@@ -91,6 +91,8 @@ The live proof used an unusual synthetic sentence played through Windows output.
 
 Lifecycle was also verified: Screen OFF stops the program-audio helper, and ending the live voice session re-arms the wake listener. The implementation includes a self-voice guard so the assistant's own speaker output is not re-transcribed as program dialogue. Raw program audio is not retained as a permanent recording.
 
+**Sustained real-world validation:** The feature was subsequently used through an entire mystery/unsolved-case television program. During and after the program, the assistant could discuss clues introduced in the show, compare interpretations, and reason about the chronology of events. This is stronger evidence than the synthetic loopback smoke test because it demonstrates useful continuity across a full-length program rather than isolated transcription.
+
 ### Camera privacy/lifecycle plumbing
 
 **Status: PROVEN AS A LOCAL SENSOR PIPELINE**
