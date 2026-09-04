@@ -18,6 +18,8 @@ Files:
 - `screen_capture.ts` — bounded privileged Electron primary-display capture that refuses while screen privacy is OFF.
 - `camera_capture.ts` — renderer webcam lifecycle where OFF physically stops every media track, plus bounded JPEG still capture.
 - `screen_watcher.ts` — local change-driven screen sampler with model-analysis throttling and salience/cooldown gating.
+- `screen_audio_loopback.ts` — Windows/Electron Screen-linked system-audio loopback pattern that keeps program audio separate from the user microphone and suppresses the assistant's own output.
+- `screen_audio_transcriber.py` — local `faster-whisper` helper that accepts bounded PCM16 chunks over stdin and emits short program-audio transcripts without storing raw audio.
 - `proactive_policy.ts` — local eligibility gating for restrained proactive speech and the `NO_MESSAGE` decision prompt pattern.
 - `proactive_voice.ts` — microphone-free playback-only Realtime session for a short line already authored by the long-lived agent, including audio-drain protection.
 - `openclaw-gateway.cmd.example` — Windows launcher shape for a long-lived local Gateway.
@@ -30,6 +32,7 @@ Security rules:
 - Never commit provider API keys/OAuth material.
 - Do not treat example regular expressions or acoustic thresholds as universal.
 - Do not expose screen/camera capture when UI privacy state is OFF.
+- If system audio is tied to Screen, stop its media tracks/transcriber when Screen turns OFF and never feed program dialogue into the user's microphone command path.
 - Keep Unreal control sidebands whitelisted. Never forward arbitrary console commands from model text.
 
 The exact code in a new build will differ by current upstream versions. Preserve the architecture and validation boundaries, not obsolete syntax.

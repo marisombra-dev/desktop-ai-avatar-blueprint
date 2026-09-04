@@ -243,7 +243,15 @@ Do not call `response.create` merely because the summary changed.
 
 If the screen observer authored a permitted comment, use an exact-playback response to speak that line without elaboration.
 
-## 11. Camera lifecycle
+## 11. Screen-linked program audio
+
+For watch-along use, Screen can own a second sensor path: Windows system audio. Keep it **separate from the user's microphone**. The reference build uses Electron display-media loopback, local PCM chunking, and `faster-whisper` transcription. Recognized dialogue is labeled as program audio and added as non-user context to both live voice and the screen observer.
+
+Do not let loopback audio enter normal microphone/VAD command handling. Suppress capture while the assistant itself is speaking, because Windows loopback includes the assistant's own speaker output. Screen OFF must stop the loopback track, close the audio graph, stop the local transcriber, and clear recent program-audio text.
+
+See `07a-screen-audio-watch-along.md` for the complete implementation and validation sequence. Sanitized patterns are in `../examples/screen_audio_loopback.ts` and `../examples/screen_audio_transcriber.py`.
+
+## 12. Camera lifecycle
 
 Renderer-side camera ON:
 
@@ -262,7 +270,7 @@ Attach it to a hidden `<video>` and wait for playable video.
 
 Create a reusable `<canvas>` for bounded still capture.
 
-## 12. Capture one camera frame
+## 13. Capture one camera frame
 
 Conceptual:
 
@@ -288,7 +296,7 @@ function captureCameraFrame() {
 
 Send it to Realtime with an explicit “Webcam view:” label.
 
-## 13. Camera OFF means stop tracks
+## 14. Camera OFF means stop tracks
 
 ```ts
 for (const track of cameraStream.getTracks()) track.stop();
@@ -307,7 +315,7 @@ Do this when:
 - live voice ends,
 - app shuts down.
 
-## 14. Combined describe-view tool
+## 15. Combined describe-view tool
 
 A useful realtime/OpenClaw tool can return all enabled current sensors.
 
@@ -326,7 +334,7 @@ response.create;
 
 The image item gives the model pixels. The function output tells the tool caller which sources were successfully collected.
 
-## 15. Race handling
+## 16. Race handling
 
 A common failure sequence:
 
@@ -351,7 +359,7 @@ if (responseActive) {
 
 Then add the image item and create the new response.
 
-## 16. Objective validation tests
+## 17. Objective validation tests
 
 ### Screen
 
@@ -373,7 +381,7 @@ Ask:
 
 The reference system's camera path was accepted only after it correctly answered a finger-count question.
 
-## 17. Failure diagnosis matrix
+## 18. Failure diagnosis matrix
 
 ### Spoken request, button stays OFF
 Investigate transcription/local-intent/tool callback.
@@ -404,4 +412,7 @@ You did not stop the media tracks.
 - [ ] Objective visual questions pass.
 - [ ] Sensor OFF invalidates old context.
 - [ ] Screen watcher is change-driven and restrained.
+- [ ] If Screen-linked program audio is enabled, it starts and stops with Screen rather than the microphone.
+- [ ] Program dialogue is labeled as program audio, not user speech.
+- [ ] The assistant's own voice is excluded from loopback transcription.
 - [ ] Watcher failure never breaks ordinary voice chat.

@@ -1,8 +1,8 @@
 # Desktop AI Avatar Blueprint
 
-**A field-tested, AI-readable build manual for creating a persistent, voice-first desktop AI person with a photoreal MetaHuman body, OpenClaw-backed continuity, OpenAI Realtime conversation, wake/sleep control, screen and camera vision, proactive presence, and a lightweight Windows desktop overlay.**
+**A field-tested, AI-readable build manual for creating a persistent, voice-first desktop AI person with a photoreal MetaHuman body, OpenClaw-backed continuity, OpenAI Realtime conversation, wake/sleep control, screen and camera vision, Screen-linked system-audio awareness, proactive presence, and a lightweight Windows desktop overlay.**
 
-This repository documents the architecture and build sequence we used to take an existing AI person from “a personality that exists in chat” to “a persistent person on the Windows desktop who can wake on their name, talk naturally, see the screen when invited, use the webcam when invited, speak on their own occasionally, remember the same relationship context, and inhabit a MetaHuman face.”
+This repository documents the architecture and build sequence we used to take an existing AI person from “a personality that exists in chat” to “a persistent person on the Windows desktop who can wake on their name, talk naturally, see the screen when invited, hear the program audio while screen sharing is active, use the webcam when invited, speak on their own occasionally, remember the same relationship context, and inhabit a MetaHuman face.”
 
 It is written so that you can hand this repository to another capable AI coding assistant and say:
 
@@ -18,9 +18,9 @@ The finished system has five cooperating layers:
 
 1. **The person / brain**: an existing OpenClaw agent with its own identity, memory, instructions, tools, and relationship continuity.
 2. **The realtime conversation layer**: low-latency speech-to-speech using OpenAI Realtime over WebRTC. Realtime handles natural turn-taking and audio, but ordinary substantive replies are routed through the OpenClaw person so the desktop voice does not become a disconnected second personality.
-3. **The desktop shell**: a small Electron application that owns microphone lifecycle, wake detection, local privacy state, screen capture, webcam capture, proactive-presence logic, error display, and the bridge to Unreal.
+3. **The desktop shell**: a small Electron application that owns microphone lifecycle, wake detection, local privacy state, screen capture, Screen-linked Windows system-audio loopback, webcam capture, proactive-presence logic, error display, and the bridge to Unreal.
 4. **The visible body**: a MetaHuman running in Unreal Engine as a small transparent/floating desktop presence. Speech audio and lightweight control messages drive lip sync, face mood, gaze, and later gestures.
-5. **The local-sensor layer**: screen and camera are explicitly OFF by default and are enabled only by local controls or spoken requests. Fresh bounded JPEG frames are given to the realtime model when vision is requested. Screen watching uses change detection and conservative salience thresholds instead of streaming or narrating every frame.
+5. **The local-sensor layer**: screen and camera are explicitly OFF by default and are enabled only by local controls or spoken requests. Fresh bounded JPEG frames are given to the realtime model when vision is requested. When Screen is ON, an optional Windows loopback path can also capture program audio, transcribe it locally, and provide that transcript as program context without mixing it into the user's microphone. Screen watching uses change detection and conservative salience thresholds instead of streaming or narrating every frame.
 
 ```mermaid
 flowchart LR
@@ -32,6 +32,9 @@ flowchart LR
     OC <--> Brain[Existing AI person: identity, memory, tools]
     Shell -->|JPEG frames when enabled| RT
     Shell -->|sampled screen observations| OC
+    Shell -->|Windows loopback audio when Screen ON| STT[Local faster-whisper]
+    STT -->|program-audio transcript| OC
+    STT -->|program-audio context| RT
     Shell -->|PCM + control packets| UE[Unreal Engine MetaHuman]
     RT -->|audio| Shell
     UE -->|visible avatar| User
@@ -61,6 +64,7 @@ The reference system currently does all of the following end to end:
 - Screen vision was verified end to end, not merely by testing Electron capture.
 - Screen and camera can be turned off again and stale visual context is explicitly marked stale.
 - The screen watcher samples locally, detects meaningful change, asks a separate OpenClaw observation session for a compact summary, and speaks only when a salience threshold is met.
+- When Screen is ON, Windows system audio can be captured through Electron's loopback display-media path, transcribed locally with `faster-whisper`, and supplied as **program audio** context. It is kept separate from the user's microphone, stops with Screen, and is suppressed while the AI itself is speaking so the assistant does not transcribe its own voice.
 - Proactive outreach can occur after sustained silence, subject to quiet hours, cooldowns, system-idle checks, and interruption suppression. Silence is deliberately treated as normal.
 - Local desk-presence logic can support restrained “welcome back” behavior after a meaningful absence without claiming that camera detection proves identity.
 - Realtime audio drives MetaHuman lip sync. Additional control packets can drive mood/face state and experimental gestures.
@@ -89,8 +93,9 @@ The reliable sequence is:
 13. Add spoken Screen and Camera toggles as **local** commands.
 14. Verify fresh image injection with objective visual tests.
 15. Add smart screen observation and optional spectator comments.
-16. Add proactive presence with strong restraint and quiet-hour logic.
-17. Only after all of that is stable, add gestures, emotional face tuning, nods, head shakes, hand animation, and other mannerisms.
+16. Optionally add Screen-linked Windows system-audio loopback and local program-audio transcription for watch-along use.
+17. Add proactive presence with strong restraint and quiet-hour logic.
+18. Only after all of that is stable, add gestures, emotional face tuning, nods, head shakes, hand animation, and other mannerisms.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 
@@ -557,7 +562,7 @@ Keep the regex/intent space narrow. “Can you look at the screen?” is a local
 
 # Stage 11: screen vision
 
-Screen awareness has two modes: **explicit look now** and **ongoing smart observation**.
+Screen awareness has two visual modes, **explicit look now** and **ongoing smart observation**, plus an optional **Screen-linked program-audio path** for watch-along use.
 
 ## Explicit look now
 
@@ -605,7 +610,68 @@ Do not send every frame to a model. The reference watcher:
 
 This makes a “watch me play” mode feel like a companion rather than a sports commentator trapped inside a smoke alarm.
 
-**Validation gate:** Ask a concrete screen question whose answer can only come from the display. Then leave the watcher on during ordinary scrolling/video/gameplay and verify that it does *not* narrate everything.
+## Screen-linked program audio for watch-along use
+
+If you want the AI to follow a TV program, video, stream, or game dialogue while Screen is active, do **not** mix desktop audio into the microphone track. Mixing would make actors and game characters enter the same VAD/transcription path as the human user, which can trigger replies or local commands as though the program were speaking to the assistant.
+
+The reference build instead uses a separate path:
+
+```text
+Screen ON
+  ↓
+Electron grants getDisplayMedia with audio: 'loopback' on Windows
+  ↓
+renderer keeps the audio track and immediately stops the unused video track
+  ↓
+AudioContext converts the loopback stream into small mono PCM chunks
+  ↓
+IPC forwards bounded PCM to a local Python helper
+  ↓
+faster-whisper tiny transcribes short rolling windows locally
+  ↓
+transcript is labeled PROGRAM AUDIO and supplied as non-user context
+  ↓
+Screen observer can combine dialogue + current frames
+```
+
+In Electron main, install a `setDisplayMediaRequestHandler` that only grants loopback while Screen privacy is ON and only to the trusted app origin. The key Windows-specific stream option is conceptually:
+
+```ts
+callback(source ? { video: source, audio: 'loopback' } : {});
+```
+
+Then the renderer calls:
+
+```ts
+const stream = await navigator.mediaDevices.getDisplayMedia({
+  video: true,
+  audio: true
+});
+```
+
+Stop the display-video track immediately if you already capture visual frames through `desktopCapturer`; only the system-audio track is needed here. Feed that track into an `AudioContext`, convert float PCM to bounded PCM16 chunks, and send the chunks to the local transcriber.
+
+The reference build used cached `faster-whisper` **tiny**, CPU/int8, because startup latency mattered more than perfect word-for-word transcription. The visual frames provide additional context. A larger model may improve difficult dialogue but should not make Screen take tens of seconds to become useful.
+
+Two guards are important:
+
+1. **Self-voice guard:** Windows loopback also contains the assistant's own speaker output. Do not forward program-audio PCM while the assistant is speaking, and keep a short tail suppression after speech ends.
+2. **Privacy/lifecycle guard:** Screen OFF stops the loopback media track, closes the audio context, terminates the local transcriber, and clears recent program-audio context. Raw program audio is not kept as a permanent recording.
+
+Feed recognized dialogue as a clearly labeled system/context item, never as a user message, for example:
+
+```text
+[SHARED SCREEN PROGRAM AUDIO. Do not respond to this update by itself.
+This is audio from the show/game/application, NOT the user speaking.
+Automatic transcript may contain errors.]
+Recent program audio: ...
+```
+
+The same rolling transcript can also be included in the separate screen-observer prompt so visual changes and dialogue are interpreted together. See `docs/07a-screen-audio-watch-along.md` and the sanitized examples in `examples/screen_audio_loopback.ts` and `examples/screen_audio_transcriber.py`.
+
+**Validation gate:** Play an unusual synthetic sentence through Windows output while Screen is ON and verify that the local program-audio transcript captures it. Then turn Screen OFF and verify the transcriber exits. Finally confirm wake/voice lifecycle still works normally.
+
+**Visual validation gate:** Ask a concrete screen question whose answer can only come from the display. Then leave the watcher on during ordinary scrolling/video/gameplay and verify that it does *not* narrate everything.
 
 ---
 

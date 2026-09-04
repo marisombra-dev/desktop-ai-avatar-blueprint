@@ -81,17 +81,27 @@ The reference watcher performs local sampling/change detection, throttles model 
 
 The watcher is best-effort and is intentionally unable to break ordinary voice chat when a sample/analysis fails.
 
+### Screen-linked system audio / watch-along
+
+**Status: END-TO-END PROVEN**
+
+The reference build now ties Windows system-audio capture to Screen privacy state. When Screen is ON, Electron grants a Windows display-media loopback stream, the renderer converts the audio track to bounded PCM, and a local `faster-whisper` helper produces short program-audio transcripts. Those transcripts are labeled as program audio rather than user speech and can be supplied to both live Realtime context and the screen-observer session.
+
+The live proof used an unusual synthetic sentence played through Windows output. The local helper captured the sentence through loopback, demonstrating that the path was receiving computer output rather than depending on room-microphone pickup.
+
+Lifecycle was also verified: Screen OFF stops the program-audio helper, and ending the live voice session re-arms the wake listener. The implementation includes a self-voice guard so the assistant's own speaker output is not re-transcribed as program dialogue. Raw program audio is not retained as a permanent recording.
+
 ### Camera privacy/lifecycle plumbing
 
 **Status: PROVEN AS A LOCAL SENSOR PIPELINE**
 
 The webcam path is OFF by default, opens only when requested, captures bounded JPEG stills, stops tracks when turned off, and can coexist with screen awareness.
 
-## Implemented and recently repaired, with a final last-mile retest still important
+## Recently repaired and now end-to-end proven
 
-### Spoken “look at the screen” after the latest Realtime schema repair
+### Spoken “look at the screen” after the Realtime schema repair
 
-**Status: IMPLEMENTED; LOCAL TOOL INSTALL + SCREEN STATE SMOKE TEST PASSED; LAST-MILE FRESH-IMAGE SPOKEN RESPONSE SHOULD BE REVERIFIED**
+**Status: END-TO-END PROVEN**
 
 The reference build discovered that its restored local Realtime tool installer was sending:
 
@@ -114,31 +124,20 @@ The fix was to preserve/use the created session type or fall back to:
 type: "realtime"
 ```
 
-After that change:
-
-- typecheck passed,
-- tests passed,
-- production build passed,
-- a fresh live voice session opened without the error indicator,
-- manual Screen ON while voice was active succeeded without provider error,
-- independent Electron display capture remained healthy.
-
-The remaining proof step for that exact latest snapshot is the human spoken flow:
+After that repair, the spoken flow was verified live:
 
 ```text
 wake name
 “Can you look at the screen?”
 ```
 
-followed by an answer that demonstrates the model used the freshly injected images.
+The Screen control enabled locally, fresh screen images were injected, and the answer demonstrated actual current-screen understanding. A clone should still rerun the same objective test because provider event ordering and image-input schemas are version-sensitive.
 
-A clone should run that objective test anyway, because provider event ordering and image-input schemas are version-sensitive.
+### Spoken camera command
 
-### Spoken camera command in the latest snapshot
+**Status: END-TO-END PROVEN**
 
-**Status: IMPLEMENTED; REVERIFY AFTER ANY REALTIME TOOL/SESSION CHANGE**
-
-The deterministic local command path and Realtime local tool path both support camera ON/OFF and fresh image injection. Because camera and screen share the local-tool/session machinery, re-run an objective camera test after changing that machinery.
+The deterministic local command path and Realtime local tool path both support camera ON/OFF and fresh image injection. Live validation included an objective camera question whose answer required seeing the current webcam frame. Re-run an objective camera test after any change to the shared local-tool/session machinery.
 
 ## Implemented but intentionally conservative
 

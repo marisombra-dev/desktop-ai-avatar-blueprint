@@ -2,7 +2,7 @@
 
 This is a sanitized version of the direct local audio bridge pattern used in the working reference build.
 
-It is **not** the first lip-sync route you should attempt. Prove MetaHuman audio animation through the simplest supported loopback/Live Link path first. Use this plugin when you want Electron/Reatime decoded audio to feed MetaHuman directly without depending on a Windows virtual-audio device.
+It is **not** the first lip-sync route you should attempt. Prove MetaHuman audio animation through the simplest supported loopback/Live Link path first. Use this plugin when you want Electron/Realtime decoded audio to feed MetaHuman directly without depending on a Windows virtual-audio device.
 
 ## What it does
 

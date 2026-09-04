@@ -188,10 +188,18 @@ Relevant APIs:
 - `BrowserWindow`
 - `desktopCapturer`
 - `screen`
+- `session.setDisplayMediaRequestHandler`
+- Windows `Streams.audio = 'loopback'` for system-audio capture
 - `ipcMain` / `ipcRenderer`
 - `contextBridge`
 - `powerMonitor`
 - `Tray`
+
+Electron session API:
+
+https://www.electronjs.org/docs/latest/api/session
+
+The reference watch-along path uses `setDisplayMediaRequestHandler` and the Windows-only `audio: 'loopback'` stream option. Check the current Electron session/Streams API before copying the example because capture semantics are version-sensitive.
 
 Do not enable broad renderer Node integration merely for convenience. Keep privileged capture/process/Gateway work in main/preload.
 
@@ -205,7 +213,11 @@ https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection
 
 https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
 
-These are useful references for browser/Electron peer connection and webcam lifecycle behavior.
+### MDN getDisplayMedia
+
+https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia
+
+These are useful references for browser/Electron peer connection, webcam lifecycle, and renderer-side display-media acquisition. Electron's Windows loopback behavior is controlled by Electron's own display-media handler, so use the Electron session docs together with MDN.
 
 ## faster-whisper
 
@@ -213,7 +225,7 @@ Repository:
 
 https://github.com/SYSTRAN/faster-whisper
 
-The reference wake listener uses a local `faster-whisper` `base` model on CPU/int8 plus `sounddevice` and strict acoustic/phrase gating. The thresholds in this blueprint were measured for one microphone/room and must be recalibrated elsewhere.
+The reference wake listener uses a local `faster-whisper` `base` model on CPU/int8 plus `sounddevice` and strict acoustic/phrase gating. The thresholds in this blueprint were measured for one microphone/room and must be recalibrated elsewhere. The Screen-linked program-audio helper uses a smaller cached `tiny` model on CPU/int8 because fast startup is more important there than wake-grade phrase discrimination; visual screen context helps compensate for imperfect transcription.
 
 ## Node.js / TypeScript toolchain
 
