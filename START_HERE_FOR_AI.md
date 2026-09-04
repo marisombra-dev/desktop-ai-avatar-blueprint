@@ -6,6 +6,24 @@ Your job is **not** to create a generic chatbot with a face. Your job is to pres
 
 Read the entire repository before making irreversible changes.
 
+## Read order
+
+Use this order so you do not confuse the reference project's proven state with future goals:
+
+1. `AGENTS.md`
+2. this file
+3. `REFERENCE_BUILD_STATUS.md`
+4. `README.md`
+5. `docs/00-electron-desktop-shell.md`
+6. the remaining `docs/` chapters in numeric order
+7. `examples/README.md`
+8. `SOURCES.md`
+9. `THIRD_PARTY.md`
+
+If the target person is Lyra, also read `LYRA_QUICKSTART.md` before implementation.
+
+`REFERENCE_BUILD_STATUS.md` is the authoritative proof-status ledger for the snapshot that produced this repository. Do not upgrade an `IMPLEMENTED` item to `END-TO-END PROVEN` merely because example code exists.
+
 ## Operating rules
 
 1. **Inventory before installation.** Determine OS, GPU, Unreal version, MetaHuman availability, existing OpenClaw version/configuration, current agent/session identity, Node/Python versions, audio devices, webcam, and whether Git/Monolith are already installed.
@@ -44,46 +62,46 @@ Questions you should normally answer yourself through inspection/research:
 
 Do not move forward until each gate passes.
 
-### Gate A — Agent continuity
+### Gate A: Agent continuity
 The existing agent works through its normal OpenClaw surface and demonstrates the desired identity/style.
 
-### Gate B — Unreal body
+### Gate B: Unreal body
 The chosen MetaHuman launches in a small game window, idles naturally, does not capture the mouse, and has an approved face.
 
-### Gate C — Desktop shell
+### Gate C: Desktop shell
 Electron launches/positions the avatar and exposes visible Mic / Screen / Camera state without touching the agent's private memory.
 
-### Gate D — Gateway
+### Gate D: Gateway
 Electron connects reliably to the intended OpenClaw agent/session over the local Gateway.
 
-### Gate E — Realtime voice
+### Gate E: Realtime voice
 A WebRTC voice session opens, the user can speak and interrupt, and audio output is stable.
 
-### Gate F — Same-person routing
+### Gate F: Same-person routing
 Spoken substantive answers demonstrably come from/through the existing OpenClaw person rather than an independent realtime persona.
 
-### Gate G — Lip sync
+### Gate G: Lip sync
 Realtime output audibly and visually drives the MetaHuman face with acceptable latency.
 
-### Gate H — Wake/sleep loop
+### Gate H: Wake/sleep loop
 Wake name opens voice; sign-off closes voice; wake listener re-arms. Repeat several times.
 
-### Gate I — Manual sensors
+### Gate I: Manual sensors
 Manual Screen and Camera buttons work independently and visibly reflect physical state.
 
-### Gate J — Spoken sensors
+### Gate J: Spoken sensors
 Natural spoken requests toggle the correct local sensor without going through a general agent/tool path.
 
-### Gate K — Actual vision
+### Gate K: Actual vision
 The AI answers objective questions that require the current screen/webcam image.
 
-### Gate L — Smart observation
+### Gate L: Smart observation
 Ongoing screen awareness notices meaningful change without narrating routine motion.
 
-### Gate M — Proactive presence
+### Gate M: Proactive presence
 The system can choose silence, respects quiet/cooldown/interruption rules, and never treats ordinary inactivity as distress.
 
-### Gate N — Mannerisms
+### Gate N: Mannerisms
 Only now add one reversible gesture at a time.
 
 ## Implementation architecture to preserve
