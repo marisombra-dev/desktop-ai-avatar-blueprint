@@ -1,0 +1,22 @@
+@echo off
+REM ---------------------------------------------------------------------------
+REM OpenClaw Gateway Windows launcher template
+REM
+REM Replace paths/port deliberately for the target machine.
+REM Do NOT put tokens or provider secrets in this file.
+REM ---------------------------------------------------------------------------
+
+REM Clear inherited Node options that can break a long-lived scheduled process.
+set "NODE_OPTIONS="
+
+REM Use a stable OpenClaw working directory.
+cd /d "%USERPROFILE%\.openclaw"
+
+REM Example only: discover the actual node.exe and OpenClaw install paths first.
+set "NODE_EXE=C:\Program Files\nodejs\node.exe"
+set "OPENCLAW_MJS=%APPDATA%\npm\node_modules\openclaw\openclaw.mjs"
+set "GATEWAY_PORT=18789"
+
+REM A modest explicit heap ceiling can prevent inherited launcher defaults from
+REM producing surprising memory behavior. Tune only if the target machine needs it.
+"%NODE_EXE%" --max-old-space-size=8192 "%OPENCLAW_MJS%" gateway run --port %GATEWAY_PORT% < NUL
