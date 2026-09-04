@@ -1,0 +1,67 @@
+# Secrets / local configuration
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+.openclaw/
+openclaw.json
+
+# Logs / diagnostics
+*.log
+logs/
+tmp/
+temp/
+
+# Local backups / scratch
+backups/
+*.bak
+*.backup
+*.old
+*.pre_*
+
+# Node / Electron
+node_modules/
+out/
+dist/
+release/
+coverage/
+.vite/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Unreal generated content
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+.vs/
+*.sln
+
+# Unreal local IDE/editor metadata
+.idea/
+.vscode/
+
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# User/private visual assets by default
+private/
+references-private/
+captures-private/
+
+# Debug screenshots / camera frames
+*.screen-smoke.jpg
+*.camera-smoke.jpg
+screen-capture-*.jpg
+camera-capture-*.jpg
+
+# Keep source/plugin source code tracked deliberately. Do not blanket-ignore Plugins/.
