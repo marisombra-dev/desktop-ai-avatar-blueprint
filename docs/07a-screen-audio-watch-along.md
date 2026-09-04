@@ -30,6 +30,7 @@ Realtime context     screen-observer context
 ```
 
 Raw program audio stays local in this pattern. The long-lived agent receives text context, not a permanent audio recording.
+
 ## 1. Grant Windows loopback only while Screen is authorized
 
 Electron exposes Windows system-audio loopback through the display-media request handler. Install the handler in the main process and gate it with your existing Screen privacy state.
@@ -61,6 +62,7 @@ session.defaultSession.setDisplayMediaRequestHandler(async (request, callback) =
 `audio: 'loopback'` is Windows-specific Electron behavior. Check the current Electron `session` / `Streams` documentation before adapting this code to a different Electron release.
 
 Do not grant loopback simply because a renderer asks. The privileged main process should remain the authority on whether Screen is currently ON.
+
 ## 2. Request display media, then keep only the audio track
 
 In the trusted renderer:
@@ -93,6 +95,7 @@ source -> processor -> gain(0) -> context.destination
 Convert each float32 sample to signed little-endian PCM16 and send bounded chunks across a narrow preload/IPC API. Do not expose arbitrary process/file access to the renderer merely to support audio capture.
 
 A sanitized renderer/main pattern is in `../examples/screen_audio_loopback.ts`.
+
 ## 3. Transcribe locally instead of sending raw program audio into Realtime
 
 The reference build launches a small Python helper when Screen audio starts. It receives lines shaped like:
@@ -126,6 +129,7 @@ WhisperModel(
 Do not write raw audio to disk. A production build also does not need to keep a permanent transcript log. The rolling text exists only long enough to support the current shared-screen context.
 
 See `../examples/screen_audio_transcriber.py` for the sanitized helper.
+
 ## 4. Label the transcript so the model never mistakes it for the user
 
 When a transcript arrives, do not create a normal user message. Add it as system/context material with an explicit source label:
@@ -161,6 +165,7 @@ assistant done     -> wait a short tail, then resume
 A few hundred milliseconds of tail suppression is enough to avoid most playback residue. The exact value depends on the audio stack.
 
 Do not solve this by muting the user's speakers. The user should still hear both the program and the assistant normally.
+
 ## 6. Tie the full lifecycle to Screen
 
 Screen ON should start the visual watcher and attempt program-audio capture. If loopback is unavailable, visual Screen should remain usable rather than failing the whole sensor.
