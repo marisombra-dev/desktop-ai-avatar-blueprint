@@ -13,10 +13,13 @@ Use them this way:
 Files:
 
 - `wake_word_listener.py` — local faster-whisper wake detector that exits after one wake.
+- `gateway_client.ts` — OpenClaw Gateway connection, dedicated sessions, Talk reservation, consult, screen observer, and proactive-decision patterns.
 - `realtime_local_controls.ts` — Realtime local tool installation, command normalization, screen/camera/sleep interception, and fresh-image injection pattern.
-- `screen_watcher.ts` — local change-driven screen sampler with model-analysis throttling.
-- `gateway_client.ts` — OpenClaw Gateway connection / dedicated-session / realtime Talk patterns.
-- `proactive_policy.ts` — local eligibility gating for restrained proactive speech.
+- `screen_capture.ts` — bounded privileged Electron primary-display capture that refuses while screen privacy is OFF.
+- `camera_capture.ts` — renderer webcam lifecycle where OFF physically stops every media track, plus bounded JPEG still capture.
+- `screen_watcher.ts` — local change-driven screen sampler with model-analysis throttling and salience/cooldown gating.
+- `proactive_policy.ts` — local eligibility gating for restrained proactive speech and the `NO_MESSAGE` decision prompt pattern.
+- `proactive_voice.ts` — microphone-free playback-only Realtime session for a short line already authored by the long-lived agent, including audio-drain protection.
 - `openclaw-gateway.cmd.example` — Windows launcher shape for a long-lived local Gateway.
 - `unreal/DesktopAvatarAudioBridge/` — sanitized UE 5.8-era MetaHuman local Live Link plugin pattern that receives float32 mono PCM over loopback UDP and can accept a narrow mood-control sideband.
 
