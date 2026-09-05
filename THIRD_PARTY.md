@@ -60,6 +60,18 @@ https://github.com/SYSTRAN/faster-whisper
 
 Each package retains its own license and transitive dependencies. Review them before redistribution.
 
+## MediaPipe, OpenCV, and local gaze tracking
+
+The optional privacy-first eye-contact pattern uses MediaPipe Face Landmarker, OpenCV, and NumPy for local webcam landmark processing.
+
+https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker
+
+https://opencv.org/
+
+The blueprint does not redistribute the MediaPipe model asset or a Python runtime. Obtain the model and packages from their current upstream sources and review their licenses and transitive dependencies before redistribution.
+
+A real user's calibration data should remain private. Do not publish webcam frames or user-specific classifier weights merely because the gaze code itself is public.
+
 ## Generated/Reference Images
 
 Reference portraits, private inspiration photographs, webcam images, screen captures, and user-specific character assets should not be assumed to be redistributable. Keep them out of a public implementation repository unless the owner has intentionally cleared them for publication.
