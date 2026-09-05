@@ -521,6 +521,36 @@ A production-ready desktop companion must pass a cold reboot test.
 
 ---
 
+## 33. MetaHuman head command reaches Unreal but the visible head does not move
+
+Do not immediately escalate to larger angles or skeleton surgery.
+
+Check in this order:
+
+1. Is the assembled character using MetaHuman head-movement rig logic such as `CR_MetaHuman_HeadMovement_IK_Proc`?
+2. Are `HeadControlSwitch` and the chosen head rotation curve being supplied together through a curve path that actually reaches the live AnimBP?
+3. Is an older `ModifyBone`, custom target curve, body rotation, or other head-authority path still active at the same time?
+4. Have you empirically mapped the visible axes on this assembled character rather than trusting yaw/pitch/roll names?
+5. Is the test amplitude large enough to see at the avatar's actual desktop size?
+
+A changed variable or received UDP command proves transport, not visible animation.
+
+## 34. Correct head turn is jumpy or snaps to attention
+
+Check render cadence before rewriting interpolation. A low-cost desktop avatar may idle at very low FPS, leaving only a few visible frames inside a normal easing duration.
+
+Temporarily raise render FPS only while the head transition is active, use eased interpolation, then restore the low idle FPS. Keep `HeadControlSwitch` stable through the transition rather than flickering ownership on/off.
+
+## 35. Avatar can physically nod/shake but says it does not know how
+
+This is a conversational-control failure, not an Unreal failure.
+
+Expose the gesture as a narrow local Realtime tool/action, install it on every fresh session, and explicitly tell the live model that an intentional nod/shake is available. Keep a conservative transcript fallback for clear yes/no responses and suppress duplicates. Verify the Unreal log receives the gesture command before touching animation again.
+
+See `09b-metahuman-head-control.md`.
+
+---
+
 # Minimal incident report template
 
 When handing a failure to another AI, provide:

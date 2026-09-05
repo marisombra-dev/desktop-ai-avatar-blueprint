@@ -478,9 +478,14 @@ See `05b-contextual-time-awareness.md`.
 
 - [ ] Response-start small smile.
 - [ ] Mood auto-reset.
-- [ ] Axis probe matrix.
-- [ ] Nod proven in actual rig.
-- [ ] Head shake proven.
+- [ ] Inspect the assembled MetaHuman's current head-movement rig before inventing a parallel bone-control path.
+- [ ] Probe `HeadControlSwitch` + head rotation curves through one isolated curve path.
+- [ ] Axis probe matrix based on visible live behavior, not variable names.
+- [ ] If idle FPS is very low, temporarily raise FPS only during eased head transitions.
+- [ ] Nod proven in actual rig and unmistakably read as YES.
+- [ ] Head shake proven and unmistakably read as NO.
+- [ ] If gestures are conversational, expose an explicit narrow local gesture action and add duplicate suppression.
+- [ ] If screen watching is supported, distinguish transient glance from persistent attention posture.
 - [ ] Question brow proven.
 - [ ] Amused expression proven.
 - [ ] Optional screen-look cosmetic gesture.
@@ -495,11 +500,11 @@ For every gesture:
 - [ ] returns to idle,
 - [ ] semantically sparse.
 
-**Gate X test:** Human notices greater naturalness, not “more animation.”
+**Gate X test:** Human notices greater naturalness, not “more animation.” For head motion specifically, require naked-eye confirmation of direction, smoothness, semantic readability, and return/hold behavior. See `09b-metahuman-head-control.md` before attempting custom head bone work.
 
 ---
 
-## Phase X — Cold reboot acceptance
+## Phase Y — Cold reboot acceptance
 
 - [ ] OpenClaw Gateway starts correctly.
 - [ ] Electron starts when intended.

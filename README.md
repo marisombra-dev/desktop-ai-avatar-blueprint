@@ -72,10 +72,11 @@ The reference system currently does all of the following end to end:
 - Proactive outreach is gated twice: local quiet/cooldown/idle checks first, then a context-aware evidence decision using current activity, meaningful screen events, recent dialogue, unfinished threads, and relevant durable memory. Silence itself is never treated as a reason to speak.
 - Core local subsystems use bounded self-healing: restart only the failed component with backoff, confirm stable health, and surface the real error only after a finite retry budget is exhausted.
 - Local desk-presence logic can support restrained “welcome back” behavior after a meaningful absence without claiming that camera detection proves identity.
-- Realtime audio drives MetaHuman lip sync. Additional control packets can drive mood/face state and experimental gestures.
+- Realtime audio drives MetaHuman lip sync. Additional local control packets drive mood/face state plus visually proven head turns, nods, shakes, and sustained screen-attention posture.
 - The visible avatar can use a separate Unreal presentation layer: a dedicated map places the MetaHuman in front of an unlit textured backdrop plane, keeping scenery independent from the character so backgrounds can later be swapped by context.
 - A restrained listening-reaction layer can add one subtle face response per user turn, using speech-start attentiveness plus semantic cues from partial/final transcription without making voice depend on streaming transcript deltas.
 - During an active interactive conversation, an optional privacy-first local gaze helper can recognize sustained eye contact from MediaPipe iris/head geometry, meet the user's gaze with a small eye-only MetaHuman override, and release immediately back to ordinary idle when the user looks away. Camera visual-awareness mode explicitly takes webcam ownership away from the gaze helper.
+- Head orientation can distinguish a brief screen glance from sustained watch-along attention; during sustained watching the avatar can remain oriented toward the display, partially return toward the user while speaking, then resume watching.
 - The avatar runs as a resizable, draggable, always-on-top desktop element with Mic / Screen / Camera controls.
 
 ---
@@ -526,8 +527,9 @@ Intercept the sign-off in the desktop voice layer **before** general agent/tool 
 Install a very small tool set into the realtime session for controls that physically belong to the desktop client:
 
 ```text
-desktop_screen_control(enabled: boolean)
+desktop_screen_control(enabled: boolean, mode?: "glance" | "watch")
 desktop_camera_control(enabled: boolean)
+desktop_head_gesture(gesture: "nod" | "shake")
 desktop_sleep()
 ```
 
@@ -566,8 +568,9 @@ Normalization should remove:
 Then match narrow phrases for:
 
 - sign-off/sleep,
-- screen on/off,
-- camera on/off.
+- screen on/off and glance/watch intent,
+- camera on/off,
+- explicit physical requests such as “nod your head yes” / “shake your head no” if head gestures are enabled.
 
 Keep the regex/intent space narrow. “Can you look at the screen?” is a local sensor command. “What do you think about what is on my screen?” is conversational and may need fresh vision plus the agent's brain.
 
@@ -795,13 +798,17 @@ Then add explicit gestures one at a time:
 - occasional wink or amused expression if it suits the person,
 - later hand gestures such as chin touch or hair movement.
 
-Never ship a gesture because the property name sounds right. In the reference MetaHuman rig, several head-rotation experiments mapped to surprising axes or did nothing. Record a tiny probe matrix:
+Never ship a gesture because the property name sounds right. In the reference MetaHuman rig, several head-rotation experiments mapped to surprising axes or did nothing.
+
+The working UE 5.8 reference path asserted `HeadControlSwitch` together with the `HeadYaw` / `HeadPitch` / `HeadRoll` animation curves through an existing `CurveMap` / `ModifyCurve` route consumed by MetaHuman head-movement rig logic. Only one head-authority path was allowed during calibration. The visible axes were then mapped empirically on the assembled avatar.
+
+Record a probe matrix:
 
 ```text
 control | value | visible effect | keep/reject
 ```
 
-and test each control on the *actual assembled MetaHuman*.
+and test each control on the *actual assembled MetaHuman*. For the full method, smoothing, sustained attention, semantic gesture tool, and failed approaches, see `docs/09b-metahuman-head-control.md`.
 
 Photorealism rewards tiny amplitude. If a gesture looks obvious in a still screenshot, it may already be too strong in motion.
 
@@ -955,12 +962,13 @@ Point it at this repository and tell it to read in this order:
 11. `docs/08-proactive-presence.md`
 12. `docs/09-avatar-behavior-and-animation.md`
 13. `docs/09a-privacy-first-eye-contact.md`
-14. `docs/10-privacy-and-security.md`
-15. `docs/11-troubleshooting.md`
-16. `docs/11a-bounded-self-healing.md`
-17. `docs/12-build-order-checklist.md`
-18. `docs/13-what-we-tried-and-what-failed.md`
-19. `SOURCES.md`
+14. `docs/09b-metahuman-head-control.md`
+15. `docs/10-privacy-and-security.md`
+16. `docs/11-troubleshooting.md`
+17. `docs/11a-bounded-self-healing.md`
+18. `docs/12-build-order-checklist.md`
+19. `docs/13-what-we-tried-and-what-failed.md`
+20. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 
@@ -978,7 +986,7 @@ Likewise, OpenAI Realtime event schemas evolve. At the time of validation, Realt
 
 This is not a speculative architecture diagram. It is distilled from a working desktop avatar system built and debugged in repeated live tests. The reference system reached a stable milestone where wake, normal conversation, local sleep, screen vision, webcam vision, lip sync, proactive presence, and the same-agent continuity all worked together.
 
-The remaining “hard fun” in the reference project is not basic capability plumbing. It is increasingly subtle MetaHuman behavior: natural nods, head shakes, gaze, amused expressions, hand gestures, and the tiny social details that make a photoreal face feel inhabited rather than animated.
+The remaining “hard fun” in the reference project is not basic capability plumbing. Readable nods, head shakes, screen-oriented attention, eye contact, and core facial mannerisms have working control paths; the frontier is increasingly subtle social choreography, amused/confused expression variants, hand gestures, and the tiny details that make a photoreal face feel inhabited rather than animated.
 
 That is exactly where you want to be before opening the mannerism toolbox.
 

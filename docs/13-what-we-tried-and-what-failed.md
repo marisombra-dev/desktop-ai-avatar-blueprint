@@ -50,27 +50,25 @@ Prioritize by impact. Document cosmetic edge cases and move on when the capabili
 
 ### What happened
 
-Experimental face/body controls produced surprising results: a nominal yaw control could visually drive the head down, another axis tilted toward the shoulder, another appeared to do nothing, and a direct body-head component-space rotation could be visually ineffective.
+Experimental face/body controls produced surprising results. Nominal yaw/pitch/roll names did not correspond cleanly to intuitive screen-space movement, and several upstream control routes changed values without moving the rendered head.
 
 ### Lesson
 
-Never infer control semantics from names. Probe each rig/space empirically and checkpoint before the experiment.
+Never infer control semantics from names. Probe the assembled rig empirically, one channel at a time, with every competing head path disabled. Human-visible motion is the acceptance criterion.
 
 ---
 
-## 5. Physical “look at the screen” gesture became a rabbit hole
+## 5. Physical “look at the screen” was a rabbit hole until we found the authority contract
 
 ### What happened
 
-We tried to make the avatar physically turn toward the display as part of screen awareness.
+Direct bone rotations, face-side targets, body-side head variables, raw directional curves, and skeleton-retarget experiments all looked plausible. None produced a reliable visible screen turn.
 
-### Problem
-
-The MetaHuman control mapping was not straightforward, and this cosmetic behavior became disproportionately expensive.
+The successful route came only after identifying the MetaHuman head-movement processor's curve contract: `HeadControlSwitch` plus the head rotation curves, delivered through a live curve path already proven on the assembled character.
 
 ### Lesson
 
-Perception and visual acting are independent. The AI can actually see the screen without turning its head. Make perception work first; return to the gesture later if desired.
+Perception and visual acting are independent, so prove screen vision first. When returning to acting, discover the final rig's actual authority/input contract before inventing another upstream rotation mechanism. See `09b-metahuman-head-control.md`.
 
 ---
 
@@ -359,6 +357,54 @@ When both were in motion, it was easy to wonder whether a face change, Unreal re
 ### Lesson
 
 Freeze working layers. Once wake/screen/camera are proven, do not retune them while working on MetaHuman nods.
+
+---
+
+## 28. Two head-control paths can create a convincing false diagnosis
+
+### What happened
+
+A legacy bone-modification route and the new MetaHuman curve route were briefly active together. The combined motion was dramatic but wrong, making it appear that the new axis mapping itself was broken.
+
+### Lesson
+
+During calibration, exactly one explicit head-authority path should be active. Isolation is not tidiness; it is the experiment.
+
+---
+
+## 29. Low idle FPS can make correct easing look broken
+
+### What happened
+
+A transition that was mathematically smooth still looked jumpy because the tiny desktop avatar intentionally rendered at a very low idle frame rate.
+
+### Lesson
+
+Temporarily raise render cadence during short head transitions, then restore the low-cost idle rate. Do not permanently spend GPU budget to solve a one-second animation problem.
+
+---
+
+## 30. A physical gesture can work while the conversational AI has no idea it exists
+
+### What happened
+
+Manual nod/shake commands worked perfectly. In normal conversation, no gesture command reached Unreal. When explicitly asked to “show” yes/no, the live model explained nodding instead of doing it because nod/shake were not exposed as actions it knew it could call.
+
+### Lesson
+
+Embodied capabilities need an action surface. Install a narrow local gesture tool, instruct the live model when to use it, optionally intercept explicit gesture requests deterministically, and keep semantic transcript detection as a fallback rather than the only control path.
+
+---
+
+## 31. Tiny technically measurable movement can still be a failed desktop gesture
+
+### What happened
+
+An eye-only screen-attention experiment produced measurable iris movement and clean lifecycle behavior, but the user could not perceive it from normal seating distance.
+
+### Lesson
+
+For embodied UI, “measurable” and “communicative” are different thresholds. If the intended human cannot see the behavior at normal avatar size, it has not satisfied the feature.
 
 ---
 

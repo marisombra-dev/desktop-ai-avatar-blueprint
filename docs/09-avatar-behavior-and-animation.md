@@ -147,7 +147,7 @@ GESTURE|SHAKE|0.75
 
 Then mark that response as having consumed the explicit head gesture.
 
-This is an optional layer. Do not enable it until the actual MetaHuman gesture implementation is visually proven.
+This layer should remain disabled until the actual MetaHuman gesture implementation is visually proven on the target avatar. In the reference build, nod and shake are now visually proven and intentionally invokable; see `09b-metahuman-head-control.md` for the working control path and duplicate-suppression rules.
 
 ## 6. Gesture control should be event-like
 
@@ -187,7 +187,7 @@ Record results in a table:
 |---|---|---|---|---|---|
 | `HeadYaw` | ... | ... | face rig | ... | ... |
 
-The reference project discovered that nominal head axes did not correspond cleanly to expected screen-space movement. Never assume names prove behavior.
+The reference project discovered that nominal head axes did not correspond cleanly to expected screen-space movement. Never assume names prove behavior. The eventual working route used MetaHuman head-control animation curves plus `HeadControlSwitch`; see `09b-metahuman-head-control.md`.
 
 ## 8. Screen-looking gesture is optional, not proof of perception
 
@@ -195,7 +195,7 @@ It is visually appealing for the avatar to glance toward the screen when screen 
 
 Do not let a failed head-turn animation block screen vision.
 
-The reference build eventually treated visual head orientation as cosmetic after proving screen understanding independently.
+The reference build correctly treated visual head orientation as cosmetic while screen perception was being proven. It later returned to the acting layer and achieved a visually proven screen glance plus sustained screen-attention posture. Perception still remains independent of where the avatar's head is pointing.
 
 ## 9. Gaze behavior
 

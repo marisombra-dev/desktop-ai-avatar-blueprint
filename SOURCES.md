@@ -2,7 +2,7 @@
 
 This repository is based on a working implementation, but several APIs and editor workflows evolve quickly. Before adapting the examples to a new machine, check the current upstream documentation below.
 
-Last reviewed: **2026-09-04**.
+Last reviewed: **2026-09-05**.
 
 ## OpenAI Realtime
 
@@ -176,6 +176,26 @@ Official documentation:
 https://dev.epicgames.com/documentation/metahuman/metahuman-creator-dna-asset-reference-in-unreal-engine
 
 Use this when custom rig/DNA work crosses UE 5.7 → 5.8 because DNA storage/runtime behavior changed.
+
+### MetaHuman animation propagation and head-control references
+
+Official custom-animation documentation:
+
+https://dev.epicgames.com/documentation/metahuman/play-a-custom-animation
+
+Epic documents that assembled MetaHumans are driven primarily from the Body skeletal mesh and that Face post-processing copies body bone transforms. This is important when diagnosing a face-side control that changes values without visibly moving the head.
+
+UE 5.8 MetaHuman known issues:
+
+https://dev.epicgames.com/documentation/unreal-engine/metahuman-known-issues-5-8-in-unreal-engine
+
+The 5.8 issue list includes body-driven head-pose behavior for whole-rig head imports and a `Face_Archetype_Skeleton` animation issue. Treat these as diagnostic context, not proof that a specific project has the same failure.
+
+Epic Developer Community support discussion of head curves / `CR_MetaHuman_HeadMovement_IK_Proc`:
+
+https://forums.unrealengine.com/t/mhc-mh002-fmn-b-facialloop-sad-m-s001-head/2708048
+
+This support explanation describes Head Translation, Head Roll/Pitch/Yaw, and Head Control Switch curves as part of MetaHuman head-bone control through Control Rig logic. The reference build's successful head-motion path was consistent with this contract, but axis mapping still required live empirical calibration.
 
 ## Electron
 

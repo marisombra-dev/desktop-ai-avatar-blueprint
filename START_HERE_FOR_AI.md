@@ -103,7 +103,7 @@ Ongoing screen awareness notices meaningful change without narrating routine mot
 The system can choose silence, respects quiet/cooldown/interruption rules, and never treats ordinary inactivity as distress.
 
 ### Gate N: Mannerisms
-Only now add one reversible gesture at a time.
+Only now add one reversible gesture at a time. Before custom head-bone experiments, read `docs/09b-metahuman-head-control.md`; it records the MetaHuman head-control contract and the failed routes that should not be blindly repeated.
 
 ## Implementation architecture to preserve
 

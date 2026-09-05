@@ -32,6 +32,20 @@ Realtime output drives the MetaHuman speech animation with very good visible syn
 
 The reference project ultimately added a direct local PCM bridge to MetaHuman audio Live Link. A sanitized version is included under `examples/unreal/DesktopAvatarAudioBridge/`.
 
+### Head orientation, sustained screen attention, nod, and head shake
+
+**Status: END-TO-END VISUALLY PROVEN**
+
+The reference build now has a working MetaHuman head-motion path. The successful route drives `HeadControlSwitch` together with MetaHuman head rotation animation curves through the same live curve-processing path used by the assembled character. Nominal axis names were mapped empirically because their visible screen-space effects were counterintuitive.
+
+Live human validation proved: a smooth screen-directed head turn; a sustained watch posture that remains oriented toward the display; a partial return toward the user while speaking followed by renewed screen attention; a clearly readable single nod for YES; and a clearly readable single shake for NO.
+
+A very low idle frame rate initially made eased motion appear jumpy. The reference build solved this by temporarily raising render FPS only during head transitions and then returning to the low-cost idle rate. Exact angles are intentionally not part of this public blueprint because calibration is avatar/window-position specific.
+
+The conversational layer also exposes an explicit narrow local head-gesture action so the live agent knows nod/shake are physical actions it can intentionally perform. A conservative transcript fallback can add one gesture for clear affirmative/negative answers, with duplicate suppression. Sustained screen attention has higher head-pose priority than conversational gestures.
+
+See `docs/09b-metahuman-head-control.md`.
+
 ### Listening micro-reactions
 
 **Status: IMPLEMENTED; CONTROL PATH AND LOW-INTENSITY VISUAL CUE PROVEN; EXTENDED NATURAL-CONVERSATION VALIDATION PENDING**
@@ -264,24 +278,6 @@ See `docs/11a-bounded-self-healing.md` and `examples/recovery_policy.ts`.
 Local presence logic can infer a return after meaningful absence and ask the agent for a brief greeting. The detector does not prove identity and downstream prompts are written accordingly.
 
 ## Experimental / not a dependency of the core product
-
-### Physical avatar head-turn toward the screen
-
-**Status: ABANDONED FOR NOW**
-
-The reference project experimented with face/body head rotation controls to make the avatar visibly look toward the user's display.
-
-Observed controls behaved counterintuitively or had little visible effect in the assembled rig. Examples included nominal yaw/pitch controls producing unexpected screen-space movement.
-
-The experiment was intentionally stopped because actual screen perception does not depend on the cosmetic head turn.
-
-Do not revive this while debugging screen vision.
-
-### Nod / head shake gesture mapping
-
-**Status: PARTIALLY IMPLEMENTED / NOT YET A CORE PROOF GATE**
-
-Semantic detection and local control messages exist, but final physical gesture mapping should be individually verified on the actual target MetaHuman before being considered complete.
 
 ### Hand gestures such as chin touch / hair pass
 
