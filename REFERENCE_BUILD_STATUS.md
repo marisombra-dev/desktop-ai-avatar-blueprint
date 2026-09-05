@@ -171,6 +171,20 @@ The last model-side curator smoke test at this snapshot was blocked by an extern
 
 See `docs/05a-shared-obsidian-memory.md` and `examples/shared_memory.ts`.
 
+### Shared activity continuity
+
+**Status: LOCAL CAPTURE / QUALIFICATION / FALLBACK / FOCUSED RETRIEVAL PROVEN; LIVE MODEL-AUTHORED RICH RECAP PENDING QUOTA RESET**
+
+The reference runtime now keeps a bounded sparse timeline during substantial Screen-enabled video/game sessions: periodic visual checkpoints, meaningful events, and a few widely spaced program-audio excerpts. Short/random viewing and ordinary desktop work are filtered out. No raw screen frames, raw program audio, or continuous TV/game transcript are written as durable memory.
+
+When Screen ends, qualifying activity evidence is queued for the existing shared-memory curator rather than spending a second model call. The curator is instructed to save a compact resumable activity note containing supported identity/stopping-point/event/theory/open-thread context. If curation fails or produces no activity note for a qualifying session, a conservative deterministic fallback preserves the last meaningful state without inventing titles or theories.
+
+On a later session, the runtime searches only `Activities and Media` and `Open Threads`, requires actual content overlap, and supplies a matched prior note to both screen observation and normal conversation. This prevents unrelated old media memories from being injected merely because they live in the same folder.
+
+TypeScript, 15 automated tests, production build, clean restart, Gateway health, wake listener, approved Unreal map, and no error indicator were verified after integration. The final naturally model-authored long-session recap remains intentionally unclaimed until live quota is available.
+
+See `docs/07b-shared-activity-continuity.md` and `examples/activity_continuity.ts`.
+
 ### Proactive outreach
 
 **Status: CONTEXT-AWARE DECISION LAYER IMPLEMENTED; MECHANICS/FAIL-CLOSED PARSING PROVEN; LIVE MODEL JUDGMENT PENDING QUOTA RESET**

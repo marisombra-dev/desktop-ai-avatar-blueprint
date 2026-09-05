@@ -149,7 +149,7 @@ Recent PROGRAM AUDIO transcript from the shared screen: ...
 
 Now the observer can combine visual evidence with dialogue. A character speaking off-screen, a title card, a dramatic reveal, or game commentary becomes much easier to interpret than vision alone.
 
-Keep the transcript rolling and bounded. The reference pattern retained only a few thousand recent characters and discarded them after Screen ended.
+Keep the transcript rolling and bounded. The reference pattern retained only a few thousand recent characters and discarded the continuous transcript after Screen ended. A separate optional activity-continuity layer may retain only a handful of widely spaced excerpts as temporary evidence for a distilled stopping-point memory; see `07b-shared-activity-continuity.md`.
 
 ## 5. Suppress the assistant's own voice
 

@@ -344,6 +344,21 @@ See `05a-shared-obsidian-memory.md`.
 
 ---
 
+## Phase T2 — Shared activity continuity
+
+- [ ] Keep sparse in-memory checkpoints while Screen is ON.
+- [ ] Sample program audio only at wide intervals; never persist a continuous transcript.
+- [ ] Require a substantial video/game session before durable curation.
+- [ ] Queue qualifying evidence for the existing shared-memory curator.
+- [ ] Preserve a deterministic last-state fallback if curation is unavailable.
+- [ ] Search only activity/open-thread memory when resuming.
+- [ ] Require actual content overlap before returning prior activity memory.
+- [ ] Feed matched prior context to both screen observation and normal agent consult.
+
+**Gate T2 test:** Resume the same show/game later and verify the AI recalls the prior stopping point without pulling unrelated activity memory.
+
+---
+
 ## Phase U — Proactive presence
 
 - [ ] Store settings/timestamps.

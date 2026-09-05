@@ -67,6 +67,7 @@ The reference system currently does all of the following end to end:
 - Screen and camera can be turned off again and stale visual context is explicitly marked stale.
 - The screen watcher samples locally, detects meaningful change, asks a separate OpenClaw observation session for a compact summary, and speaks only when a salience threshold is met.
 - When Screen is ON, Windows system audio can be captured through Electron's loopback display-media path, transcribed locally with `faster-whisper`, and supplied as **program audio** context. It is kept separate from the user's microphone, stops with Screen, and is suppressed while the AI itself is speaking so the assistant does not transcribe its own voice.
+- Substantial shared video/game sessions can leave a sparse resumable activity memory: periodic checkpoints, meaningful events, and a few widely spaced audio excerpts are curated into a compact stopping-point note instead of a transcript.
 - Proactive outreach is gated twice: local quiet/cooldown/idle checks first, then a context-aware evidence decision using current activity, meaningful screen events, recent dialogue, unfinished threads, and relevant durable memory. Silence itself is never treated as a reason to speak.
 - Local desk-presence logic can support restrained “welcome back” behavior after a meaningful absence without claiming that camera detection proves identity.
 - Realtime audio drives MetaHuman lip sync. Additional control packets can drive mood/face state and experimental gestures.
@@ -98,9 +99,10 @@ The reliable sequence is:
 15. Verify fresh image injection with objective visual tests.
 16. Add smart screen observation and optional spectator comments.
 17. Optionally add Screen-linked Windows system-audio loopback and local program-audio transcription for watch-along use.
-18. Add proactive presence with strong restraint and quiet-hour logic.
-19. Only after all of that is stable, add restrained listening micro-reactions and response-linked face tuning.
-20. Add larger gestures, nods, head shakes, hand animation, and other mannerisms last.
+18. Add shared-activity continuity so substantial shows/games can resume from a compact prior stopping point.
+19. Add proactive presence with strong restraint and quiet-hour logic.
+20. Only after all of that is stable, add restrained listening micro-reactions and response-linked face tuning.
+21. Add larger gestures, nods, head shakes, hand animation, and other mannerisms last.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 

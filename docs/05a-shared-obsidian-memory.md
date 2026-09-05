@@ -40,7 +40,7 @@ These categories answer different questions:
 - **Shared moments:** experiences, discoveries, jokes, or milestones that became part of the relationship history.
 - **Patterns and preferences:** recurring corrections, tastes, habits, or shared ways of interpreting things.
 - **Open threads:** unfinished thoughts, promises, questions, or topics worth returning to naturally.
-- **Activities and media:** compact continuity for shows, games, books, and other shared activities.
+- **Activities and media:** compact continuity for shows, games, books, and other shared activities. For long shared screen sessions, see `07b-shared-activity-continuity.md` for sparse timeline capture and resume-from-last-time behavior.
 
 Do not confuse a fact *about* the user with a shared experience *between* the user and AI. Both may matter, but they are different kinds of memory.
 
