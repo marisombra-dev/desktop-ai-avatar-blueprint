@@ -173,21 +173,27 @@ See `docs/05a-shared-obsidian-memory.md` and `examples/shared_memory.ts`.
 
 ### Proactive outreach
 
-**Status: IMPLEMENTED**
+**Status: CONTEXT-AWARE DECISION LAYER IMPLEMENTED; MECHANICS/FAIL-CLOSED PARSING PROVEN; LIVE MODEL JUDGMENT PENDING QUOTA RESET**
 
 The runtime has:
 
 - silence threshold,
 - long spoken cooldown,
 - reconsider interval,
-- quiet hours,
-- temporary spoken quiet requests,
-- system-idle suppression,
-- lock/active-call suppression,
-- explicit `NO_MESSAGE` path,
-- cancellation if the user interacts while the model is deciding.
+- quiet hours and temporary spoken quiet requests,
+- system-idle and lock/active-call suppression,
+- cancellation if the user interacts while the model is deciding,
+- current activity / meaningful screen-event context,
+- recent program-dialogue context when available,
+- recently ended shared-activity context,
+- unfinished-thread and repeated-friction signals,
+- relevant shared Obsidian continuity,
+- a structured `speak/confidence/kind/message` decision with a high confidence floor,
+- fail-closed behavior for malformed, vague, low-confidence, or unavailable model output.
 
-Correct behavior frequently means saying nothing.
+Silence itself is not evidence. Durable memory can enrich a concrete reason to speak but cannot create one by itself. The decision prompt explicitly asks whether speaking **now** would improve the moment and applies stricter interruption manners during video and focused desktop work.
+
+TypeScript, automated decision-parser tests, production build, restart, Gateway health, wake listener, and the normal avatar runtime were verified after this change. At this snapshot, the user's live model quota had not yet reset, so a real model-authored context-aware proactive utterance is intentionally not claimed as end-to-end proven yet.
 
 ### Desk-return greeting
 

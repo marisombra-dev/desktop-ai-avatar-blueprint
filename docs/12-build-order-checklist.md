@@ -357,6 +357,12 @@ See `05a-shared-obsidian-memory.md`.
 - [ ] spoken cooldown.
 - [ ] interruption suppression.
 - [ ] `NO_MESSAGE` prompt path.
+- [ ] context-aware evidence gate: silence permits consideration but is not itself a reason.
+- [ ] current activity / meaningful screen event supplied when available.
+- [ ] unfinished-thread and repeated-friction cues supplied conservatively.
+- [ ] durable memory enriches a reason but never creates one by itself.
+- [ ] structured decision parser fails closed on malformed or low-confidence output.
+- [ ] activity-aware interruption bar (video quiet, desktop stricter, game looser).
 - [ ] playback-only voice session.
 - [ ] audio-drain handling.
 - [ ] abort if user interacts while decision is in flight.

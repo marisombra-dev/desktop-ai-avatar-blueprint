@@ -67,7 +67,7 @@ The reference system currently does all of the following end to end:
 - Screen and camera can be turned off again and stale visual context is explicitly marked stale.
 - The screen watcher samples locally, detects meaningful change, asks a separate OpenClaw observation session for a compact summary, and speaks only when a salience threshold is met.
 - When Screen is ON, Windows system audio can be captured through Electron's loopback display-media path, transcribed locally with `faster-whisper`, and supplied as **program audio** context. It is kept separate from the user's microphone, stops with Screen, and is suppressed while the AI itself is speaking so the assistant does not transcribe its own voice.
-- Proactive outreach can occur after sustained silence, subject to quiet hours, cooldowns, system-idle checks, and interruption suppression. Silence is deliberately treated as normal.
+- Proactive outreach is gated twice: local quiet/cooldown/idle checks first, then a context-aware evidence decision using current activity, meaningful screen events, recent dialogue, unfinished threads, and relevant durable memory. Silence itself is never treated as a reason to speak.
 - Local desk-presence logic can support restrained “welcome back” behavior after a meaningful absence without claiming that camera detection proves identity.
 - Realtime audio drives MetaHuman lip sync. Additional control packets can drive mood/face state and experimental gestures.
 - A restrained listening-reaction layer can add one subtle face response per user turn, using speech-start attentiveness plus semantic cues from partial/final transcription without making voice depend on streaming transcript deltas.
@@ -744,6 +744,18 @@ skip when system idle exceeds ~15 minutes
 ```
 
 These are taste parameters, not laws.
+
+The later reference build adds a second, more intelligent gate after those local checks. The runtime normally asks the model when there is **concrete situational evidence** worth considering, such as an unfinished thread becoming timely, repeated friction during a task, a meaningful shared-screen event, or a just-ended shared activity. A sparse long-silence reconsideration may also occur, but elapsed time is never presented as evidence that speaking is warranted.
+
+A useful human heuristic is:
+
+```text
+grounded?  helpful?  timely?
+```
+
+In implementation terms: is there real evidence for the remark, would it improve the situation, and is this a good moment to interrupt? Shared memory may **enrich** a legitimate reason, but memory existing by itself must never create one.
+
+The decision should be structured and fail closed. The reference pattern requests JSON containing `speak`, `confidence`, `kind`, and `message`, then refuses to speak unless the result is well-formed, has a concrete reason category, and clears a high confidence threshold. See `docs/08-proactive-presence.md` and `examples/context_aware_proactive.ts`.
 
 ## Presence / welcome-back behavior
 

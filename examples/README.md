@@ -22,6 +22,7 @@ Files:
 - `screen_audio_loopback.ts` — Windows/Electron Screen-linked system-audio loopback pattern that keeps program audio separate from the user microphone and suppresses the assistant's own output.
 - `screen_audio_transcriber.py` — local `faster-whisper` helper that accepts bounded PCM16 chunks over stdin and emits short program-audio transcripts without storing raw audio.
 - `proactive_policy.ts` — local eligibility gating for restrained proactive speech and the `NO_MESSAGE` decision prompt pattern.
+- `context_aware_proactive.ts` — fail-closed structured decision pattern that combines activity, screen events, unfinished threads, friction signals, and durable memory without letting silence or memory alone trigger speech.
 - `proactive_voice.ts` — microphone-free playback-only Realtime session for a short line already authored by the long-lived agent, including audio-drain protection.
 - `listening_reactions.ts` — bounded one-reaction-per-user-turn semantic classifier for subtle listening expressions, suitable for partial-transcript opportunism with completed-transcript fallback.
 - `openclaw-gateway.cmd.example` — Windows launcher shape for a long-lived local Gateway.

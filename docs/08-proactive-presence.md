@@ -102,6 +102,48 @@ Include a small recent conversation excerpt if relevant.
 
 This language is not decorative. Without explicit normalization, a well-meaning model may invent concern simply because it was asked whether to speak.
 
+## 5a. Add a context-aware evidence gate
+
+A silence threshold should mean only **the runtime is allowed to consider speaking**. It should not itself be the reason to speak.
+
+A sparse long-silence reconsideration is fine as a cost/latency policy, but label it internally as permission to **ask again**, never as evidence that a remark is needed.
+
+After the local gates pass, assemble a small evidence packet from signals you already have:
+
+- current activity mode (`video`, `game`, `desktop`, `other`),
+- latest meaningful screen event and its importance,
+- very recent program dialogue when Screen audio is active,
+- the activity that just ended,
+- recent conversation and explicit unfinished-thread cues,
+- repeated friction or failure signals,
+- a few relevant durable-memory excerpts.
+
+The crucial rule is:
+
+> **Memory may enrich a reason to speak. Memory must not create the reason by itself.**
+
+Otherwise a system with rich continuity will constantly find *something* it remembers and turn memory into an excuse for chatter.
+
+A useful human analogy is a right-speech-style filter: **grounded, helpful, timely**. In software terms: is the remark supported by real evidence, would it improve the situation, and is this a good moment to interrupt?
+
+Require a structured decision such as:
+
+```json
+{"speak":false,"confidence":0.41,"kind":"none","message":""}
+```
+
+or:
+
+```json
+{"speak":true,"confidence":0.91,"kind":"unfinished_thread","message":"Want to check that second log now?"}
+```
+
+Parse this output defensively. Malformed JSON, missing message text, an unknown reason kind, or confidence below a high threshold should all resolve to **silence**. The reference build uses `0.82` as a conservative starting threshold.
+
+Activity also changes the interruption bar: video should suppress speech around recent dialogue; focused desktop work should require unusually strong practical value; games can tolerate somewhat quicker short reactions without becoming play-by-play.
+
+See `examples/context_aware_proactive.ts` for a sanitized fail-closed decision helper.
+
 ## 6. Reconsider slowly
 
 The reference system uses roughly a 30-minute minimum between proactive **decision attempts**, even if no message was spoken.
