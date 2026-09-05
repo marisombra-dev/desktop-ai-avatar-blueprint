@@ -19,6 +19,7 @@ Files:
 - `realtime_local_controls.ts` — Realtime local tool installation, command normalization, screen/camera/sleep interception, and fresh-image injection pattern.
 - `screen_capture.ts` — bounded privileged Electron primary-display capture that refuses while screen privacy is OFF.
 - `camera_capture.ts` — renderer webcam lifecycle where OFF physically stops every media track, plus bounded JPEG still capture.
+- `gaze_tracker.py` — privacy-first local MediaPipe eye-contact pattern with user calibration, hysteresis, tiny face-follow offsets after contact, explicit release, and no published classifier weights.
 - `screen_watcher.ts` — local change-driven screen sampler with model-analysis throttling and salience/cooldown gating.
 - `screen_audio_loopback.ts` — Windows/Electron Screen-linked system-audio loopback pattern that keeps program audio separate from the user microphone and suppresses the assistant's own output.
 - `screen_audio_transcriber.py` — local `faster-whisper` helper that accepts bounded PCM16 chunks over stdin and emits short program-audio transcripts without storing raw audio.
@@ -40,6 +41,7 @@ Security rules:
 - If shared memory is enabled, exclude transcript/log dumps and reject secret-like text before durable writes.
 - Do not treat example regular expressions or acoustic thresholds as universal.
 - Do not expose screen/camera capture when UI privacy state is OFF.
+- If local eye-contact tracking is enabled, process frames locally, do not persist them, do not send them to the model, and do not publish a real user's calibration weights.
 - If system audio is tied to Screen, stop its media tracks/transcriber when Screen turns OFF and never feed program dialogue into the user's microphone command path.
 - Keep Unreal control sidebands whitelisted. Never forward arbitrary console commands from model text.
 
