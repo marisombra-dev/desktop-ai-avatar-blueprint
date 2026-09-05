@@ -74,6 +74,7 @@ The reference system currently does all of the following end to end:
 - Local desk-presence logic can support restrained “welcome back” behavior after a meaningful absence without claiming that camera detection proves identity.
 - Realtime audio drives MetaHuman lip sync. Additional control packets can drive mood/face state and experimental gestures.
 - A restrained listening-reaction layer can add one subtle face response per user turn, using speech-start attentiveness plus semantic cues from partial/final transcription without making voice depend on streaming transcript deltas.
+- During an active interactive conversation, an optional privacy-first local gaze helper can recognize sustained eye contact from MediaPipe iris/head geometry, meet the user's gaze with a small eye-only MetaHuman override, and release immediately back to ordinary idle when the user looks away. Camera visual-awareness mode explicitly takes webcam ownership away from the gaze helper.
 - The avatar runs as a resizable, draggable, always-on-top desktop element with Mic / Screen / Camera controls.
 
 ---
@@ -106,7 +107,8 @@ The reliable sequence is:
 20. Add proactive presence with strong restraint and quiet-hour logic.
 21. Add bounded self-healing for local leaf processes and Realtime cleanup.
 22. Only after all of that is stable, add restrained listening micro-reactions and response-linked face tuning.
-23. Add larger gestures, nods, head shakes, hand animation, and other mannerisms last.
+23. Optionally add privacy-first eye contact as an eye-only layer with local calibration, hysteresis, webcam ownership arbitration, and watchdog release. See `docs/09a-privacy-first-eye-contact.md`.
+24. Add larger gestures, nods, head shakes, hand animation, and other mannerisms last.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 
@@ -950,12 +952,13 @@ Point it at this repository and tell it to read in this order:
 9. `docs/07-screen-and-camera-vision.md`
 10. `docs/08-proactive-presence.md`
 11. `docs/09-avatar-behavior-and-animation.md`
-12. `docs/10-privacy-and-security.md`
-13. `docs/11-troubleshooting.md`
-14. `docs/11a-bounded-self-healing.md`
-15. `docs/12-build-order-checklist.md`
-16. `docs/13-what-we-tried-and-what-failed.md`
-17. `SOURCES.md`
+12. `docs/09a-privacy-first-eye-contact.md`
+13. `docs/10-privacy-and-security.md`
+14. `docs/11-troubleshooting.md`
+15. `docs/11a-bounded-self-healing.md`
+16. `docs/12-build-order-checklist.md`
+17. `docs/13-what-we-tried-and-what-failed.md`
+18. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 

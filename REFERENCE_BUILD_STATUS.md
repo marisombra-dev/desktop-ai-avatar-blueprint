@@ -44,6 +44,18 @@ The control path, cue classifier, TypeScript build, automated tests, and an actu
 
 See `docs/09-avatar-behavior-and-animation.md` and `examples/listening_reactions.ts`.
 
+### Privacy-first eye contact
+
+**Status: PROVEN END TO END**
+
+During an active interactive voice session, a local MediaPipe helper can classify sustained eye contact from calibrated iris/head geometry, apply a small eye-only MetaHuman gaze override, and release back to ordinary idle when the user looks away. The user verified the visible behavior directly. No error indicator appeared.
+
+The classifier does not use face position to decide contact. Smoothed face position is used only for tiny follow movement after contact has already been established. Entry/exit hysteresis prevents twitching, and both the desktop helper and Unreal side have explicit/watchdog release paths.
+
+Webcam ownership arbitration was also live-proven: Camera visual-awareness ON stops the gaze helper first; Camera OFF during the same live conversation allows it to resume. Ending voice kills the helper and re-arms the wake listener. Calibration frames are not persisted or sent to the model.
+
+See `docs/09a-privacy-first-eye-contact.md` and `examples/gaze_tracker.py`.
+
 ### Local sleep/sign-off
 
 **Status: PROVEN**

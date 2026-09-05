@@ -438,7 +438,27 @@ See `05b-contextual-time-awareness.md`.
 
 ---
 
-## Phase W — Mannerisms
+## Phase W — Privacy-first eye contact
+
+- [ ] Eye-contact sensing is explicitly local-only and opt-in.
+- [ ] Calibrate gaze to the avatar's actual screen position.
+- [ ] Classifier uses iris/head geometry rather than face screen position.
+- [ ] Face x/y affects only tiny follow motion after contact is established.
+- [ ] Separate enter/exit thresholds and dwell times prevent flicker.
+- [ ] Unreal receives only bounded eye-look controls, not head/body movement.
+- [ ] Stopping the helper sends an explicit zero-strength release.
+- [ ] Unreal watchdog fades/releases stale gaze if packets stop.
+- [ ] Camera visual-awareness mode stops gaze tracking before acquiring the webcam.
+- [ ] Camera OFF resumes gaze only during an active interactive conversation.
+- [ ] Voice end, lock, suspend, and quit stop the helper.
+- [ ] No gaze frames are persisted or sent to the model.
+- [ ] Mouse remains free during every validation method.
+
+**Gate W test:** Start voice, meet the avatar's eyes, look away, toggle Camera ON/OFF in the same conversation, then end voice. Eye contact engages and releases naturally, webcam ownership is singular, wake re-arms, and no error indicator remains.
+
+---
+
+## Phase X — Mannerisms
 
 - [ ] Response-start small smile.
 - [ ] Mood auto-reset.
@@ -459,7 +479,7 @@ For every gesture:
 - [ ] returns to idle,
 - [ ] semantically sparse.
 
-**Gate W test:** Human notices greater naturalness, not “more animation.”
+**Gate X test:** Human notices greater naturalness, not “more animation.”
 
 ---
 
