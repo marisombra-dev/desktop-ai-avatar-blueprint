@@ -213,7 +213,7 @@ See `docs/05a-shared-obsidian-memory.md` and `examples/shared_memory.ts`.
 
 The reference runtime now injects a small local-time context block into ordinary agent consults, proactive decisions, desk-return greetings, and shared-memory curation. The block is generated from the computer's actual clock and system timezone and is explicitly marked as factual runtime context, not new user speech.
 
-The assistant is instructed to use the block for relative-time language such as today/tomorrow/yesterday/later, but not to mention the clock/date unless relevant and never to invent reminders, deadlines, or obligations from time context alone.
+The assistant is instructed to treat the runtime date/time/timezone/daypart as authoritative for relative-time language such as today/tomorrow/yesterday/later, while still avoiding unnecessary clock narration. A deterministic user-visible greeting guard now rejects explicit morning/afternoon/evening wording when it contradicts the runtime daypart and substitutes a neutral greeting instead.
 
 A prior hardcoded timezone in durable-memory date stamping was removed; memory headings now follow the current system timezone as well. Windows/Node timezone agreement, deterministic alternate-timezone/date tests, TypeScript, production build, clean restart, Gateway health, wake listener, approved Unreal map, and no error indicator were verified.
 
@@ -273,9 +273,11 @@ See `docs/11a-bounded-self-healing.md` and `examples/recovery_policy.ts`.
 
 ### Desk-return greeting
 
-**Status: IMPLEMENTED AS OPTIONAL BEHAVIOR**
+**Status: IMPLEMENTED; SIMULATED 30-MINUTE RETURN PROVEN END TO END, NATURAL UNSCRIPTED RETURN RECHECK PENDING**
 
-Local presence logic can infer a return after meaningful absence and ask the agent for a brief greeting. The detector does not prove identity and downstream prompts are written accordingly.
+Local presence logic can infer a return after meaningful absence and ask the agent for a brief greeting. Return detection and greeting delivery are now separate states: a qualified arrival can remain pending through temporary interruption suppression, user interaction consumes the pending greeting, and slow/failed model generation has a bounded local fallback. Technical presence-transition logging was added without storing frames or personal content. The detector does not prove identity and downstream prompts are written accordingly.
+
+A development simulation of a 30-minute absence reached `away confirmed -> arrival detected -> greeting sent` and produced audible playback. The time-of-day wording guard is deterministically tested; a fresh natural real-world absence/return remains intentionally unclaimed until observed again.
 
 ## Experimental / not a dependency of the core product
 

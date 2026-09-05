@@ -289,7 +289,24 @@ Keep them separate:
 
 Both may use the same playback mechanism but should have different decision prompts and eligibility rules.
 
-## 16. What not to do
+## 16. Keep arrival detection separate from greeting delivery
+
+Do not collapse `returned` and `greeting spoken` into one state transition. The reference build exposed a failure mode where presence changed back to `present` before the greeting was safely delivered. If a temporary interruption gate suppressed speech at that instant, the welcome-back event vanished permanently.
+
+Use a short-lived **pending arrival** record instead. Once return is detected:
+
+- record the qualified away duration,
+- mark the desk present, but keep the greeting pending for a bounded retry window,
+- if Windows temporarily suppresses spontaneous speech, retry rather than discarding the event,
+- if the user starts talking first, consume the pending greeting because the return is already acknowledged,
+- if the greeting model times out or errors, use a brief local fallback rather than silent failure,
+- log only technical transition metadata, never camera frames or personal content.
+
+Presence polling should also not depend on whether an Electron control shell happens to be visible if the avatar/runtime itself remains active. Window visibility and desk presence are different facts.
+
+Keep the model deadline short. A welcome-back line that arrives long after the person sat down feels broken even if every subsystem eventually succeeds.
+
+## 17. What not to do
 
 Avoid prompts like:
 
@@ -309,7 +326,7 @@ Avoid:
 - treating a webcam presence detector as identity verification,
 - sending the proactive decision prompt into the normal user-facing conversation.
 
-## 17. Test it by waiting
+## 18. Test it by waiting
 
 Proactive behavior cannot be fully tested by hammering a “run now” button because the feature is temporal and contextual.
 
@@ -336,4 +353,7 @@ A good proactive system often produces boring logs and very few utterances.
 - [ ] Playback-only voice does not open the microphone.
 - [ ] Playback is not clipped at the end.
 - [ ] Arrival detection does not claim identity certainty.
+- [ ] A detected return remains pending briefly until greeting delivery succeeds, is intentionally suppressed, or is consumed by user interaction.
+- [ ] Slow/failed greeting generation has a bounded local fallback instead of silent loss.
+- [ ] Presence transition logs contain only technical metadata, never images or personal content.
 - [ ] Proactive speech remains rare enough to feel intentional.

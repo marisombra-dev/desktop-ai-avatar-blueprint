@@ -199,6 +199,8 @@ See `05a-shared-obsidian-memory.md`.
 - [ ] Resolve timezone from the current operating system/runtime rather than a hardcoded location.
 - [ ] Inject a bounded local date/time/daypart block into ordinary agent consults.
 - [ ] Supply the same temporal frame to proactive/arrival decisions and memory curation.
+- [ ] Treat runtime date/time/timezone/daypart as authoritative facts.
+- [ ] Deterministically reject a time-of-day greeting that contradicts the runtime daypart.
 - [ ] Make time context factual only; it must not create reminders, obligations, or proactive-speech reasons by itself.
 - [ ] Stamp durable memory dates in the same resolved system timezone.
 - [ ] Verify an alternate-timezone date near midnight.
@@ -448,6 +450,11 @@ See `05b-contextual-time-awareness.md`.
 - [ ] Minimum away duration before greeting.
 - [ ] Presence detector does not claim identity.
 - [ ] Welcome-back prompt remains generic/natural.
+- [ ] Keep return detection and greeting delivery as separate states with a bounded pending window.
+- [ ] Temporary interruption suppression defers a pending greeting rather than discarding it.
+- [ ] User interaction consumes a pending greeting.
+- [ ] Model timeout/error falls back to a brief local greeting.
+- [ ] Presence logs are technical only and contain no camera frames or personal content.
 - [ ] Same quiet/interruption rules as proactive speech.
 
 **Gate V test:** Return greeting happens only after meaningful absence and never mentions monitoring.

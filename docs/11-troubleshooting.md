@@ -439,6 +439,24 @@ Re-check active live voice and lock/quiet conditions after the model returns too
 
 ---
 
+## 26a. Return is detected but no welcome-back line is heard
+
+Do not immediately blame the detector. Trace separate boundaries: `away confirmed -> arrival detected -> greeting pending -> greeting authored/fallback -> playback requested`.
+
+A common bug is clearing the away state before greeting delivery is safe. If Windows temporarily suppresses spontaneous speech at that instant, the return event disappears. Keep a bounded pending-arrival record and retry briefly. If the user begins talking, consume the pending greeting. If model generation times out or errors, use a short local fallback.
+
+Do not require the Electron control window itself to be visible if presence detection is intended to remain active while the avatar runtime is active.
+
+---
+
+## 26b. Assistant says the wrong time-of-day greeting
+
+First compare the OS clock/timezone with the runtime `Intl` timezone and the injected daypart. If those facts are correct but the model says `Good morning` during the afternoon, this is not a timezone bug. It is a model-output validation bug.
+
+Mark runtime time facts as authoritative and deterministically reject incompatible morning/afternoon/evening greetings before playback. Prefer a neutral fallback rather than trying to guess a corrected phrase downstream.
+
+---
+
 ## 27. Avatar speech moves but audible sound is absent
 
 Determine where the split occurs:

@@ -31,12 +31,35 @@ export function localDateKey(
   }).format(date);
 }
 
-function daypart(hour: number): string {
+function daypartForHour(hour: number): string {
   if (hour < 5) return 'late night';
   if (hour < 12) return 'morning';
   if (hour < 17) return 'afternoon';
   if (hour < 22) return 'evening';
   return 'late evening';
+}
+
+export function localDaypart(
+  date = new Date(),
+  timeZone = resolvedSystemTimeZone(),
+): string {
+  return daypartForHour(hourInZone(date, timeZone));
+}
+
+export function timeOfDayGreetingMatches(
+  text: string,
+  date = new Date(),
+  timeZone = resolvedSystemTimeZone(),
+): boolean {
+  const normalized = text.toLowerCase();
+  const mentionsMorning = /\bgood morning\b/.test(normalized);
+  const mentionsAfternoon = /\bgood afternoon\b/.test(normalized);
+  const mentionsEvening = /\bgood evening\b/.test(normalized);
+  if (!mentionsMorning && !mentionsAfternoon && !mentionsEvening) return true;
+  const part = localDaypart(date, timeZone);
+  if (mentionsMorning) return part === 'morning';
+  if (mentionsAfternoon) return part === 'afternoon';
+  return part === 'evening' || part === 'late evening';
 }
 
 export function buildLocalTimeContext(
@@ -52,10 +75,11 @@ export function buildLocalTimeContext(
   }).format(date);
 
   return [
-    '[INTERNAL LOCAL TIME CONTEXT. Runtime-provided fact, not new user speech.]',
+    '[INTERNAL LOCAL TIME CONTEXT. Authoritative runtime-provided fact, not new user speech.]',
     `Local date: ${localDate}.`,
     `Local time: ${localTime}.`,
-    `System timezone: ${timeZone}. Current daypart: ${daypart(hourInZone(date, timeZone))}.`,
+    `System timezone: ${timeZone}. Current daypart: ${localDaypart(date, timeZone)}.`,
+    'Treat the date, time, timezone, and daypart above as authoritative. Never contradict them with an incompatible time-of-day greeting or relative-time claim.',
     'Use this to interpret today, tonight, tomorrow, yesterday, and later naturally.',
     'Do not mention the clock/date unless relevant. Never invent reminders or deadlines from time alone.',
     '[END LOCAL TIME CONTEXT]',
