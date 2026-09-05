@@ -103,8 +103,9 @@ export function buildFocusedRetrievalQuery(
   latestSummary: string,
   latestEvent: string,
   recentProgramAudio: string,
+  activityIdentityHint = '',
 ): string {
-  return [latestSummary, latestEvent, recentProgramAudio]
+  return [activityIdentityHint, latestSummary, latestEvent, recentProgramAudio]
     .filter(Boolean)
     .join(' ')
     .replace(/\s+/g, ' ')
@@ -114,3 +115,14 @@ export function buildFocusedRetrievalQuery(
 
 // Search only activity/open-thread notes, and require actual content overlap.
 // Folder membership alone must never count as a match.
+export function looksLikeActivityIdentification(text: string): boolean {
+  const clean = text.replace(/\s+/g, ' ').trim();
+  return /\b(?:we(?:'re| are) (?:watching|playing|back (?:to|on))|i(?:'m| am) (?:watching|playing)|let'?s (?:watch|play|continue)|this (?:show|movie|series|game|episode) (?:is|is called)|the (?:show|movie|series|game) (?:is|is called)|we(?:'re| are) on (?:episode|season|chapter|level)|back to (?:the|our) (?:show|game|movie|series))\b/i.test(clean);
+}
+
+export function inferredActivityMode(text: string): ActivityMode | undefined {
+  if (!looksLikeActivityIdentification(text)) return undefined;
+  if (/\b(?:watching|watch|show|movie|series|episode|season)\b/i.test(text)) return 'video';
+  if (/\b(?:playing|play|game|level)\b/i.test(text)) return 'game';
+  return undefined;
+}

@@ -15,6 +15,7 @@ Files:
 - `wake_word_listener.py` — local faster-whisper wake detector that exits after one wake.
 - `gateway_client.ts` — OpenClaw Gateway connection, dedicated sessions, Talk reservation, consult, screen observer, and proactive-decision patterns.
 - `shared_memory.ts` — sanitized local Markdown/Obsidian retrieval and curated-write pattern for cross-surface continuity.
+- `contextual_time.ts` — system-timezone-aware local date/time/daypart context and durable-memory date-key pattern.
 - `realtime_local_controls.ts` — Realtime local tool installation, command normalization, screen/camera/sleep interception, and fresh-image injection pattern.
 - `screen_capture.ts` — bounded privileged Electron primary-display capture that refuses while screen privacy is OFF.
 - `camera_capture.ts` — renderer webcam lifecycle where OFF physically stops every media track, plus bounded JPEG still capture.

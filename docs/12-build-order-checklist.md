@@ -178,6 +178,21 @@ See `05a-shared-obsidian-memory.md`.
 
 ---
 
+## Phase I3 — Contextual local time
+
+- [ ] Resolve timezone from the current operating system/runtime rather than a hardcoded location.
+- [ ] Inject a bounded local date/time/daypart block into ordinary agent consults.
+- [ ] Supply the same temporal frame to proactive/arrival decisions and memory curation.
+- [ ] Make time context factual only; it must not create reminders, obligations, or proactive-speech reasons by itself.
+- [ ] Stamp durable memory dates in the same resolved system timezone.
+- [ ] Verify an alternate-timezone date near midnight.
+
+**Gate I3 test:** today/tomorrow/yesterday resolve correctly and changing the computer timezone requires no source edit.
+
+See `05b-contextual-time-awareness.md`.
+
+---
+
 ## Phase J — Lip sync
 
 ### Initial route
@@ -354,6 +369,9 @@ See `05a-shared-obsidian-memory.md`.
 - [ ] Search only activity/open-thread memory when resuming.
 - [ ] Require actual content overlap before returning prior activity memory.
 - [ ] Feed matched prior context to both screen observation and normal agent consult.
+- [ ] Let a natural user phrase such as `we're watching X` / `we're playing Y` prime focused retrieval immediately.
+- [ ] Keep the user-named activity as a temporary Screen-session identity hint and clear it on Screen OFF/activity change.
+- [ ] Treat matched history as silent context; do not announce memory merely to prove it exists.
 
 **Gate T2 test:** Resume the same show/game later and verify the AI recalls the prior stopping point without pulling unrelated activity memory.
 

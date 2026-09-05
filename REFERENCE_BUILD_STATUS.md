@@ -171,6 +171,18 @@ The last model-side curator smoke test at this snapshot was blocked by an extern
 
 See `docs/05a-shared-obsidian-memory.md` and `examples/shared_memory.ts`.
 
+### Contextual local-time awareness
+
+**Status: IMPLEMENTED AND DETERMINISTIC TIMEZONE/DATE TESTS PROVEN**
+
+The reference runtime now injects a small local-time context block into ordinary agent consults, proactive decisions, desk-return greetings, and shared-memory curation. The block is generated from the computer's actual clock and system timezone and is explicitly marked as factual runtime context, not new user speech.
+
+The assistant is instructed to use the block for relative-time language such as today/tomorrow/yesterday/later, but not to mention the clock/date unless relevant and never to invent reminders, deadlines, or obligations from time context alone.
+
+A prior hardcoded timezone in durable-memory date stamping was removed; memory headings now follow the current system timezone as well. Windows/Node timezone agreement, deterministic alternate-timezone/date tests, TypeScript, production build, clean restart, Gateway health, wake listener, approved Unreal map, and no error indicator were verified.
+
+See `docs/05b-contextual-time-awareness.md` and `examples/contextual_time.ts`.
+
 ### Shared activity continuity
 
 **Status: LOCAL CAPTURE / QUALIFICATION / FALLBACK / FOCUSED RETRIEVAL PROVEN; LIVE MODEL-AUTHORED RICH RECAP PENDING QUOTA RESET**
@@ -179,9 +191,9 @@ The reference runtime now keeps a bounded sparse timeline during substantial Scr
 
 When Screen ends, qualifying activity evidence is queued for the existing shared-memory curator rather than spending a second model call. The curator is instructed to save a compact resumable activity note containing supported identity/stopping-point/event/theory/open-thread context. If curation fails or produces no activity note for a qualifying session, a conservative deterministic fallback preserves the last meaningful state without inventing titles or theories.
 
-On a later session, the runtime searches only `Activities and Media` and `Open Threads`, requires actual content overlap, and supplies a matched prior note to both screen observation and normal conversation. This prevents unrelated old media memories from being injected merely because they live in the same folder.
+On a later session, the runtime searches only `Activities and Media` and `Open Threads`, requires actual content overlap, and supplies a matched prior note to both screen observation and normal conversation. Natural user identification such as `we're watching X` / `we're playing Y` can prime that focused search immediately and stabilize the activity identity for the current Screen session. Matched continuity is explicitly treated as silent background context rather than something to announce merely to prove memory. This prevents unrelated old media memories from being injected merely because they live in the same folder.
 
-TypeScript, 15 automated tests, production build, clean restart, Gateway health, wake listener, approved Unreal map, and no error indicator were verified after integration. The final naturally model-authored long-session recap remains intentionally unclaimed until live quota is available.
+TypeScript, 19 automated tests, production build, clean restart, Gateway health, wake listener, approved Unreal map, and no error indicator were verified after the latest continuity/time integration. The final naturally model-authored long-session recap remains intentionally unclaimed until live quota is available.
 
 See `docs/07b-shared-activity-continuity.md` and `examples/activity_continuity.ts`.
 

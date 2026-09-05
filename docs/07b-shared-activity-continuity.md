@@ -155,7 +155,19 @@ Do not assume unresolved details have already been resolved.
 
 This lets a user say something like “I still don’t believe his alibi” without having to restate the entire previous episode.
 
-## 9. Privacy and storage boundaries
+## 9. Prefer explicit user identification and silent resume
+
+If the user naturally says something like `we're watching X` or `we're playing Y`, treat that as high-value activity-identification evidence. It is often more reliable and cheaper than trying to infer a title from arbitrary pixels.
+
+Use that utterance to immediately run the focused activity-memory search, even if the first screen-observer cycle has not finished yet. The utterance can also act as a temporary activity identity hint for the current Screen session so later visual/audio summaries do not have to rediscover the activity name.
+
+Clear the hint when Screen turns OFF or when the activity mode clearly changes.
+
+Once a matching prior note is found, load it as **silent background context**. The assistant should not announce `I remember this`, recite the prior recap unprompted, or mention the memory system merely to prove continuity. The point is to resolve references naturally and surface prior theories/stopping points only when relevant or asked.
+
+This is the difference between possessing memory and constantly performing memory.
+
+## 10. Privacy and storage boundaries
 
 A good activity-continuity layer stores substantially less than the live system observed.
 
@@ -171,7 +183,7 @@ Recommended boundaries:
 
 If Screen is OFF, no new activity evidence should be collected.
 
-## 10. Validation sequence
+## 11. Validation sequence
 
 1. Verify a short random video does not qualify for durable activity memory.
 2. Verify a substantial video/game session does qualify.
@@ -189,8 +201,11 @@ If Screen is OFF, no new activity evidence should be collected.
 - [ ] Curator failure still preserves a conservative stopping-point fallback.
 - [ ] Focused retrieval requires actual overlap and cannot pull unrelated media memories merely by folder/category.
 - [ ] Matched prior continuity reaches both the screen observer and normal agent consult.
+- [ ] A natural user identification such as `we're watching X` can prime focused retrieval immediately.
+- [ ] Matched history is loaded quietly rather than announced merely to prove memory.
+- [ ] Activity identity hints clear on Screen OFF or clear activity change.
 - [ ] Screen OFF ends evidence collection.
 
-**Reference status:** sparse activity capture, qualification rules, deterministic fallback, focused activity retrieval, TypeScript, 15 automated tests, production build, and clean runtime restart were verified. A naturally model-authored rich recap after a long real-world session still requires post-quota live validation.
+**Reference status:** sparse activity capture, qualification rules, deterministic fallback, focused activity retrieval, explicit user-identification priming, quiet resume context, TypeScript, 19 automated tests, production build, and clean runtime restart were verified. A naturally model-authored rich recap after a long real-world session still requires post-quota live validation.
 
 See `examples/activity_continuity.ts` for a sanitized implementation pattern.
