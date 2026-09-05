@@ -54,6 +54,27 @@ Use two layers:
 - **automatic low-amplitude face behavior** for normal presence,
 - **sparse explicit gestures** for strong semantic cues.
 
+## 2a. Listening micro-reactions: make the avatar visibly listen
+
+A convincing avatar should not wait until its own speaking turn to become expressive. The safest useful pattern is a two-stage listening layer:
+
+1. when user speech starts, enter a subtle attentive/listening state without guessing emotion;
+2. when partial or final transcription supplies a strong semantic cue, allow **one** small face reaction for that user turn.
+
+Keep this layer much weaker than speaking expressions. Ordinary speech should usually produce no semantic reaction at all. Good examples are a tiny brow lift for surprise, a slight interested brow for “hear me out,” a small playfulness lift for teasing, or a softening for serious material.
+
+Do not make the voice pipeline depend on partial-transcript events. If the provider emits input-transcription deltas, use them opportunistically for earlier timing. If it does not, the completed transcript should trigger the same classifier immediately before the response.
+
+A useful invariant is:
+
+```text
+one user speaking turn -> zero or one semantic listening reaction
+```
+
+This prevents the face from reacting to every keyword in a long sentence. Reset the per-turn guard at the next `speech_started` event.
+
+See `examples/listening_reactions.ts` for a sanitized cue classifier.
+
 ## 3. Response-start smile
 
 A tiny smile at the beginning of a friendly response can prevent the avatar from looking frozen while speech ramps up.
@@ -325,14 +346,15 @@ If any answer is no, the gesture is not ready.
 ## 18. Recommended order of mannerism work
 
 1. stable blink/gaze idle,
-2. response-start smile,
-3. content-linked mood intensity,
-4. nod,
-5. head shake,
-6. question brow,
-7. amused/laugh expression,
-8. deliberate screen/camera orientation if still desired,
-9. hand gestures,
-10. advanced posture/body motion.
+2. restrained listening micro-reactions,
+3. response-start smile,
+4. content-linked mood intensity,
+5. nod,
+6. head shake,
+7. question brow,
+8. amused/laugh expression,
+9. deliberate screen/camera orientation if still desired,
+10. hand gestures,
+11. advanced posture/body motion.
 
 The reference project learned this order after doing some of it backwards.

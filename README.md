@@ -70,6 +70,7 @@ The reference system currently does all of the following end to end:
 - Proactive outreach can occur after sustained silence, subject to quiet hours, cooldowns, system-idle checks, and interruption suppression. Silence is deliberately treated as normal.
 - Local desk-presence logic can support restrained “welcome back” behavior after a meaningful absence without claiming that camera detection proves identity.
 - Realtime audio drives MetaHuman lip sync. Additional control packets can drive mood/face state and experimental gestures.
+- A restrained listening-reaction layer can add one subtle face response per user turn, using speech-start attentiveness plus semantic cues from partial/final transcription without making voice depend on streaming transcript deltas.
 - The avatar runs as a resizable, draggable, always-on-top desktop element with Mic / Screen / Camera controls.
 
 ---
@@ -98,7 +99,8 @@ The reliable sequence is:
 16. Add smart screen observation and optional spectator comments.
 17. Optionally add Screen-linked Windows system-audio loopback and local program-audio transcription for watch-along use.
 18. Add proactive presence with strong restraint and quiet-hour logic.
-19. Only after all of that is stable, add gestures, emotional face tuning, nods, head shakes, hand animation, and other mannerisms.
+19. Only after all of that is stable, add restrained listening micro-reactions and response-linked face tuning.
+20. Add larger gestures, nods, head shakes, hand animation, and other mannerisms last.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 

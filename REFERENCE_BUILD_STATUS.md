@@ -32,6 +32,18 @@ Realtime output drives the MetaHuman speech animation with very good visible syn
 
 The reference project ultimately added a direct local PCM bridge to MetaHuman audio Live Link. A sanitized version is included under `examples/unreal/DesktopAvatarAudioBridge/`.
 
+### Listening micro-reactions
+
+**Status: IMPLEMENTED; CONTROL PATH AND LOW-INTENSITY VISUAL CUE PROVEN; EXTENDED NATURAL-CONVERSATION VALIDATION PENDING**
+
+The reference build now applies a restrained listening layer while the user speaks. `speech_started` resets a per-turn reaction guard and establishes attentiveness. If input-transcription delta events are available, semantic cues can trigger before the utterance ends; otherwise the completed transcript uses the same classifier immediately before the response.
+
+The implementation allows at most one semantic listening reaction per user turn and keeps its intensity below ordinary speaking expressions. Routine speech produces no explicit reaction. Example cues include a small interested/surprised brow, slight playfulness, serious softening, or a small brighten for clearly positive news.
+
+The control path, cue classifier, TypeScript build, automated tests, and an actual low-intensity live MetaHuman cue were verified. At this snapshot, extended conversational observation by the user is still pending because the live model quota had not yet reset. Therefore this ledger does not yet claim sustained natural-conversation proof.
+
+See `docs/09-avatar-behavior-and-animation.md` and `examples/listening_reactions.ts`.
+
 ### Local sleep/sign-off
 
 **Status: PROVEN**
