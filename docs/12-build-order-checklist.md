@@ -404,6 +404,25 @@ See `05b-contextual-time-awareness.md`.
 
 ---
 
+## Phase U2 - Bounded self-healing
+
+- [ ] Give every recoverable subsystem a finite rolling retry budget.
+- [ ] Use backoff; never hot-loop a crashing process.
+- [ ] Distinguish expected exits from crashes.
+- [ ] Restart only the failed leaf component.
+- [ ] Require a READY signal or stable-health interval before clearing failure history.
+- [ ] Restart privacy-linked helpers only while the capability remains authorized.
+- [ ] Give Gateway built-in reconnect logic a grace period before resetting the local client.
+- [ ] On Realtime setup failure, close any reserved server session and re-arm wake.
+- [ ] Let optional proactive/spectator failures remain nonfatal.
+- [ ] After budget exhaustion, stop retrying and surface the real subsystem/reason.
+- [ ] Keep recovery logs technical only: no transcripts, screen/audio content, memory, tokens, or secrets.
+- [ ] Failure-inject representative leaf processes and confirm exact approved launch state returns.
+
+**Gate U2 test:** Kill representative expendable helpers/runtimes. They recover with new processes, healthy components remain untouched, and no error badge remains after successful recovery.
+
+---
+
 ## Phase V — Optional desk return
 
 - [ ] Local presence detector.

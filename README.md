@@ -70,6 +70,7 @@ The reference system currently does all of the following end to end:
 - Substantial shared video/game sessions can leave a sparse resumable activity memory: periodic checkpoints, meaningful events, and a few widely spaced audio excerpts are curated into a compact stopping-point note instead of a transcript. Natural phrases such as `we're watching X` can prime matching continuity immediately, and matched history is loaded quietly rather than announced.
 - Runtime-generated local date/time/timezone context grounds relative-time language across ordinary consults, proactive decisions, return greetings, and memory curation without making time itself a reason to speak.
 - Proactive outreach is gated twice: local quiet/cooldown/idle checks first, then a context-aware evidence decision using current activity, meaningful screen events, recent dialogue, unfinished threads, and relevant durable memory. Silence itself is never treated as a reason to speak.
+- Core local subsystems use bounded self-healing: restart only the failed component with backoff, confirm stable health, and surface the real error only after a finite retry budget is exhausted.
 - Local desk-presence logic can support restrained “welcome back” behavior after a meaningful absence without claiming that camera detection proves identity.
 - Realtime audio drives MetaHuman lip sync. Additional control packets can drive mood/face state and experimental gestures.
 - A restrained listening-reaction layer can add one subtle face response per user turn, using speech-start attentiveness plus semantic cues from partial/final transcription without making voice depend on streaming transcript deltas.
@@ -103,8 +104,9 @@ The reliable sequence is:
 18. Optionally add Screen-linked Windows system-audio loopback and local program-audio transcription for watch-along use.
 19. Add shared-activity continuity so substantial shows/games can resume from a compact prior stopping point.
 20. Add proactive presence with strong restraint and quiet-hour logic.
-21. Only after all of that is stable, add restrained listening micro-reactions and response-linked face tuning.
-22. Add larger gestures, nods, head shakes, hand animation, and other mannerisms last.
+21. Add bounded self-healing for local leaf processes and Realtime cleanup.
+22. Only after all of that is stable, add restrained listening micro-reactions and response-linked face tuning.
+23. Add larger gestures, nods, head shakes, hand animation, and other mannerisms last.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 
@@ -950,9 +952,10 @@ Point it at this repository and tell it to read in this order:
 11. `docs/09-avatar-behavior-and-animation.md`
 12. `docs/10-privacy-and-security.md`
 13. `docs/11-troubleshooting.md`
-14. `docs/12-build-order-checklist.md`
-15. `docs/13-what-we-tried-and-what-failed.md`
-16. `SOURCES.md`
+14. `docs/11a-bounded-self-healing.md`
+15. `docs/12-build-order-checklist.md`
+16. `docs/13-what-we-tried-and-what-failed.md`
+17. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 

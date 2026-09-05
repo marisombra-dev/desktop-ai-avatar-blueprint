@@ -221,6 +221,20 @@ Silence itself is not evidence. Durable memory can enrich a concrete reason to s
 
 TypeScript, automated decision-parser tests, production build, restart, Gateway health, wake listener, and the normal avatar runtime were verified after this change. At this snapshot, the user's live model quota had not yet reset, so a real model-authored context-aware proactive utterance is intentionally not claimed as end-to-end proven yet.
 
+### Bounded self-healing and graceful recovery
+
+**Status: CORE POLICY / WAKE / OVERLAY / UNREAL RECOVERY PROVEN; GATEWAY / SCREEN-AUDIO / REALTIME FAILURE-INJECTION STILL PENDING**
+
+The reference runtime now uses finite rolling retry budgets with backoff for recoverable local subsystems. Successful recovery restarts only the failed component; repeated failure exhausts the retry budget and surfaces the existing error indicator with the actual subsystem/reason. Recovery never changes privacy state, personality/routing configuration, memory stores, or the approved Unreal launch command.
+
+Live failure injection was performed against the wake listener, overlay synchronizer, and Unreal avatar runtime. Each was forcibly terminated and relaunched automatically with a new process. Unreal returned on the approved production map with the same `-NoMouseCapture` and performance flags. The structured recovery log recorded `scheduled` -> `attempt` -> `healthy`, and no error indicator remained after successful recovery.
+
+A Realtime half-open-session cleanup bug was also fixed: if WebRTC setup fails after the server-side voice session has already been reserved, cleanup now closes the reserved session, releases local media resources, clears active-voice ownership, and re-arms wake. Normal voice gets one clean startup retry; repeated failure then becomes a real visible error.
+
+TypeScript, 22 automated tests, and the production build passed. Gateway reset, Screen-audio crash recovery, and Realtime failure cleanup/retry are implemented and build-tested but were not deliberately failure-injected in this validation pass.
+
+See `docs/11a-bounded-self-healing.md` and `examples/recovery_policy.ts`.
+
 ### Desk-return greeting
 
 **Status: IMPLEMENTED AS OPTIONAL BEHAVIOR**

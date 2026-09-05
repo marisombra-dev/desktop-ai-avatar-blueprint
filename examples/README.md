@@ -25,6 +25,7 @@ Files:
 - `activity_continuity.ts` — sparse substantial-activity qualification, checkpoint retention, focused resume-query, and deterministic stopping-point fallback pattern.
 - `proactive_policy.ts` — local eligibility gating for restrained proactive speech and the `NO_MESSAGE` decision prompt pattern.
 - `context_aware_proactive.ts` — fail-closed structured decision pattern that combines activity, screen events, unfinished threads, friction signals, and durable memory without letting silence or memory alone trigger speech.
+- `recovery_policy.ts` — finite rolling retry budgets, exponential backoff, and privacy-aware leaf-process recovery planning.
 - `proactive_voice.ts` — microphone-free playback-only Realtime session for a short line already authored by the long-lived agent, including audio-drain protection.
 - `listening_reactions.ts` — bounded one-reaction-per-user-turn semantic classifier for subtle listening expressions, suitable for partial-transcript opportunism with completed-transcript fallback.
 - `openclaw-gateway.cmd.example` — Windows launcher shape for a long-lived local Gateway.
