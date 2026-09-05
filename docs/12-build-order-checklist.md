@@ -90,6 +90,22 @@ Use this as the execution checklist for a new AI person such as Lyra. Do not mar
 
 ---
 
+## Phase E2 — Optional swappable background presentation
+
+- [ ] Keep scenery separate from the MetaHuman assets/materials.
+- [ ] Create a dedicated presentation map or equivalent scene layer.
+- [ ] Import/create a background `Texture2D`.
+- [ ] Use an opaque unlit material for a still photographic/illustrated backdrop.
+- [ ] Put the material on a plane behind the avatar and fill the runtime camera framing.
+- [ ] Preserve character lighting independently from the backdrop.
+- [ ] Launch the intended presentation map explicitly.
+- [ ] Preserve `-NoMouseCapture` and existing window synchronization.
+- [ ] Treat future context switching as whitelisted presentation state, not personality state.
+
+**Gate E2 test:** Background + avatar render cleanly together, mouse remains free, and removing/swapping the background requires no MetaHuman edits.
+
+---
+
 ## Phase F — Electron shell
 
 - [ ] Create TypeScript/Electron app.

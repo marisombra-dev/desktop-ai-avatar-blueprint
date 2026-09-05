@@ -73,6 +73,7 @@ The reference system currently does all of the following end to end:
 - Core local subsystems use bounded self-healing: restart only the failed component with backoff, confirm stable health, and surface the real error only after a finite retry budget is exhausted.
 - Local desk-presence logic can support restrained “welcome back” behavior after a meaningful absence without claiming that camera detection proves identity.
 - Realtime audio drives MetaHuman lip sync. Additional control packets can drive mood/face state and experimental gestures.
+- The visible avatar can use a separate Unreal presentation layer: a dedicated map places the MetaHuman in front of an unlit textured backdrop plane, keeping scenery independent from the character so backgrounds can later be swapped by context.
 - A restrained listening-reaction layer can add one subtle face response per user turn, using speech-start attentiveness plus semantic cues from partial/final transcription without making voice depend on streaming transcript deltas.
 - During an active interactive conversation, an optional privacy-first local gaze helper can recognize sustained eye contact from MediaPipe iris/head geometry, meet the user's gaze with a small eye-only MetaHuman override, and release immediately back to ordinary idle when the user looks away. Camera visual-awareness mode explicitly takes webcam ownership away from the gaze helper.
 - The avatar runs as a resizable, draggable, always-on-top desktop element with Mic / Screen / Camera controls.
@@ -89,7 +90,7 @@ The reliable sequence is:
 2. Install and verify Unreal + MetaHuman.
 3. Install and verify Monolith so an AI assistant can work inside Unreal.
 4. Create and approve one canonical face.
-5. Make the MetaHuman idle naturally in a tiny standalone Unreal runtime window.
+5. Make the MetaHuman idle naturally in a tiny standalone Unreal runtime window. Optionally add a separate swappable Unreal background layer here; see `docs/02a-swappable-background-presentation-layer.md`.
 6. Build the Electron shell and make it reliably launch/position the Unreal window.
 7. Connect Electron to the OpenClaw Gateway.
 8. Establish realtime WebRTC voice with no screen/camera yet.
@@ -945,20 +946,21 @@ Point it at this repository and tell it to read in this order:
 2. this `README.md`
 3. `docs/01-architecture.md`
 4. `docs/02-unreal-metahuman-monolith.md`
-5. `docs/03-reference-photo-to-metahuman.md`
-6. `docs/04-voice-and-lipsync.md`
-7. `docs/05-openclaw-and-continuity.md`
-8. `docs/06-wake-sleep-and-local-controls.md`
-9. `docs/07-screen-and-camera-vision.md`
-10. `docs/08-proactive-presence.md`
-11. `docs/09-avatar-behavior-and-animation.md`
-12. `docs/09a-privacy-first-eye-contact.md`
-13. `docs/10-privacy-and-security.md`
-14. `docs/11-troubleshooting.md`
-15. `docs/11a-bounded-self-healing.md`
-16. `docs/12-build-order-checklist.md`
-17. `docs/13-what-we-tried-and-what-failed.md`
-18. `SOURCES.md`
+5. `docs/02a-swappable-background-presentation-layer.md`
+6. `docs/03-reference-photo-to-metahuman.md`
+7. `docs/04-voice-and-lipsync.md`
+8. `docs/05-openclaw-and-continuity.md`
+9. `docs/06-wake-sleep-and-local-controls.md`
+10. `docs/07-screen-and-camera-vision.md`
+11. `docs/08-proactive-presence.md`
+12. `docs/09-avatar-behavior-and-animation.md`
+13. `docs/09a-privacy-first-eye-contact.md`
+14. `docs/10-privacy-and-security.md`
+15. `docs/11-troubleshooting.md`
+16. `docs/11a-bounded-self-healing.md`
+17. `docs/12-build-order-checklist.md`
+18. `docs/13-what-we-tried-and-what-failed.md`
+19. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 

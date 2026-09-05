@@ -89,6 +89,16 @@ Wake tuning is considered stable enough that it should not be casually retuned w
 - tray/minimize/restore behavior,
 - exact UI error state can be surfaced rather than hidden.
 
+### Separate background presentation layer
+
+**Status: PROVEN**
+
+The running reference map places the MetaHuman in front of a normal Unreal plane using a dedicated opaque unlit material and background `Texture2D`. The background is not baked into the character or its materials. Electron continues to launch and position the composed Unreal runtime as before.
+
+The final validated path is intentionally simple: one presentation map contains the foreground character, camera, character lighting, and backdrop plane. This makes the environment replaceable later without changing identity, lip sync, animation, or agent behavior.
+
+See `docs/02a-swappable-background-presentation-layer.md`.
+
 ### Manual screen capture / awareness state
 
 **Status: PROVEN**
