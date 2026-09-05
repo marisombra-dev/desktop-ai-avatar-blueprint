@@ -75,6 +75,7 @@ The reference system currently does all of the following end to end:
 - Realtime audio drives MetaHuman lip sync. Additional local control packets drive mood/face state plus visually proven head turns, nods, shakes, and sustained screen-attention posture.
 - The visible avatar can use a separate Unreal presentation layer: a dedicated map places the MetaHuman in front of an unlit textured backdrop plane, keeping scenery independent from the character so backgrounds can later be swapped by context.
 - A restrained listening-reaction layer can add one subtle face response per user turn, using speech-start attentiveness plus semantic cues from partial/final transcription without making voice depend on streaming transcript deltas.
+- A visually calibrated expression palette can provide genuine happiness, surprise, subtle concern, skeptical eyebrow, anger, and brief fear/alarm. The friendly greeting smile is naturally validated in ordinary conversation, and calibrated expressions temporarily outrank generic response-start mood so face layers do not fight.
 - During an active interactive conversation, an optional privacy-first local gaze helper can recognize sustained eye contact from MediaPipe iris/head geometry, meet the user's gaze with a small eye-only MetaHuman override, and release immediately back to ordinary idle when the user looks away. Camera visual-awareness mode explicitly takes webcam ownership away from the gaze helper.
 - Head orientation can distinguish a brief screen glance from sustained watch-along attention; during sustained watching the avatar can remain oriented toward the display, partially return toward the user while speaking, then resume watching.
 - The avatar runs as a resizable, draggable, always-on-top desktop element with Mic / Screen / Camera controls.
@@ -808,7 +809,7 @@ Record a probe matrix:
 control | value | visible effect | keep/reject
 ```
 
-and test each control on the *actual assembled MetaHuman*. For the full method, smoothing, sustained attention, semantic gesture tool, and failed approaches, see `docs/09b-metahuman-head-control.md`.
+and test each control on the *actual assembled MetaHuman*. For the full head-control method, smoothing, sustained attention, semantic gesture tool, and failed approaches, see `docs/09b-metahuman-head-control.md`. For expression-pose sampling, custom recipes, duration/amplitude calibration, expression priority, and greeting-smile validation, see `docs/09c-metahuman-expression-calibration.md`.
 
 Photorealism rewards tiny amplitude. If a gesture looks obvious in a still screenshot, it may already be too strong in motion.
 
@@ -963,12 +964,13 @@ Point it at this repository and tell it to read in this order:
 12. `docs/09-avatar-behavior-and-animation.md`
 13. `docs/09a-privacy-first-eye-contact.md`
 14. `docs/09b-metahuman-head-control.md`
-15. `docs/10-privacy-and-security.md`
-16. `docs/11-troubleshooting.md`
-17. `docs/11a-bounded-self-healing.md`
-18. `docs/12-build-order-checklist.md`
-19. `docs/13-what-we-tried-and-what-failed.md`
-20. `SOURCES.md`
+15. `docs/09c-metahuman-expression-calibration.md`
+16. `docs/10-privacy-and-security.md`
+17. `docs/11-troubleshooting.md`
+18. `docs/11a-bounded-self-healing.md`
+19. `docs/12-build-order-checklist.md`
+20. `docs/13-what-we-tried-and-what-failed.md`
+21. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 

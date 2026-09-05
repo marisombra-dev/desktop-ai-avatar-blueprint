@@ -177,6 +177,20 @@ https://dev.epicgames.com/documentation/metahuman/metahuman-creator-dna-asset-re
 
 Use this when custom rig/DNA work crosses UE 5.7 → 5.8 because DNA storage/runtime behavior changed.
 
+### MetaHuman expression poses and rig definition
+
+Official expression-pose documentation:
+
+https://dev.epicgames.com/documentation/metahuman/expression-poses
+
+Epic describes Expression Poses as fixed semantic facial states in the MetaHuman rig definition. Treat those states as authored rig data, then validate their visible read on the assembled character before using them conversationally.
+
+MetaHuman DNA / rig-definition documentation:
+
+https://dev.epicgames.com/documentation/metahuman/metahuman-dna-rig-definition-and-rig-operation
+
+This documents how the MetaHuman rig definition predetermines expression types and encodes expression animation data. It is useful background for understanding why semantic expression channels can be sampled and recombined without inventing arbitrary face-bone math.
+
 ### MetaHuman animation propagation and head-control references
 
 Official custom-animation documentation:

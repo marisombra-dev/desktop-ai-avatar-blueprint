@@ -408,6 +408,42 @@ For embodied UI, “measurable” and “communicative” are different threshol
 
 ---
 
+## 32. Sampling a static expression at its midpoint can erase the expression
+
+### What happened
+
+Very short MetaHuman facial-pose clips were initially sampled at half their reported play length. The result looked weak or almost neutral even though the source pose was strongly authored.
+
+### Lesson
+
+For static/near-one-frame poses, inspect curve values across the clip and choose the strongest meaningful sample. Do not assume `length / 2` represents the authored pose.
+
+---
+
+## 33. More expression amplitude can make the emotion less readable
+
+### What happened
+
+A stock anger pose became less recognizably angry when its overall intensity was increased because extra channels diluted the useful facial signal. A lower amplitude held longer communicated more.
+
+### Lesson
+
+Tune face shape and duration separately. Human emotional readability is not monotonic with curve amplitude.
+
+---
+
+## 34. A strengthened micro-gesture can expose obsolete random triggers
+
+### What happened
+
+A formerly tiny random speech-start eyebrow twitch became a clear skeptical expression after the brow recipe was improved. Friendly greetings could therefore begin with an unintended confused/doubtful look.
+
+### Lesson
+
+Whenever a gesture recipe is strengthened, search every old call site. Remove random triggers that were acceptable only because the old motion was nearly invisible.
+
+---
+
 # The meta-lesson
 
 The project was not hard because any one component was impossible. It was hard because a desktop AI avatar is a stack of systems that fail in visually similar ways.

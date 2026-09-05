@@ -79,14 +79,11 @@ See `examples/listening_reactions.ts` for a sanitized cue classifier.
 
 A tiny smile at the beginning of a friendly response can prevent the avatar from looking frozen while speech ramps up.
 
-The reference approach:
+The early reference approach used a generic happiness pulse at response start. After facial calibration matured, friendly greetings were upgraded to a visually approved happy expression while ordinary responses retained the lightweight generic path.
 
-1. `response.created` marks a pending response-start expression.
-2. If no explicit mood is already queued, set a short happiness state.
-3. On the first transcript/audio delta, apply a small smile pulse.
-4. Reset to automatic/neutral after ~1–2 seconds.
+Important ordering rule: if an approved expression owns the turn, suppress the generic response-start mood for that response so the two layers do not fight. The approved greeting smile should warm in naturally as speech begins rather than snapping instantly to a fixed grin.
 
-This is far better than holding a smile throughout every sentence.
+See `09c-metahuman-expression-calibration.md` for the live-validated expression workflow.
 
 ## 4. Mood commands as rendering hints
 
@@ -281,7 +278,7 @@ Good low-frequency candidates:
 
 - brief chin touch during genuine thinking latency,
 - occasional hair pass,
-- tiny shrug/hand motion for uncertainty,
+- tiny shrug/hand motion for uncertainty (still a later body-animation task in the reference build),
 - restrained laugh gesture.
 
 Do not loop them. Rare is better.

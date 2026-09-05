@@ -29,6 +29,7 @@ Files:
 - `recovery_policy.ts` — finite rolling retry budgets, exponential backoff, and privacy-aware leaf-process recovery planning.
 - `proactive_voice.ts` — microphone-free playback-only Realtime session for a short line already authored by the long-lived agent, including audio-drain protection.
 - `listening_reactions.ts` — bounded one-reaction-per-user-turn semantic classifier for subtle listening expressions, suitable for partial-transcript opportunism with completed-transcript fallback.
+- `approved_expressions.ts` — narrow calibrated-expression whitelist/tool pattern with per-turn generic-mood bypass so approved facial acting does not fight a legacy response-start mood layer.
 - `openclaw-gateway.cmd.example` — Windows launcher shape for a long-lived local Gateway.
 - `unreal/DesktopAvatarAudioBridge/` — sanitized UE 5.8-era MetaHuman local Live Link plugin pattern that receives float32 mono PCM over loopback UDP and can accept a narrow mood-control sideband.
 

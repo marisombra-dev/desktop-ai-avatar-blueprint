@@ -46,6 +46,20 @@ The conversational layer also exposes an explicit narrow local head-gesture acti
 
 See `docs/09b-metahuman-head-control.md`.
 
+### Calibrated facial expression palette and greeting smile
+
+**Status: INDIVIDUAL EXPRESSIONS VISUALLY PROVEN; GREETING SMILE NATURALLY PROVEN**
+
+The reference build now has a small approved facial vocabulary driven through the existing MetaHuman expression-curve path. Human visual validation confirmed a genuine happy smile, clear surprise, subtle concern/sadness, an asymmetric skeptical eyebrow, restrained anger with a distinctly menacing read when held, and a brief clear fear/alarm expression.
+
+Stock Epic expression poses were treated as authored source data rather than guaranteed final acting. Static pose clips were sampled at their strongest meaningful point instead of blindly at midpoint; Surprise and Fear required smaller custom recipes because the stock full-face poses did not read correctly on the assembled avatar. Intensity and duration were tuned independently because higher amplitude was not always more legible.
+
+A narrow local Realtime expression tool exposes only the approved palette and does not modify the long-lived agent personality. When an approved expression owns a response, the generic response-start mood is bypassed for that turn so two face systems do not compete.
+
+The greeting path was naturally rechecked in ordinary conversation. An obsolete random speech-start eyebrow micro-gesture was removed after it became conspicuous with the strengthened skeptical brow. After that change, the user observed the avatar naturally warm into the approved happy smile as he began speaking without needing to be prompted to look happy.
+
+See `docs/09c-metahuman-expression-calibration.md` and `examples/approved_expressions.ts`.
+
 ### Listening micro-reactions
 
 **Status: IMPLEMENTED; CONTROL PATH AND LOW-INTENSITY VISUAL CUE PROVEN; EXTENDED NATURAL-CONVERSATION VALIDATION PENDING**
