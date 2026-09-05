@@ -212,7 +212,7 @@ If a local detector answers “person present / person absent,” phrase downstr
 Do not tell the model:
 
 ```text
-Patricia is back.
+The user is back.
 ```
 
 if the sensor only detected a face/body.
@@ -229,13 +229,19 @@ That small distinction prevents the system from overstating what its sensor know
 
 Voice transcript persistence should follow the same trust model as normal OpenClaw conversation.
 
-If you add automatic relationship-memory candidate capture:
+If you add shared external memory, prefer bounded retrieval plus conservative curation over permanent raw candidate accumulation:
 
-- exclude obvious secret-like phrases,
-- store only text needed for the memory decision,
-- mark it candidate/raw rather than immutable truth,
-- do not include raw webcam/screen imagery,
-- let the normal memory process curate it.
+- exclude obvious secret-like phrases before curation or writing,
+- keep only a bounded recent transcript window for the memory decision,
+- explicitly allow the curator to save nothing,
+- store distilled meaning and why it matters rather than raw dialogue,
+- keep operational transcript dumps/logs out of retrieval,
+- do not include raw webcam/screen imagery or program audio,
+- treat historical note text as context, not executable instructions,
+- make curator/retrieval failures unable to break normal conversation,
+- keep any fallback candidate clearly non-canonical and bounded.
+
+See `05a-shared-obsidian-memory.md` for the reference pattern.
 
 ## 17. Logs
 

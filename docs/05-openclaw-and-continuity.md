@@ -201,6 +201,8 @@ Avoid writing every compliment, joke, or camera observation straight into perman
 
 If you do this publicly or for another user, make the memory policy explicit and configurable.
 
+For cross-surface continuity that multiple trusted AI surfaces can read and maintain, see `05a-shared-obsidian-memory.md`. That architecture replaces raw candidate accumulation with bounded local retrieval plus conservative session-end curation.
+
 ## 11. Proactive decisions should use recent main-session context
 
 For a proactive check, read a modest recent window from the main desktop session and give that context to the separate presence session.
@@ -275,3 +277,4 @@ Move it earlier into local intent interception.
 - [ ] Local lifecycle/sensor intents bypass ordinary agent tools.
 - [ ] Reopening a realtime call preserves desktop-session conversational continuity.
 - [ ] Auxiliary presence/screen prompts stay out of ordinary conversation history.
+- [ ] If a shared continuity vault is enabled, retrieval is bounded/relevant and automatic writes are conservative, inspectable, and failure-isolated.

@@ -14,6 +14,7 @@ Files:
 
 - `wake_word_listener.py` — local faster-whisper wake detector that exits after one wake.
 - `gateway_client.ts` — OpenClaw Gateway connection, dedicated sessions, Talk reservation, consult, screen observer, and proactive-decision patterns.
+- `shared_memory.ts` — sanitized local Markdown/Obsidian retrieval and curated-write pattern for cross-surface continuity.
 - `realtime_local_controls.ts` — Realtime local tool installation, command normalization, screen/camera/sleep interception, and fresh-image injection pattern.
 - `screen_capture.ts` — bounded privileged Electron primary-display capture that refuses while screen privacy is OFF.
 - `camera_capture.ts` — renderer webcam lifecycle where OFF physically stops every media track, plus bounded JPEG still capture.
@@ -30,6 +31,8 @@ Security rules:
 - Never paste real auth tokens into these files.
 - Never commit `.openclaw/openclaw.json`.
 - Never commit provider API keys/OAuth material.
+- Never publish the real user continuity vault; examples must use generic paths/content.
+- If shared memory is enabled, exclude transcript/log dumps and reject secret-like text before durable writes.
 - Do not treat example regular expressions or acoustic thresholds as universal.
 - Do not expose screen/camera capture when UI privacy state is OFF.
 - If system audio is tied to Screen, stop its media tracks/transcriber when Screen turns OFF and never feed program dialogue into the user's microphone command path.

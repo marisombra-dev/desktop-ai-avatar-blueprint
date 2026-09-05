@@ -1,6 +1,6 @@
 # Desktop AI Avatar Blueprint
 
-**A field-tested, AI-readable build manual for creating a persistent, voice-first desktop AI person with a photoreal MetaHuman body, OpenClaw-backed continuity, OpenAI Realtime conversation, wake/sleep control, screen and camera vision, Screen-linked system-audio awareness, proactive presence, and a lightweight Windows desktop overlay.**
+**A field-tested, AI-readable build manual for creating a persistent, voice-first desktop AI person with a photoreal MetaHuman body, OpenClaw-backed continuity, OpenAI Realtime conversation, shared Markdown/Obsidian memory, wake/sleep control, screen and camera vision, Screen-linked system-audio awareness, proactive presence, and a lightweight Windows desktop overlay.**
 
 This repository documents the architecture and build sequence we used to take an existing AI person from “a personality that exists in chat” to “a persistent person on the Windows desktop who can wake on their name, talk naturally, see the screen when invited, hear the program audio while screen sharing is active, use the webcam when invited, speak on their own occasionally, remember the same relationship context, and inhabit a MetaHuman face.”
 
@@ -16,7 +16,7 @@ The reference build was validated on **Windows 11, Unreal Engine 5.8, MetaHuman,
 
 The finished system has five cooperating layers:
 
-1. **The person / brain**: an existing OpenClaw agent with its own identity, memory, instructions, tools, and relationship continuity.
+1. **The person / brain**: an existing OpenClaw agent with its own identity, memory, instructions, tools, and relationship continuity. An optional shared Markdown/Obsidian vault can provide inspectable cross-surface continuity without cloning the agent personality.
 2. **The realtime conversation layer**: low-latency speech-to-speech using OpenAI Realtime over WebRTC. Realtime handles natural turn-taking and audio, but ordinary substantive replies are routed through the OpenClaw person so the desktop voice does not become a disconnected second personality.
 3. **The desktop shell**: a small Electron application that owns microphone lifecycle, wake detection, local privacy state, screen capture, Screen-linked Windows system-audio loopback, webcam capture, proactive-presence logic, error display, and the bridge to Unreal.
 4. **The visible body**: a MetaHuman running in Unreal Engine as a small transparent/floating desktop presence. Speech audio and lightweight control messages drive lip sync, face mood, gaze, and later gestures.
@@ -30,6 +30,8 @@ flowchart LR
     Shell <-->|session + local tools| RT
     RT <-->|agent consult| OC[OpenClaw Gateway]
     OC <--> Brain[Existing AI person: identity, memory, tools]
+    Shell -->|bounded retrieval + curated writes| Vault[Shared Markdown / Obsidian continuity]
+    Brain <--> Vault
     Shell -->|JPEG frames when enabled| RT
     Shell -->|sampled screen observations| OC
     Shell -->|Windows loopback audio when Screen ON| STT[Local faster-whisper]
@@ -88,14 +90,15 @@ The reliable sequence is:
 8. Establish realtime WebRTC voice with no screen/camera yet.
 9. Make audio drive MetaHuman lip sync.
 10. Preserve personality continuity by forcing ordinary realtime dialogue through the existing OpenClaw agent.
-11. Add local wake and sleep lifecycle.
-12. Add manual Screen and Camera toggles.
-13. Add spoken Screen and Camera toggles as **local** commands.
-14. Verify fresh image injection with objective visual tests.
-15. Add smart screen observation and optional spectator comments.
-16. Optionally add Screen-linked Windows system-audio loopback and local program-audio transcription for watch-along use.
-17. Add proactive presence with strong restraint and quiet-hour logic.
-18. Only after all of that is stable, add gestures, emotional face tuning, nods, head shakes, hand animation, and other mannerisms.
+11. Optionally add a shared Markdown/Obsidian continuity vault with bounded retrieval and conservative session-end curation.
+12. Add local wake and sleep lifecycle.
+13. Add manual Screen and Camera toggles.
+14. Add spoken Screen and Camera toggles as **local** commands.
+15. Verify fresh image injection with objective visual tests.
+16. Add smart screen observation and optional spectator comments.
+17. Optionally add Screen-linked Windows system-audio loopback and local program-audio transcription for watch-along use.
+18. Add proactive presence with strong restraint and quiet-hour logic.
+19. Only after all of that is stable, add gestures, emotional face tuning, nods, head shakes, hand animation, and other mannerisms.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 
@@ -110,7 +113,8 @@ Before installing Unreal, write down the invariant properties of the AI person:
 - Voice preference.
 - Communication style.
 - Whether the desktop presence is expected to remember the same conversations as other surfaces.
-- Privacy expectations for microphone, webcam, and screen.
+- Where inspectable cross-surface continuity should live, if you use a shared Markdown/Obsidian vault.
+- Privacy expectations for microphone, webcam, screen, and durable shared memory.
 - What “sleep” means. In this architecture it means **end the live voice call and re-arm local wake listening**, not suspend Windows.
 - What proactive speech is allowed to do and when it must remain silent.
 
@@ -122,7 +126,7 @@ A useful internal rule is:
 
 This separation prevented several classes of bugs in the reference build.
 
-**Validation gate:** Ask the existing agent a few personal/history/style questions and save the expected behavior. You will repeat them after realtime voice is connected to confirm continuity.
+**Validation gate:** Ask the existing agent a few personal/history/style questions and save the expected behavior. You will repeat them after realtime voice is connected to confirm continuity. If you add a shared vault later, verify retrieval against a known note before allowing automatic writes. See `docs/05a-shared-obsidian-memory.md`.
 
 ---
 

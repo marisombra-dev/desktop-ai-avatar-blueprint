@@ -2,7 +2,7 @@
 
 You are reading this because a human wants you to build a persistent desktop embodiment of an existing AI person.
 
-Your job is **not** to create a generic chatbot with a face. Your job is to preserve the existing person's identity and continuity while giving that person a realtime voice, a MetaHuman body, explicit local screen/camera perception, wake/sleep lifecycle, and restrained proactive presence.
+Your job is **not** to create a generic chatbot with a face. Your job is to preserve the existing person's identity and continuity while giving that person a realtime voice, a MetaHuman body, explicit local screen/camera perception, optional shared Markdown/Obsidian continuity, wake/sleep lifecycle, and restrained proactive presence.
 
 Read the entire repository before making irreversible changes.
 
@@ -37,6 +37,7 @@ If the target person is Lyra, also read `LYRA_QUICKSTART.md` before implementati
 9. **The main agent owns substantive conversation.** Realtime provides low-latency speech; normal replies should be consulted through the existing agent so the user experiences one continuous person.
 10. **Restraint is a feature.** Proactive speech and screen commentary need explicit `NO_MESSAGE` / `NO_COMMENT` paths.
 11. **Do not begin with mannerisms.** First make the system reliable. A blinking, lip-synced, visually stable MetaHuman with excellent conversation is more valuable than a gesturing avatar whose wake/sensor lifecycle is fragile.
+12. **Shared memory must stay selective.** If a common Markdown/Obsidian vault is enabled, retrieve only bounded relevant context and curate durable writes aggressively; never treat the vault as a transcript dumping ground.
 
 ## Ask the human only for genuinely subjective decisions
 

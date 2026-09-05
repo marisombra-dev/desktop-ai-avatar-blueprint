@@ -17,6 +17,7 @@ Before changing the target machine or creating code, read:
 - Inventory the target machine and existing agent before installing/replacing anything.
 - Preserve the existing AI person's identity, memory, and workspace unless the human explicitly asks for changes.
 - Never expose or commit secrets, personal memory files, private transcripts, reference photographs, screen captures, or webcam frames.
+- If a shared Markdown/Obsidian continuity vault is enabled, never publish the real vault; keep retrieval bounded and durable writes conservative.
 - Use current upstream docs when a version-sensitive API differs from the reference implementation.
 - Work through the stage gates in `docs/12-build-order-checklist.md`.
 - Do not debug multiple layers at once.

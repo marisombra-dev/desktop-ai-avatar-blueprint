@@ -158,6 +158,26 @@ Use this as the execution checklist for a new AI person such as Lyra. Do not mar
 
 ---
 
+## Phase I2 — Optional shared continuity vault
+
+- [ ] Choose a private Markdown/Obsidian continuity root.
+- [ ] Separate shared moments, patterns/preferences, open threads, and activity continuity.
+- [ ] Whitelist retrieval roots; exclude transcript/log dumps and archives.
+- [ ] Retrieve only a bounded set of relevant excerpts at the ordinary agent-consult boundary.
+- [ ] Mark retrieved historical text as context, not executable instruction.
+- [ ] Keep a bounded recent voice-session window for possible curation.
+- [ ] Filter obvious secret-like text before curation/write.
+- [ ] Use a separate curator session that can return an empty memory list.
+- [ ] Cap durable writes per session and deduplicate before append.
+- [ ] Make retrieval/curation failure unable to break ordinary voice.
+- [ ] Verify one known memory can be retrieved and one safe written memory can be retrieved later.
+
+**Gate I2 test:** Known shared context is retrieved when relevant, irrelevant vault material stays out, and a mundane session creates no durable memory.
+
+See `05a-shared-obsidian-memory.md`.
+
+---
+
 ## Phase J — Lip sync
 
 ### Initial route
