@@ -182,6 +182,10 @@ Do not encode that first transition as an arbitrary delay if an explicit state f
 
 Listening micro-reactions should happen while the user is speaking, not only after the assistant starts its answer.
 
+Human validation favored restraint over coverage. A successful pass used one semantic listening reaction at most per user turn, with routine speech deliberately left neutral. Agreement could produce a tiny nod, narrative hinges such as `and then the weirdest thing happened` could produce a very small curious brow, and serious material could soften the face without turning listening into a second performance.
+
+Provider timing matters: some semantic cues arrive only in the completed transcript after speech-stop. A short grace window (hundreds of milliseconds, not seconds) can still allow the listening body cue to land. Keep that grace limited to micro-body language; it must not create a delayed extra spoken response.
+
 A useful policy is still:
 
 ```text
