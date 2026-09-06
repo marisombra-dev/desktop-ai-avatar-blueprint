@@ -86,11 +86,46 @@ That framing also matters for prompt-injection resistance. Old quoted text in a 
 
 General memory retrieval and social callbacks serve different purposes. A fact may be relevant enough to answer a question correctly without being something the companion should casually bring up.
 
-For callbacks, search a much smaller source set such as `Shared Moments.md` and `Open Threads.md`. Require meaningful overlap with the current turn and return only one or two bounded candidates. Generic greetings and conversational glue should return nothing.
+For casual callbacks, search a much smaller source set such as `Shared Moments.md`. Require meaningful overlap with the current turn and return only one or two bounded candidates. Generic greetings and conversational glue should return nothing.
 
 Give callback candidates their own contract: use at most one only when it naturally improves warmth, humor, continuity, or understanding; never announce retrieval or say “according to memory/notes”; do not force a callback merely to prove continuity; do not repeat one already used unless the user brings it back; keep the current conversation primary.
 
 This turns memory from a database feature into relationship continuity. The desired behavior is not “I found a stored fact about that.” It is simply speaking like someone who was there.
+
+## 3b. Treat open threads as a separate lifecycle
+
+An unresolved plan is not the same thing as a nostalgic callback. Give `Open Threads.md` its own focused retriever and lifecycle.
+
+A useful entry includes an explicit state:
+
+```markdown
+## 2026-09-06 — Future feature after current work
+- **Status:** Open
+- **Memory:** Finish the current capability pass first, then return to the deferred feature.
+```
+
+Only `Open` entries are eligible for retrieval. When the user explicitly says the thread is finished, cancelled, or no longer relevant, mark it `Resolved` and exclude it from future callback matching. Preserve the history in Markdown rather than deleting it.
+
+Open-thread matching should tolerate a distinctive anchor appearing alone in otherwise generic language. A phrase such as `the library idea` may need to resolve a stored thread whose formal title uses different wording. At the same time, generic remarks such as `I'm getting coffee` must match nothing. Keep a strict stop-word/generic-word filter and test the false-positive boundary.
+
+## 3c. Keep high-confidence social continuity off the slow tool path
+
+A socially obvious continuity turn should not require a heavyweight agent/tool round trip merely to remember what a shared phrase means. The reference build exposed this failure directly: a correct open-thread memory was available locally, but routing through a slow agent consult produced extreme latency, timeout, and eventual apparent amnesia.
+
+For a high-confidence social match, a better pattern is:
+
+```text
+user turn
+  -> local focused retrieval
+  -> high-confidence shared-moment/open-thread match
+  -> Realtime response with bounded continuity context and tools disabled
+```
+
+The response contract should say: treat the supplied continuity as silent shared history, respond as someone who already knows what the user means, do not announce checking/notes/retrieval, and do not invent details beyond the supplied context.
+
+Keep a tiny short-lived cache of the most recent matched continuity so a follow-up such as `you know what I mean, right?` can resolve immediately. Do not let this cache leak into unrelated turns.
+
+Task requests such as `implement it`, `edit the project`, `research that`, or `fact-check it` should still bypass the fast social lane and reach the appropriate agent/tool path.
 
 ## 4. Keep a tiny evergreen relationship anchor
 
@@ -209,7 +244,10 @@ Validate the system in layers:
 5. Build and restart the desktop app; confirm voice/wake/sensors are unchanged.
 6. When model quota is available, run a mundane session and confirm the curator returns no memory.
 7. Run a clearly meaningful session and confirm one concise memory is written and later retrieved.
+8. Create a temporary open thread, verify it retrieves, mark it resolved, and verify it no longer retrieves.
+9. Test the same real open thread through two different natural phrasings plus one unrelated phrase.
+10. Human-test the fast continuity lane for latency, natural wording, unrelated-turn isolation, and a vague immediate follow-up.
 
-**Reference status:** local vault retrieval and curated-write plumbing are proven. The desktop runtime integration compiles, builds, and restarts cleanly. At the September 5, 2026 snapshot, the final live curator model smoke test was temporarily blocked by an external model-usage quota, so the ledger does not claim that last boundary as proven yet.
+**Reference status:** local vault retrieval, curated writes, shared-moment social callbacks, open-thread lifecycle, and the fast high-confidence social-continuity lane have all been exercised against a real local Markdown vault. Human live use confirmed natural continuity across alternate phrasing and an immediate vague follow-up, with an unrelated turn left alone.
 
 See `examples/shared_memory.ts` for a sanitized implementation pattern.

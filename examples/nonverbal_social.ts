@@ -18,6 +18,17 @@ export function isClearlyLaughingTurn(text: string): boolean {
   return false;
 }
 
+// Example calibration only. Tune against the actual person/camera.
+// Ordinary speech often opens the jaw enough to fool a sensitive quiet-laugh gate.
+export function acceptVisibleLaugh(userSpeaking: boolean, jawOpen: number): boolean {
+  return userSpeaking ? jawOpen >= 0.19 : jawOpen >= 0.09;
+}
+
+export const NON_SPEECH_AMUSEMENT_GUIDANCE = `
+Produce one brief non-lexical amused exhalation. No words, syllables, labels, or stage directions.
+If a true non-speech sound cannot be produced, remain silent rather than describing the sound.
+`.trim();
+
 export type ScreenReaction = 'silence' | 'laugh' | { speak: string };
 
 export function parseScreenReaction(comment: string | undefined): ScreenReaction {

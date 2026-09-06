@@ -201,7 +201,9 @@ Reciprocal laughter is human-validated after several failed approaches. Directly
 
 The local social-sensor helper now writes a minimal event log and automatically restarts after unexpected exit during an active voice session. This was added because silent helper death made smile/laughter regressions look like voice-model failures.
 
-Automated regression coverage is 56 passing tests with clean TypeScript typecheck and production build after the validated pass. Mouse-capture safety was reverified after restart.
+A later live greeting exposed another useful edge case: the sensitive visual-laugh gate could mistake a broad smile plus ordinary mouth opening during speech for laughter, and the dedicated vocal-reaction prompt could verbalize its own stage direction. The repair calibrates speaking laughter more strictly than non-speaking laughter and explicitly prefers silence over narrating the requested sound. A normal greeting, speech-with-laughter, and non-speaking soft laughter are now separate regression cases.
+
+Automated regression coverage is 63 passing tests with clean TypeScript typecheck and production build after the validated pass. Mouse-capture safety was reverified after restart.
 
 See `docs/09e-fewer-words-more-presence.md` and `examples/nonverbal_social.ts`.
 
@@ -255,7 +257,9 @@ The reference build now has an optional shared local Markdown/Obsidian continuit
 
 The local retrieval path was tested against known vault material and returned the expected relevant notes. The curated-write path was also tested by writing safe durable entries into the shared-memory area and successfully retrieving them again.
 
-A later social-use layer added a separate narrow callback retriever over only `Shared Moments` and `Open Threads`. It requires content overlap, returns at most a couple of candidates, and supplies them under a different behavioral contract from general factual continuity. Live human validation confirmed that a previously curated shared joke could be used naturally later without an explicit “do you remember?” prompt and without announcing memory retrieval. Generic greetings produced no callback candidate.
+A later social-use layer separated casual shared-moment callbacks from unresolved open threads. Shared-moment retrieval is narrow and optional; open threads have their own `Open` / `Resolved` lifecycle and focused matcher. Live human validation confirmed that a previously curated shared joke could be used naturally later without an explicit “do you remember?” prompt and without announcing memory retrieval.
+
+A subsequent regression test exposed an important routing lesson: the correct open-thread memory was present locally, but sending a socially obvious continuity question through a heavyweight agent consult caused extreme latency, timeout, and apparent amnesia. High-confidence social continuity was therefore moved to a local focused-retrieval + Realtime no-tool lane. Human live use then verified alternate phrasings of the same deferred project, an unrelated coffee turn with no continuity contamination, a spontaneous social joke/laugh exchange, and an immediate vague follow-up that correctly reconstructed the whole shared plan without checking notes or asking for a reminder.
 
 The runtime captures a bounded recent voice-session window and can ask a separate low-cost curator session to save at most three durable memories across four categories: shared moments, patterns/preferences, open threads, and activities/media. The curator is explicitly allowed to save nothing. Secret-like text is filtered, raw audio/images are not written, and any curator/retrieval failure is isolated from ordinary voice conversation.
 

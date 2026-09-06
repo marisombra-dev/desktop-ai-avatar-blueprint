@@ -118,7 +118,7 @@ function callbackScore(query: string, candidate: string): number {
 }
 
 export function retrieveSocialCallbacks(query: string, maxChars = 1600): string {
-  const files = [CATEGORY_FILES['shared-moment'], CATEGORY_FILES['open-thread']]
+  const files = [CATEGORY_FILES['shared-moment']]
     .map((name) => path.join(SHARED_ROOT, name));
   const ranked: Array<{ file: string; chunk: string; score: number }> = [];
   for (const file of files) {
@@ -144,6 +144,54 @@ Do not announce memory retrieval, quote stored wording mechanically, or force a 
 Skip callbacks in serious, factual, upset, or task-focused turns unless the history is directly useful.
 The current conversation remains primary.
 `.trim();
+
+function isOpenThread(chunk: string): boolean {
+  return !/\*\*Status:\*\*\s*Resolved\b/i.test(chunk);
+}
+
+function openThreadScore(query: string, candidate: string): number {
+  if (!isOpenThread(candidate)) return 0;
+  const terms = callbackTerms(query).filter((term) => !['idea', 'project', 'plan', 'excited'].includes(term));
+  if (!terms.length) return 0;
+  const haystack = candidate.toLowerCase();
+  const matched = terms.filter((term) => haystack.includes(term));
+  return matched.some((term) => term.length >= 4) ? matched.length * 10 + 4 : 0;
+}
+
+export function retrieveOpenThreads(query: string, maxChars = 1400): string {
+  const file = path.join(SHARED_ROOT, CATEGORY_FILES['open-thread']);
+  if (!existsSync(file)) return '';
+  const ranked = chunks(file)
+    .map((chunk) => ({ chunk, score: openThreadScore(query, chunk) }))
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score);
+  return ranked.slice(0, 2).map((item) => `[Open Threads.md]\n${item.chunk}`).join('\n\n').slice(0, maxChars);
+}
+
+export interface SocialContinuityContext {
+  kind: 'shared-moment' | 'open-thread';
+  context: string;
+}
+
+export function getSocialContinuity(query: string): SocialContinuityContext | undefined {
+  const openThread = retrieveOpenThreads(query);
+  if (openThread) return { kind: 'open-thread', context: openThread };
+  const callback = retrieveSocialCallbacks(query);
+  return callback ? { kind: 'shared-moment', context: callback } : undefined;
+}
+
+export function isVagueContinuityFollowUp(text: string): boolean {
+  return /\b(?:you know what i(?:'m| am) talking about|you know what i mean|you know which one|you know the one)\b/i.test(text);
+}
+
+export class SocialContinuityCache {
+  private last?: { value: SocialContinuityContext; at: number };
+  remember(value: SocialContinuityContext, now = Date.now()): void { this.last = { value, at: now }; }
+  reuseFor(text: string, now = Date.now()): SocialContinuityContext | undefined {
+    if (!this.last || now - this.last.at > 3 * 60 * 1000 || !isVagueContinuityFollowUp(text)) return undefined;
+    return this.last.value;
+  }
+}
 
 const SECRET_LIKE = /\b(?:password|passcode|api\s*key|secret|token|credit card|account number|private key)\b/i;
 
@@ -172,13 +220,35 @@ export function appendCuratedMemories(items: CuratedMemory[], day: string): numb
     const fingerprint = memory.toLowerCase().slice(0, 140);
     if (fingerprint.length >= 50 && existing.includes(fingerprint)) continue;
 
-    const lines = [`\n## ${day} — ${title}`, `- **Memory:** ${memory}`];
+    const lines = [`\n## ${day} — ${title}`];
+    if (item.category === 'open-thread') lines.push('- **Status:** Open');
+    lines.push(`- **Memory:** ${memory}`);
     if (why) lines.push(`- **Why it matters:** ${why}`);
     lines.push('- **Source:** desktop shared-memory curator', '');
     appendFileSync(target, `${lines.join('\n')}\n`, 'utf8');
     saved += 1;
   }
   return saved;
+}
+
+export function resolveOpenThreadByTitle(title: string): boolean {
+  const file = path.join(SHARED_ROOT, CATEGORY_FILES['open-thread']);
+  if (!existsSync(file)) return false;
+  const target = title.replace(/\s+/g, ' ').trim().toLowerCase();
+  if (target.length < 6) return false;
+  const raw = readFileSync(file, 'utf8').replace(/\r/g, '');
+  const blocks = raw.split(/(?=^##\s+)/m);
+  const matches = blocks.filter((block) => {
+    const heading = block.match(/^##\s+\d{4}-\d{2}-\d{2}\s+[—-]\s+(.+)$/m)?.[1];
+    return heading?.replace(/\s+/g, ' ').trim().toLowerCase() === target && isOpenThread(block);
+  });
+  if (matches.length !== 1) return false;
+  const before = matches[0]!;
+  const after = /\*\*Status:\*\*/i.test(before)
+    ? before.replace(/- \*\*Status:\*\*\s*Open\b/i, '- **Status:** Resolved')
+    : before.replace(/(^##[^\n]+\n)/m, '$1- **Status:** Resolved\n');
+  writeFileSync(file, raw.replace(before, after), 'utf8');
+  return true;
 }
 
 export function enrichConsult(currentUserTurn: string): string {

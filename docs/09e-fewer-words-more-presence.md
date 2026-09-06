@@ -86,6 +86,10 @@ speech containing laughter -> audible chuckle/amused reaction + context-aware ve
 
 Keep laughter detection conservative and based on **observable cues**, not inferred mood. One successful local detector combined a very strong bilateral smile cue with short-lived mouth/jaw movement, hysteresis, and cooldown. Exact thresholds are camera/person dependent and should be calibrated rather than copied. The local detector is a supplementary social cue, not an emotion classifier.
 
+Calibrate **speaking and non-speaking laughter separately**. A broad smile plus ordinary mouth opening while greeting or talking can resemble a visual laugh. In the reference build, a softer non-speaking laugh needed a sensitive gate, while the same gate produced a false laugh during a smiling greeting. The durable repair kept the sensitive quiet-laugh gate but required stronger jaw/mouth evidence whenever user speech was actively in progress.
+
+Also fail safely at synthesis time. If the voice model cannot produce a true non-lexical amused sound, silence is preferable to literally saying stage directions such as `short warm exhalation sound`. Explicitly tell the dedicated reaction response not to describe the requested sound.
+
 If the voice can hear amusement but the dedicated local detector misses it, do not immediately make the language model responsible for synthesizing laughter inside normal prose. That experiment increased latency and produced lexicalized `ha ha ha` in the reference build. Separate recognition, reaction sound, and semantic reply whenever possible.
 
 ## 4. Give the screen observer a nonverbal option
