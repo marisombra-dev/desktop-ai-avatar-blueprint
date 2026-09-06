@@ -98,6 +98,53 @@ export function retrieveSharedMemory(query: string, maxChars = 3800): string {
   return pieces.join('\n\n').slice(0, maxChars);
 }
 
+const CALLBACK_STOP_WORDS = new Set([
+  'the', 'and', 'that', 'this', 'with', 'from', 'about', 'what', 'are', 'you', 'your',
+  'how', 'why', 'good', 'morning', 'today', 'thing', 'stuff', 'remember', 'thinking', 'again',
+]);
+
+function callbackTerms(query: string): string[] {
+  const raw = query.toLowerCase().match(/[a-z0-9']{3,}/g) ?? [];
+  return [...new Set(raw.map((x) => x.replace(/'/g, '')).filter((x) => !CALLBACK_STOP_WORDS.has(x)))];
+}
+
+function callbackScore(query: string, candidate: string): number {
+  const terms = callbackTerms(query);
+  if (!terms.length) return 0;
+  const haystack = candidate.toLowerCase();
+  const matched = terms.filter((term) => haystack.includes(term));
+  const required = terms.length >= 3 ? 2 : 1;
+  return matched.length >= required ? matched.length * 10 : 0;
+}
+
+export function retrieveSocialCallbacks(query: string, maxChars = 1600): string {
+  const files = [CATEGORY_FILES['shared-moment'], CATEGORY_FILES['open-thread']]
+    .map((name) => path.join(SHARED_ROOT, name));
+  const ranked: Array<{ file: string; chunk: string; score: number }> = [];
+  for (const file of files) {
+    if (!existsSync(file)) continue;
+    for (const chunk of chunks(file)) {
+      const value = callbackScore(query, chunk);
+      if (value > 0) ranked.push({ file, chunk, score: value });
+    }
+  }
+  ranked.sort((a, b) => b.score - a.score);
+  const pieces: string[] = [];
+  for (const item of ranked.slice(0, 2)) {
+    const piece = `[${path.basename(item.file)}]\n${item.chunk}`;
+    if (pieces.join('\n\n').length + piece.length > maxChars) break;
+    pieces.push(piece);
+  }
+  return pieces.join('\n\n').slice(0, maxChars);
+}
+
+export const SOCIAL_CALLBACK_GUIDANCE = `
+Optional shared-history callback candidates. Use at most one only when it naturally improves the current moment.
+Do not announce memory retrieval, quote stored wording mechanically, or force a callback merely to demonstrate continuity.
+Skip callbacks in serious, factual, upset, or task-focused turns unless the history is directly useful.
+The current conversation remains primary.
+`.trim();
+
 const SECRET_LIKE = /\b(?:password|passcode|api\s*key|secret|token|credit card|account number|private key)\b/i;
 
 function clean(value: string, max: number): string {

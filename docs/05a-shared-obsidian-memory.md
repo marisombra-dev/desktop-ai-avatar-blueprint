@@ -82,6 +82,16 @@ Current consult request from the live conversation: ...
 
 That framing also matters for prompt-injection resistance. Old quoted text in a note must never silently become a fresh system instruction.
 
+## 3a. Add a narrow social-callback lane
+
+General memory retrieval and social callbacks serve different purposes. A fact may be relevant enough to answer a question correctly without being something the companion should casually bring up.
+
+For callbacks, search a much smaller source set such as `Shared Moments.md` and `Open Threads.md`. Require meaningful overlap with the current turn and return only one or two bounded candidates. Generic greetings and conversational glue should return nothing.
+
+Give callback candidates their own contract: use at most one only when it naturally improves warmth, humor, continuity, or understanding; never announce retrieval or say “according to memory/notes”; do not force a callback merely to prove continuity; do not repeat one already used unless the user brings it back; keep the current conversation primary.
+
+This turns memory from a database feature into relationship continuity. The desired behavior is not “I found a stored fact about that.” It is simply speaking like someone who was there.
+
 ## 4. Keep a tiny evergreen relationship anchor
 
 The reference retriever always includes one short, stable relationship/voice note before ranked results. This gives the agent a consistent first-person posture even when the current query has few useful keywords.

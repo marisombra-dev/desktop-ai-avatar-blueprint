@@ -249,17 +249,19 @@ The deterministic local command path and Realtime local tool path both support c
 
 ### Shared Markdown / Obsidian continuity
 
-**Status: LOCAL RETRIEVAL + WRITE PATH PROVEN; DESKTOP RUNTIME INTEGRATION IMPLEMENTED; FINAL LIVE CURATOR MODEL SMOKE TEST PENDING**
+**Status: LOCAL RETRIEVAL + WRITE PATH PROVEN; SOCIAL CALLBACK USE HUMAN-VALIDATED; CURATOR/RUNTIME INTEGRATION ACTIVE**
 
 The reference build now has an optional shared local Markdown/Obsidian continuity layer. Before an ordinary agent consult, the desktop runtime performs bounded local retrieval over approved identity/continuity/project notes, explicitly excluding the large presence/transcript snapshot. Retrieved excerpts are framed as runtime reference context rather than new user speech, and historical quoted text is marked non-executable.
 
 The local retrieval path was tested against known vault material and returned the expected relevant notes. The curated-write path was also tested by writing safe durable entries into the shared-memory area and successfully retrieving them again.
 
+A later social-use layer added a separate narrow callback retriever over only `Shared Moments` and `Open Threads`. It requires content overlap, returns at most a couple of candidates, and supplies them under a different behavioral contract from general factual continuity. Live human validation confirmed that a previously curated shared joke could be used naturally later without an explicit “do you remember?” prompt and without announcing memory retrieval. Generic greetings produced no callback candidate.
+
 The runtime captures a bounded recent voice-session window and can ask a separate low-cost curator session to save at most three durable memories across four categories: shared moments, patterns/preferences, open threads, and activities/media. The curator is explicitly allowed to save nothing. Secret-like text is filtered, raw audio/images are not written, and any curator/retrieval failure is isolated from ordinary voice conversation.
 
 TypeScript, tests, production build, restart, Gateway health, wake listener, and the approved avatar runtime all remained healthy after integration.
 
-The last model-side curator smoke test at this snapshot was blocked by an external model-usage quota before the curator could answer. Therefore this ledger does **not** yet claim end-to-end proof of automatic model curation. Local retrieval, local writes, and runtime wiring are proven/implemented as described.
+By this snapshot, the live continuity store contained a genuinely curated shared-moment entry produced through the desktop curator path, and the later callback layer retrieved and used it naturally in conversation. That proves the practical curate -> store -> retrieve -> socially use chain for at least one real shared moment. The curator is still designed to fail closed and save nothing when uncertain.
 
 See `docs/05a-shared-obsidian-memory.md` and `examples/shared_memory.ts`.
 
