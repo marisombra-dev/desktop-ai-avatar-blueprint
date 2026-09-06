@@ -263,10 +263,18 @@ Your provider-facing delivery instruction is exposing architecture. Tell it that
 Check session ownership and transcript persistence.
 
 ### Voice has the right memories but wrong manner
-Check whether your realtime layer is adding its own generic coaching/reassurance style after the consulted answer.
+First check whether your realtime layer is adding its own generic coaching/reassurance style after the consulted answer. If routing is correct but casual interaction still turns into unsolicited explanation, advice, fact-checking, or offers of help, this is a behavioral-priority problem rather than an identity problem. See `05c-social-intent-and-behavioral-priority.md`.
 
 ### Local sign-off triggers unrelated tool behavior
 Move it earlier into local intent interception.
+
+## 15. Test social behavior separately from continuity
+
+Force-consult can prove that the same long-lived agent authored the answer and still leave the desktop surface socially wrong. Models are generally optimized to be useful, so ambiguous remarks can be pulled toward explaining, correcting, advising, or offering help even when the user was making a social bid.
+
+Do not keep rewriting identity files to fight this. Define a separate behavioral contract: what counts as social companionship, what counts as explicit analysis, which local modes are operational, and when silence is the correct response. Put compatible guidance in every route that can actually generate speech.
+
+See `05c-social-intent-and-behavioral-priority.md` for the full diagnostic pattern and a regression suite.
 
 ## Exit criteria
 
@@ -277,4 +285,5 @@ Move it earlier into local intent interception.
 - [ ] Local lifecycle/sensor intents bypass ordinary agent tools.
 - [ ] Reopening a realtime call preserves desktop-session conversational continuity.
 - [ ] Auxiliary presence/screen prompts stay out of ordinary conversation history.
+- [ ] Social-behavior regression tests distinguish companionship from explicit analysis without weakening factual competence.
 - [ ] If a shared continuity vault is enabled, retrieval is bounded/relevant and automatic writes are conservative, inspectable, and failure-isolated.

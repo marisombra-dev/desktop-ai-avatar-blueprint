@@ -444,6 +444,30 @@ Whenever a gesture recipe is strengthened, search every old call site. Remove ra
 
 ---
 
+## 35. Personality adjectives did not defeat the generic helper reflex
+
+### What happened
+
+The desktop agent could have the correct identity, memories, warmth, humor instructions, and voice yet still interpret casual remarks as information tasks. Shared entertainment became unsolicited explanation or fact-checking; gratitude could grow an availability speech; personal news could trigger advice before reaction.
+
+### Lesson
+
+Do not keep adding adjectives such as `warm`, `playful`, or `funny` and expect the inferred task to change. Define the social objective explicitly and distinguish social, analytical, operational, and quiet lanes. Put that behavioral contract in every route that can actually generate speech. See `05c-social-intent-and-behavioral-priority.md`.
+
+---
+
+## 36. Hard token caps fixed length by breaking speech
+
+### What happened
+
+A hard Realtime output-token limit was added to force short social replies. It succeeded at stopping extra wording by audibly cutting a normal greeting off mid-utterance.
+
+### Lesson
+
+Do not use a hard generation cap to repair a social-intent problem. Fix why the model thinks it should explain, advise, ask, or offer help. Then tune brevity with response-specific semantic instructions. In realtime voice, abrupt token exhaustion is worse than one unnecessary sentence.
+
+---
+
 # The meta-lesson
 
 The project was not hard because any one component was impossible. It was hard because a desktop AI avatar is a stack of systems that fail in visually similar ways.

@@ -38,6 +38,7 @@ If the target person is Lyra, also read `LYRA_QUICKSTART.md` before implementati
 10. **Restraint is a feature.** Proactive speech and screen commentary need explicit `NO_MESSAGE` / `NO_COMMENT` paths.
 11. **Do not begin with mannerisms.** First make the system reliable. A blinking, lip-synced, visually stable MetaHuman with excellent conversation is more valuable than a gesturing avatar whose wake/sensor lifecycle is fragile.
 12. **Shared memory must stay selective.** If a common Markdown/Obsidian vault is enabled, retrieve only bounded relevant context and curate durable writes aggressively; never treat the vault as a transcript dumping ground.
+13. **Personality needs behavioral priority, not just adjectives.** Test whether ambiguous social remarks remain social instead of becoming unsolicited explanation/advice. Read `docs/05c-social-intent-and-behavioral-priority.md` before tuning prompts for “warmth” or “brevity.”
 
 ## Ask the human only for genuinely subjective decisions
 
@@ -80,6 +81,9 @@ A WebRTC voice session opens, the user can speak and interrupt, and audio output
 
 ### Gate F: Same-person routing
 Spoken substantive answers demonstrably come from/through the existing OpenClaw person rather than an independent realtime persona.
+
+### Gate F2: Social-behavior priority
+Greetings, gratitude, jokes, personal sharing, and casual shared-media observations retain the intended person's social manner instead of automatically becoming explanation, advice, fact-checking, coaching, or availability speeches. Explicit analysis requests must still receive analysis.
 
 ### Gate G: Lip sync
 Realtime output audibly and visually drives the MetaHuman face with acceptable latency.

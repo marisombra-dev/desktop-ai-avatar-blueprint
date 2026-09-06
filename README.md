@@ -71,6 +71,7 @@ The reference system currently does all of the following end to end:
 - Runtime-generated local date/time/timezone/daypart context grounds relative-time language across ordinary consults, proactive decisions, return greetings, and memory curation. Runtime time is authoritative, and explicit time-of-day greetings are sanity-checked before playback without making time itself a reason to speak.
 - Proactive outreach is gated twice: local quiet/cooldown/idle checks first, then a context-aware evidence decision using current activity, meaningful screen events, recent dialogue, unfinished threads, and relevant durable memory. Silence itself is never treated as a reason to speak.
 - Core local subsystems use bounded self-healing: restart only the failed component with backoff, confirm stable health, and surface the real error only after a finite retry budget is exhausted.
+- Conversational behavior can distinguish social companionship from explicit analysis, operational commands, and quiet states so a correct long-lived persona does not collapse into generic explain/correct/offer-help behavior during ambiguous social turns.
 - Local desk-presence logic can support restrained “welcome back” behavior after a meaningful absence without claiming that camera detection proves identity. During an open interactive voice session, the existing local gaze helper can also emit a minimal face-present heartbeat so return detection keeps working without a second process fighting for the webcam. Return detection and greeting delivery remain separate, and an already-open Realtime session must not cause a qualified greeting to be discarded.
 - Realtime audio drives MetaHuman lip sync. Additional local control packets drive mood/face state plus visually proven head turns, nods, shakes, sustained screen-attention posture, and a true clavicle-driven uncertainty shrug.
 - The visible avatar can use a separate Unreal presentation layer: a dedicated map places the MetaHuman in front of an unlit textured backdrop plane, keeping scenery independent from the character so backgrounds can later be swapped by context.
@@ -125,6 +126,7 @@ Before installing Unreal, write down the invariant properties of the AI person:
 - Existing agent/session that owns long-term identity.
 - Voice preference.
 - Communication style.
+- What “companionship” means for this person: when to share a moment, joke, react, advise, analyze, ask questions, or simply stay quiet.
 - Whether the desktop presence is expected to remember the same conversations as other surfaces.
 - Where inspectable cross-surface continuity should live, if you use a shared Markdown/Obsidian vault.
 - Privacy expectations for microphone, webcam, screen, and durable shared memory.
@@ -139,7 +141,7 @@ A useful internal rule is:
 
 This separation prevented several classes of bugs in the reference build.
 
-**Validation gate:** Ask the existing agent a few personal/history/style questions and save the expected behavior. You will repeat them after realtime voice is connected to confirm continuity. If you add a shared vault later, verify retrieval against a known note before allowing automatic writes. See `docs/05a-shared-obsidian-memory.md`. For reliable relative-time grounding and timezone-aware memory dates, see `docs/05b-contextual-time-awareness.md`.
+**Validation gate:** Ask the existing agent a few personal/history/style questions and save the expected behavior. You will repeat them after realtime voice is connected to confirm continuity. If you add a shared vault later, verify retrieval against a known note before allowing automatic writes. See `docs/05a-shared-obsidian-memory.md`. For reliable relative-time grounding and timezone-aware memory dates, see `docs/05b-contextual-time-awareness.md`. For preventing a correct persona from collapsing into generic helper behavior, read `docs/05c-social-intent-and-behavioral-priority.md`.
 
 ---
 
@@ -434,6 +436,14 @@ Use a lightweight realtime system instruction only for **delivery**, for example
 Do not duplicate the entire personality prompt in the realtime layer.
 
 **Validation gate:** Ask questions whose answers depend on the existing agent's continuity. The spoken answers should match the same person's style/history, not merely sound good.
+
+### A correct identity can still behave like a generic assistant
+
+Do not stop after proving memory and routing. Assistant-tuned models often interpret ambiguous remarks as requests to explain, correct, advise, offer help, or ask another question. A list of personality adjectives does not reliably change that inferred task.
+
+Define behavioral priorities and conversational lanes explicitly. Casual social bids should remain social; explicit truth-seeking should still reach analysis; local commands should remain operational; quiet requests should be allowed to produce actual silence. During shared entertainment, temporary mode framing can state that companionship outranks unsolicited analysis unless the user asks for factual checking.
+
+See `docs/05c-social-intent-and-behavioral-priority.md` and `examples/social_intent_routing.ts`. Do not use hard output-token caps as a substitute for fixing intent; spoken Realtime can be audibly truncated mid-utterance.
 
 ---
 
@@ -959,20 +969,23 @@ Point it at this repository and tell it to read in this order:
 6. `docs/03-reference-photo-to-metahuman.md`
 7. `docs/04-voice-and-lipsync.md`
 8. `docs/05-openclaw-and-continuity.md`
-9. `docs/06-wake-sleep-and-local-controls.md`
-10. `docs/07-screen-and-camera-vision.md`
-11. `docs/08-proactive-presence.md`
-12. `docs/09-avatar-behavior-and-animation.md`
-13. `docs/09a-privacy-first-eye-contact.md`
-14. `docs/09b-metahuman-head-control.md`
-15. `docs/09c-metahuman-expression-calibration.md`
-16. `docs/09d-metahuman-shoulder-shrug.md`
-17. `docs/10-privacy-and-security.md`
-18. `docs/11-troubleshooting.md`
-19. `docs/11a-bounded-self-healing.md`
-20. `docs/12-build-order-checklist.md`
-21. `docs/13-what-we-tried-and-what-failed.md`
-22. `SOURCES.md`
+9. `docs/05a-shared-obsidian-memory.md`
+10. `docs/05b-contextual-time-awareness.md`
+11. `docs/05c-social-intent-and-behavioral-priority.md`
+12. `docs/06-wake-sleep-and-local-controls.md`
+13. `docs/07-screen-and-camera-vision.md`
+14. `docs/08-proactive-presence.md`
+15. `docs/09-avatar-behavior-and-animation.md`
+16. `docs/09a-privacy-first-eye-contact.md`
+17. `docs/09b-metahuman-head-control.md`
+18. `docs/09c-metahuman-expression-calibration.md`
+19. `docs/09d-metahuman-shoulder-shrug.md`
+20. `docs/10-privacy-and-security.md`
+21. `docs/11-troubleshooting.md`
+22. `docs/11a-bounded-self-healing.md`
+23. `docs/12-build-order-checklist.md`
+24. `docs/13-what-we-tried-and-what-failed.md`
+25. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 

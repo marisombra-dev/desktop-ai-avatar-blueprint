@@ -173,7 +173,19 @@ Lifecycle was also verified: Screen OFF stops the program-audio helper, and endi
 
 The webcam path is OFF by default, opens only when requested, captures bounded JPEG stills, stops tracks when turned off, and can coexist with screen awareness.
 
-## Recently repaired and now end-to-end proven
+## Recently repaired and validated
+
+### Social intent / companion behavioral priority
+
+**Status: LIVE BEHAVIORAL IMPROVEMENT OBSERVED; EXTENDED REGRESSION VALIDATION ONGOING**
+
+The reference build demonstrated that correct agent routing and correct memories are not sufficient for natural companionship. In ambiguous social moments, the assistant repeatedly drifted toward unsolicited explanation, correction, offers of help, and follow-up questions because the interaction was still framed as a generic assistance task.
+
+The repair separated social/companion turns from explicit analysis and local operational commands. Shared-watch mode received explicit social task framing, clearly social turns could use a no-tool response lane, explicit truth-seeking still reached the normal analysis path, and a quiet request became a real suppression state rather than a speech about being quiet. A hard output-token-cap experiment was rejected after it audibly truncated speech mid-utterance; brevity returned to soft semantic guidance instead.
+
+Live conversation after the repair showed the intended qualitative change: ordinary greetings stayed socially appropriate, personal sharing was received rather than immediately converted into advice, and playful observations could be joined rather than corrected. This is enough to record the architectural lesson, while broader long-term behavioral regression testing remains ongoing.
+
+See `docs/05c-social-intent-and-behavioral-priority.md` and `examples/social_intent_routing.ts`.
 
 ### Spoken “look at the screen” after the Realtime schema repair
 

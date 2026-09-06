@@ -16,6 +16,7 @@ Files:
 - `gateway_client.ts` — OpenClaw Gateway connection, dedicated sessions, Talk reservation, consult, screen observer, and proactive-decision patterns.
 - `shared_memory.ts` — sanitized local Markdown/Obsidian retrieval and curated-write pattern for cross-surface continuity.
 - `contextual_time.ts` — system-timezone-aware local date/time/daypart context and durable-memory date-key pattern.
+- `social_intent_routing.ts` — generic social/analysis/quiet/operational lane classifier and response-policy pattern for preventing ambiguous social bids from collapsing into generic helper behavior.
 - `realtime_local_controls.ts` — Realtime local tool installation, command normalization, screen/camera/sleep interception, and fresh-image injection pattern.
 - `screen_capture.ts` — bounded privileged Electron primary-display capture that refuses while screen privacy is OFF.
 - `camera_capture.ts` — renderer webcam lifecycle where OFF physically stops every media track, plus bounded JPEG still capture.

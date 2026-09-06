@@ -211,6 +211,26 @@ See `05b-contextual-time-awareness.md`.
 
 ---
 
+## Phase I4 — Social intent and behavioral priority
+
+- [ ] Define social/companion behavior separately from identity adjectives.
+- [ ] Identify explicit analysis/fact-check requests.
+- [ ] Keep narrow local operational commands out of general conversation routing.
+- [ ] Allow quiet/shared-activity requests to produce actual silence.
+- [ ] Give shared watch/activity modes explicit social task framing.
+- [ ] Do not correct playful observations merely because they can be interpreted literally.
+- [ ] Avoid automatic follow-up questions, coaching, reassurance, or offers of help after every short social turn.
+- [ ] Audit every route that can generate speech for compatible behavioral guidance.
+- [ ] Use no-tool social lanes only where appropriate; explicit analysis still gets normal tools.
+- [ ] Do not use hard output-token caps as a substitute for intent classification.
+- [ ] Run ambiguous-turn regression tests covering greeting, gratitude, personal sharing, joking, quiet, and explicit truth-seeking.
+
+**Gate I4 test:** The human experiences the intended social person during ordinary hanging-out conversation, while explicit factual/analytical requests remain fully competent.
+
+See `05c-social-intent-and-behavioral-priority.md` and `../examples/social_intent_routing.ts`.
+
+---
+
 ## Phase J — Lip sync
 
 ### Initial route
