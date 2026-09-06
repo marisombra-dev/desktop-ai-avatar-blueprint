@@ -92,6 +92,23 @@ Also fail safely at synthesis time. If the voice model cannot produce a true non
 
 If the voice can hear amusement but the dedicated local detector misses it, do not immediately make the language model responsible for synthesizing laughter inside normal prose. That experiment increased latency and produced lexicalized `ha ha ha` in the reference build. Separate recognition, reaction sound, and semantic reply whenever possible.
 
+## 3a. Add a tiny vocal-reaction vocabulary
+
+Once laughter is stable, a few other short reactions can make the companion feel present without adding sentences. Keep the set deliberately small and use it only when the reaction can genuinely stand alone.
+
+A validated reference set was:
+
+```text
+thoughtful / interesting -> quiet "mm"
+surprise / disbelief     -> tiny surprised inhale
+skeptical amusement      -> dry "hm"
+sympathy                 -> soft low "mm"
+```
+
+Do not route questions, longer statements, personal disclosures, or task requests into this lane. Those usually need a real answer. A deterministic local classifier is appropriate because the semantic scope is intentionally tiny.
+
+Voice synthesis may treat abstract directions such as `skeptical exhale` or `sympathetic breath` as text to narrate. If that happens, give the voice a concrete vocal target such as a short `hm` or low `mm`, forbid extra words, and prefer silence over spoken stage directions. Tune one failing sound at a time rather than rewriting reactions that already work.
+
 ## 4. Give the screen observer a nonverbal option
 
 A shared-screen observer should not be limited to:

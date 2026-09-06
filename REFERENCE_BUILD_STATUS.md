@@ -205,6 +205,8 @@ A later live greeting exposed another useful edge case: the sensitive visual-lau
 
 Automated regression coverage is 63 passing tests with clean TypeScript typecheck and production build after the validated pass. Mouse-capture safety was reverified after restart.
 
+The same pass now includes a tiny human-validated vocabulary of nonverbal vocal reactions for low-risk standalone social turns: a thoughtful `mm`, a brief surprised inhale, a dry skeptical `hm`, and a soft sympathetic `mm`. Routing is deliberately conservative so questions, longer statements, personal disclosures, and task requests stay in ordinary conversation. A normal control sentence remained fully verbal in live testing.
+
 See `docs/09e-fewer-words-more-presence.md` and `examples/nonverbal_social.ts`.
 
 ### Spoken “look at the screen” after the Realtime schema repair

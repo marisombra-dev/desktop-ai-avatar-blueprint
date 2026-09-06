@@ -29,6 +29,26 @@ Produce one brief non-lexical amused exhalation. No words, syllables, labels, or
 If a true non-speech sound cannot be produced, remain silent rather than describing the sound.
 `.trim();
 
+export type SocialVocalReaction = 'thoughtful' | 'surprise' | 'skeptical' | 'sympathy';
+
+export function socialVocalReactionFor(text: string): SocialVocalReaction | undefined {
+  const value = normalizeSocialTurn(text);
+  if (!value || value.length > 72 || value.split(/\s+/).length > 10) return undefined;
+  if (/[?]/.test(text) && !/^(?:seriously|no way)[?!. ]*$/i.test(text.trim())) return undefined;
+  if (/^(?:that's|that is) (?:interesting|curious|odd|strange)$|^(?:interesting|curious|odd|strange)$/.test(value)) return 'thoughtful';
+  if (/^(?:wow|whoa|no way|seriously)$/.test(value)) return 'surprise';
+  if (/^(?:yeah right|right sure|well that's convenient|how convenient)$/.test(value)) return 'skeptical';
+  if (/^(?:that's a shame|that is a shame|what a shame|that's sad|that sucks)$/.test(value)) return 'sympathy';
+  return undefined;
+}
+
+export const SOCIAL_VOCAL_GUIDANCE: Record<SocialVocalReaction, string> = {
+  thoughtful: 'Produce exactly one quiet thoughtful "mm" hum and no other words.',
+  surprise: 'Make one tiny genuine surprised inhale. No words; silence if unavailable.',
+  skeptical: 'Produce exactly one short dry "hm" and no other words.',
+  sympathy: 'Produce exactly one soft low "mm" and no other words.',
+};
+
 export type ScreenReaction = 'silence' | 'laugh' | { speak: string };
 
 export function parseScreenReaction(comment: string | undefined): ScreenReaction {
