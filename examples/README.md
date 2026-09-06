@@ -24,6 +24,7 @@ Files:
 - `camera_capture.ts` — renderer webcam lifecycle where OFF physically stops every media track, plus bounded JPEG still capture.
 - `gaze_tracker.py` — privacy-first local MediaPipe eye-contact pattern with user calibration, hysteresis, tiny face-follow offsets after contact, explicit release, and no published classifier weights.
 - `screen_watcher.ts` — local change-driven screen sampler with model-analysis throttling and salience/cooldown gating.
+- `ambient_watch_participation.ts` — Watch-only sparse ambient reaction gate, local shared-activity ending intent, authoritative Screen-off verification, and control-narration loop brake.
 - `screen_audio_loopback.ts` — Windows/Electron Screen-linked system-audio loopback pattern that keeps program audio separate from the user microphone and suppresses the assistant's own output.
 - `screen_audio_transcriber.py` — local `faster-whisper` helper that accepts bounded PCM16 chunks over stdin and emits short program-audio transcripts without storing raw audio.
 - `activity_continuity.ts` — sparse substantial-activity qualification, checkpoint retention, focused resume-query, and deterministic stopping-point fallback pattern.

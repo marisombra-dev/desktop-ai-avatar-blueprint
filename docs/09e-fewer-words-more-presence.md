@@ -178,6 +178,28 @@ activity ends -> clear watch state and return center
 
 Do not encode that first transition as an arbitrary delay if an explicit state flag can express the ownership rule. Natural ending phrases such as “I’m closing it down”, “I’m turning it off”, or “I’m done with this” should exit the shared activity once and cleanly restore center. A pathological speech-repetition guard is also useful, but it should be an emergency brake for repeated multi-word phrases, not another hard brevity cap.
 
+## 5b. Add sparse ambient participation without stealing the floor
+
+A sustained shared-watch mode can support occasional context-aware reactions that are not conversational turns. The goal is the feeling of somebody watching beside you, not a commentator filling silence.
+
+A safe observer contract is intentionally tiny:
+
+```text
+NO_COMMENT
+LAUGH_ONLY
+AMBIENT: one short reaction
+```
+
+Ambient lines should be short, declarative, contextually grounded, and non-demanding. Reject questions, explanations, capability offers, multi-sentence commentary, and control narration locally even if the observer generates them. Silence remains the default, especially during continuous program dialogue.
+
+Human validation favored sparse reactions. Long quiet stretches felt natural, while an occasional well-timed joke or exclamation created strong shared-presence value. The system should therefore optimize for salience rather than comment frequency.
+
+Ending the shared activity must not be delegated to the social language lane. Treat phrases such as `stop the video`, `I stopped it`, or `turn off the screen share` as local operational intent while Watch is active. Issue the OFF command, verify the authoritative Screen/privacy state, clear watch posture, and only then acknowledge success. If verification fails, say so rather than claiming the control changed.
+
+A narrow repetition brake is useful for a second failure mode: if a missed control phrase produces repeated narration such as `I'm shutting off the screen share...`, cancel after the second obvious control-narration repetition instead of waiting for a general speech-loop detector.
+
+See `examples/ambient_watch_participation.ts`.
+
 ## 6. Make listening visibly responsive
 
 Listening micro-reactions should happen while the user is speaking, not only after the assistant starts its answer.

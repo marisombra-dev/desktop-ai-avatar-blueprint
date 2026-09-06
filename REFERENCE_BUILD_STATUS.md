@@ -167,6 +167,18 @@ The reference watcher performs local sampling/change detection, throttles model 
 
 The watcher is best-effort and is intentionally unable to break ordinary voice chat when a sample/analysis fails.
 
+### Ambient shared-watch participation and verified exit
+
+**Status: HUMAN-VALIDATED**
+
+The reference build now supports sparse context-aware ambient reactions during sustained Watch mode. The observer can remain silent, request a non-speech laugh, or provide one short non-demanding reaction. A local gate rejects questions, explanations, capability offers, multi-sentence commentary, and other outputs that would seize the conversational floor.
+
+Live validation showed the intended social effect: long quiet stretches remained acceptable, while occasional salient reactions and jokes felt natural and could combine with reciprocal laughter. The same validation exposed an important reliability lesson: ending Watch must be an authoritative local state transition rather than something the conversational model merely says it performed.
+
+The final repair routes natural Watch-ending language into one deterministic Screen-off path, verifies the main-process privacy state before acknowledging success, synchronizes renderer state from that authoritative source, clears sustained watch posture, and uses a narrow control-narration repetition brake as a fail-safe. Repeated live start/stop cycles completed without freezes or visible error badges after the validated pass.
+
+See `docs/09e-fewer-words-more-presence.md` and `examples/ambient_watch_participation.ts`.
+
 ### Screen-linked system audio / watch-along
 
 **Status: END-TO-END PROVEN**
