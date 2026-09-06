@@ -1,7 +1,7 @@
 """Sanitized local eye-contact tracker pattern.
 
 This example intentionally contains no real user's calibration weights.
-It processes webcam frames locally and emits only a small numerical gaze target.
+It processes webcam frames locally, emits only a small numerical gaze target, and may publish a low-rate boolean desk-presence heartbeat on stdout so another process does not need to open the same webcam.
 
 Dependencies: mediapipe, opencv-python, numpy
 Model: MediaPipe Face Landmarker task model supplied separately.
@@ -28,6 +28,9 @@ EXIT_MARGIN = -0.15
 ENTER_SECONDS = 0.55
 EXIT_SECONDS = 0.45
 SEND_INTERVAL = 0.12
+PRESENCE_ENTER_SECONDS = 0.35
+PRESENCE_EXIT_SECONDS = 1.00
+PRESENCE_HEARTBEAT_SECONDS = 3.0
 GAZE_STRENGTH = 0.22
 BASE_H = 0.0
 BASE_V = 0.0
@@ -142,6 +145,7 @@ def main() -> None:
     parser.add_argument("--calibration", required=True, type=Path)
     parser.add_argument("--model", type=Path, default=None)
     parser.add_argument("--camera", type=int, default=0)
+    parser.add_argument("--presence-events", action="store_true")
     args = parser.parse_args()
 
     model = args.model or Path(os.environ.get("DESKTOP_AVATAR_GAZE_MODEL", "gaze_face_landmarker.task"))
@@ -166,6 +170,10 @@ def main() -> None:
     anchor_x = anchor_y = None
     smooth_x = smooth_y = None
     last_send = 0.0
+    presence_state = None
+    presence_candidate = None
+    presence_candidate_since = None
+    last_presence_emit = 0.0
     started = time.monotonic()
 
     try:
@@ -192,6 +200,20 @@ def main() -> None:
                     fx, fy = geometry["face_x"], geometry["face_y"]
                     smooth_x = fx if smooth_x is None else smooth_x * 0.82 + fx * 0.18
                     smooth_y = fy if smooth_y is None else smooth_y * 0.82 + fy * 0.18
+
+                if args.presence_events:
+                    candidate = bool(face_ok)
+                    if presence_candidate != candidate:
+                        presence_candidate = candidate
+                        presence_candidate_since = now
+                    required = PRESENCE_ENTER_SECONDS if candidate else PRESENCE_EXIT_SECONDS
+                    if presence_candidate_since is not None and now - presence_candidate_since >= required and presence_state != candidate:
+                        presence_state = candidate
+                        last_presence_emit = now
+                        print(json.dumps({"event": "desk_presence", "present": presence_state}), flush=True)
+                    elif presence_state is not None and now - last_presence_emit >= PRESENCE_HEARTBEAT_SECONDS:
+                        last_presence_emit = now
+                        print(json.dumps({"event": "desk_presence", "present": presence_state}), flush=True)
 
                 if not contact:
                     if face_ok and margin >= ENTER_MARGIN:

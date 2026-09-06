@@ -25,6 +25,7 @@ The behavioral result should be simple:
 
 - While the avatar is idle, the gaze helper is not running.
 - During an interactive voice conversation, the local gaze helper may own the webcam.
+- While it owns the webcam, the same helper may emit a low-rate local face-present heartbeat for desk-return detection; do not open a second camera process just for presence.
 - Looking toward the avatar for a short sustained interval activates eye contact.
 - Looking away for a short sustained interval releases the override.
 - Normal idle gaze resumes immediately after release.
@@ -214,6 +215,12 @@ Also stop the gaze helper on system lock, suspend, and application quit. On unlo
 
 Proactive or unsolicited speech should not automatically start eye contact. In the reference design, gaze is tied to actual interactive engagement.
 
+### One camera owner can serve more than one local purpose
+
+The single-owner rule does not mean every local feature needs a separate webcam process. If the gaze helper already has the authorized camera open, it can safely publish a minimal presence heartbeat derived from the same frame loop. A practical message is one JSON line every second or two containing only a boolean, for example `{"event":"desk_presence","present":true}`.
+
+The desktop shell can use that heartbeat to maintain `present` / `away` state during a long-lived voice session. This is preferable to disabling return detection whenever voice is open, and preferable to launching a competing OpenCV capture that may fail or steal the camera. Treat stale heartbeats as `unknown`, not as proof of absence.
+
 ## Packaging caveat
 
 Bundling the Python script, calibration schema, and MediaPipe model file is not the same thing as bundling a working runtime.
@@ -241,8 +248,9 @@ Do not declare eye contact complete because the classifier prints plausible numb
 7. During one live conversation, turn Camera ON: gaze helper releases the webcam before visual camera capture begins.
 8. Turn Camera OFF: gaze helper resumes.
 9. Kill the helper unexpectedly: Unreal watchdog releases the eyes.
-10. Confirm no frames were saved and no local gaze frames were sent to the model.
-11. Confirm the avatar window did not capture or clip the user's mouse during testing.
+10. If desk-return detection shares the gaze helper, confirm its local boolean heartbeat changes with face presence and contains no frame/landmark/identity data.
+11. Confirm no frames were saved and no local gaze frames were sent to the model.
+12. Confirm the avatar window did not capture or clip the user's mouse during testing.
 
 That last check sounds mundane until a desktop avatar accidentally becomes a tiny 3D prison warden. Avoid foreground-focus capture tricks during validation.
 

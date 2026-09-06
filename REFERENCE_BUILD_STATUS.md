@@ -299,11 +299,15 @@ See `docs/11a-bounded-self-healing.md` and `examples/recovery_policy.ts`.
 
 ### Desk-return greeting
 
-**Status: IMPLEMENTED; SIMULATED 30-MINUTE RETURN PROVEN END TO END, NATURAL UNSCRIPTED RETURN RECHECK PENDING**
+**Status: ACTIVE-VOICE REGRESSION REPAIRED; LIVE CAMERA HEARTBEAT PROVEN; NATURAL LONG-ABSENCE RETURN RECHECK PENDING**
 
-Local presence logic can infer a return after meaningful absence and ask the agent for a brief greeting. Return detection and greeting delivery are now separate states: a qualified arrival can remain pending through temporary interruption suppression, user interaction consumes the pending greeting, and slow/failed model generation has a bounded local fallback. Technical presence-transition logging was added without storing frames or personal content. The detector does not prove identity and downstream prompts are written accordingly.
+Local presence logic can infer a return after meaningful absence and ask the agent for a brief greeting. Return detection and greeting delivery are separate states: a qualified arrival can remain pending through temporary interruption suppression, user interaction consumes the pending greeting, and slow/failed model generation has a bounded local fallback. Technical presence-transition logging stores no frames or personal content. The detector does not prove identity and downstream prompts are written accordingly.
 
-A development simulation of a 30-minute absence reached `away confirmed -> arrival detected -> greeting sent` and produced audible playback. The time-of-day wording guard is deterministically tested; a fresh natural real-world absence/return remains intentionally unclaimed until observed again.
+A real several-hour absence exposed a regression: the presence loop skipped checks whenever an interactive voice session was open, and the greeting path also discarded a qualified arrival merely because `activeVoice` was true. This meant leaving the avatar awake for hours made return detection effectively disappear.
+
+The repaired architecture reuses the already-running local eye-contact/gaze helper as the single webcam owner during interactive voice. That helper emits a low-rate boolean face-present heartbeat to Electron; no frames, landmarks, or identity labels are sent. When interactive voice is not active, the original one-shot local presence detector remains available. A qualified greeting may now be delivered through the already-open Realtime conversation rather than spawning a competing playback path or silently consuming the event.
+
+The modified helper was smoke-tested against the real webcam and emitted repeated `desk_presence: true` heartbeats while a face was present. Python compilation, 41 automated tests, TypeScript typecheck, and the production build passed. The prior simulated 30-minute `away confirmed -> arrival detected -> greeting sent` flow remains historical proof of the state machine; a fresh natural long-absence return after this active-voice repair is intentionally still pending.
 
 ## Experimental / not a dependency of the core product
 

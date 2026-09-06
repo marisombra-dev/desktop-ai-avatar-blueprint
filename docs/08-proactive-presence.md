@@ -218,7 +218,8 @@ Reference behavior:
 - when apparently absent, require multiple consecutive absent detections,
 - when away, check more frequently for return,
 - require a minimum meaningful away duration before greeting,
-- do not greet if a live voice/proactive session is already active,
+- do not start a competing proactive playback session if one is already active,
+- if interactive voice is already open, keep return detection alive and deliver the greeting through that existing conversation path rather than discarding it,
 - respect quiet/interruption rules.
 
 Example reference constants:
@@ -232,6 +233,14 @@ minimum away duration for greeting: ~10 min
 ```
 
 The detector can be webcam/local vision based, but it must not claim identity certainty unless it truly performs an authorized identity-recognition function.
+
+### Reuse the active camera owner instead of opening the webcam twice
+
+If a live interactive voice session already has a local eye-contact/gaze helper holding the webcam, do **not** spawn a second presence process against the same device. Have the existing local helper emit a tiny technical heartbeat such as `{"present":true}` / `{"present":false}` on stdout or IPC at a low rate. Electron can consume that boolean for desk-state transitions while the helper continues its gaze work.
+
+This fixes a subtle architectural trap: a presence loop that simply skips checks whenever live voice is active will never notice a return if the user leaves the avatar awake for hours. The correct invariant is **voice activity changes the sensor source, not whether presence is tracked**.
+
+Keep the heartbeat local and content-free. Do not include frames, landmarks, identity labels, or transcripts. When explicit Camera visual-awareness takes webcam ownership, either suspend desk-return checks briefly or obtain presence from that already-authorized camera stream rather than opening another capture handle.
 
 A safe internal prompt says:
 
@@ -299,6 +308,7 @@ Use a short-lived **pending arrival** record instead. Once return is detected:
 - mark the desk present, but keep the greeting pending for a bounded retry window,
 - if Windows temporarily suppresses spontaneous speech, retry rather than discarding the event,
 - if the user starts talking first, consume the pending greeting because the return is already acknowledged,
+- if an interactive Realtime voice session is already open, deliver the greeting through that existing session instead of treating `activeVoice` as a reason to erase the arrival event,
 - if the greeting model times out or errors, use a brief local fallback rather than silent failure,
 - log only technical transition metadata, never camera frames or personal content.
 
@@ -356,4 +366,7 @@ A good proactive system often produces boring logs and very few utterances.
 - [ ] A detected return remains pending briefly until greeting delivery succeeds, is intentionally suppressed, or is consumed by user interaction.
 - [ ] Slow/failed greeting generation has a bounded local fallback instead of silent loss.
 - [ ] Presence transition logs contain only technical metadata, never images or personal content.
+- [ ] Leaving an interactive voice session open for a long absence does not disable return detection.
+- [ ] If another local helper already owns the webcam, presence reuses that owner or defers rather than opening a competing capture.
+- [ ] A qualified return is not discarded merely because Realtime is already open.
 - [ ] Proactive speech remains rare enough to feel intentional.

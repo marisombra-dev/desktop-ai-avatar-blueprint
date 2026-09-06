@@ -449,15 +449,18 @@ See `05b-contextual-time-awareness.md`.
 - [ ] Track away timestamp.
 - [ ] Minimum away duration before greeting.
 - [ ] Presence detector does not claim identity.
+- [ ] If interactive voice already owns the webcam through a local gaze helper, reuse that owner for a low-rate present/absent heartbeat instead of opening a second capture process.
+- [ ] Leaving voice open does not disable desk-return detection.
 - [ ] Welcome-back prompt remains generic/natural.
 - [ ] Keep return detection and greeting delivery as separate states with a bounded pending window.
 - [ ] Temporary interruption suppression defers a pending greeting rather than discarding it.
 - [ ] User interaction consumes a pending greeting.
+- [ ] An already-open Realtime session can deliver a qualified welcome-back instead of causing the event to be discarded.
 - [ ] Model timeout/error falls back to a brief local greeting.
 - [ ] Presence logs are technical only and contain no camera frames or personal content.
 - [ ] Same quiet/interruption rules as proactive speech.
 
-**Gate V test:** Return greeting happens only after meaningful absence and never mentions monitoring.
+**Gate V test:** Test both lifecycles: (1) return while voice is closed, and (2) leave an interactive voice session open, go away long enough to qualify, then return without speaking first. In both cases the return is detected, webcam ownership remains singular, and any greeting never mentions monitoring.
 
 ---
 
@@ -474,6 +477,7 @@ See `05b-contextual-time-awareness.md`.
 - [ ] Camera visual-awareness mode stops gaze tracking before acquiring the webcam.
 - [ ] Camera OFF resumes gaze only during an active interactive conversation.
 - [ ] Voice end, lock, suspend, and quit stop the helper.
+- [ ] If the gaze helper also supplies desk presence, it emits only a low-rate boolean heartbeat and stale heartbeat state becomes unknown.
 - [ ] No gaze frames are persisted or sent to the model.
 - [ ] Mouse remains free during every validation method.
 
