@@ -220,7 +220,8 @@ Reference behavior:
 - require a minimum meaningful away duration before greeting,
 - do not start a competing proactive playback session if one is already active,
 - if interactive voice is already open, keep return detection alive and deliver the greeting through that existing conversation path rather than discarding it,
-- respect quiet/interruption rules.
+- make the relationship between scheduled quiet hours and return greetings an explicit product policy rather than inheriting generic proactive-speech behavior accidentally;
+- always respect an explicit user-requested quiet state and temporary OS interruption constraints.
 
 Example reference constants:
 
@@ -241,6 +242,8 @@ If a live interactive voice session already has a local eye-contact/gaze helper 
 This fixes a subtle architectural trap: a presence loop that simply skips checks whenever live voice is active will never notice a return if the user leaves the avatar awake for hours. The correct invariant is **voice activity changes the sensor source, not whether presence is tracked**.
 
 Keep the heartbeat local and content-free. Do not include frames, landmarks, identity labels, or transcripts. When explicit Camera visual-awareness takes webcam ownership, either suspend desk-return checks briefly or obtain presence from that already-authorized camera stream rather than opening another capture handle.
+
+If a qualified return must always receive verbal recognition, define absence-duration bands and a deterministic fallback before calling the model. For example: roughly 10–30 minutes can use a light acknowledgment, 30–120 minutes a warmer return, and 2+ hours a more reunion-like greeting. Recent unfinished activity can justify a short continuation cue instead of a generic welcome. In that policy, `NO_MESSAGE` is not a valid model outcome for a qualified return.
 
 A safe internal prompt says:
 

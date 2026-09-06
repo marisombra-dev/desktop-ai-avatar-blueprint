@@ -478,7 +478,9 @@ See `05c-social-intent-and-behavioral-priority.md` and `../examples/social_inten
 - [ ] An already-open Realtime session can deliver a qualified welcome-back instead of causing the event to be discarded.
 - [ ] Model timeout/error falls back to a brief local greeting.
 - [ ] Presence logs are technical only and contain no camera frames or personal content.
-- [ ] Same quiet/interruption rules as proactive speech.
+- [ ] Decide explicitly whether scheduled quiet hours suppress qualified return greetings; do not inherit this accidentally from generic proactive speech.
+- [ ] Explicit temporary quiet commands still suppress/defer return greetings according to the user's request.
+- [ ] Qualified returns use absence-duration bands or equivalent context so a short absence and a long absence do not sound identical.
 
 **Gate V test:** Test both lifecycles: (1) return while voice is closed, and (2) leave an interactive voice session open, go away long enough to qualify, then return without speaking first. In both cases the return is detected, webcam ownership remains singular, and any greeting never mentions monitoring.
 
@@ -532,6 +534,21 @@ For every gesture:
 - [ ] semantically sparse.
 
 **Gate X test:** Human notices greater naturalness, not “more animation.” For head motion specifically, require naked-eye confirmation of direction, smoothness, semantic readability, and return/hold behavior. See `09b-metahuman-head-control.md` before attempting custom head bone work.
+
+---
+
+## Phase X2 — Nonverbal social presence
+
+- [ ] Tiny closure acknowledgments can resolve as a restrained nod/soft expression without spoken filler.
+- [ ] Listening micro-gestures use separate cooldown/authority from later response gestures.
+- [ ] Clearly amused turns can route to real laughter with no obligatory words.
+- [ ] Negative/control cases such as `Tell me why that was funny` do not trigger laugh-only routing.
+- [ ] Screen observer can choose silence, laugh-only, or a spoken comment when appropriate.
+- [ ] Shared-glance behavior temporarily releases sustained screen attention toward the user and restores the prior watch pose safely.
+- [ ] Shared-glance restore checks current Screen authorization and live-session state.
+- [ ] Human live validation confirms laughter and gaze timing feel natural.
+
+**Gate X2 test:** During ordinary conversation and shared media, the avatar sometimes communicates more naturally with gaze, laughter, or a tiny gesture than with another sentence. See `09e-fewer-words-more-presence.md`.
 
 ---
 

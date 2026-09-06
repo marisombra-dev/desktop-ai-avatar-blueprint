@@ -468,6 +468,30 @@ Do not use a hard generation cap to repair a social-intent problem. Fix why the 
 
 ---
 
+## 37. Treating speech as the only valid response created unnecessary words
+
+### What happened
+
+Even after social intent improved, tiny acknowledgments and shared amusement could still produce an extra sentence because the runtime assumed every turn required spoken language.
+
+### Lesson
+
+An embodied companion has multiple output channels. For very low-risk social moments, a nod, expression, laugh, shared glance, or silence can be the complete response. Keep these routes narrow and semantically tested. See `09e-fewer-words-more-presence.md`.
+
+---
+
+## 38. A laughter keyword classifier can accidentally laugh at a real question
+
+### What happened
+
+An early laugh-only classifier was broad enough that a sentence such as `Tell me why that was funny` could be interpreted as a request for laughter rather than an actual conversational question.
+
+### Lesson
+
+Nonverbal routing needs negative regression cases, not only positive examples. Match unmistakable amusement or explicit laugh requests, not the mere presence of words such as `funny`.
+
+---
+
 # The meta-lesson
 
 The project was not hard because any one component was impossible. It was hard because a desktop AI avatar is a stack of systems that fail in visually similar ways.

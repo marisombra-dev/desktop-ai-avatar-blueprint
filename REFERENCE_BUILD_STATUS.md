@@ -187,6 +187,22 @@ Live conversation after the repair showed the intended qualitative change: ordin
 
 See `docs/05c-social-intent-and-behavioral-priority.md` and `examples/social_intent_routing.ts`.
 
+### Nonverbal social presence / fewer-words-more-person pass
+
+**Status: IMPLEMENTED AND AUTOMATED-REGRESSION PROVEN; NATURAL LAUGHTER/SHARED-GLANCE QUALITY VALIDATION PENDING**
+
+The reference build now treats speech as one social output channel rather than the mandatory response to every turn. Tiny closure acknowledgments can resolve as a soft expression plus small nod with no spoken sentence. Listening agreement cues can produce a separate low-amplitude micro-nod while the user is still speaking without consuming the later assistant-response gesture budget.
+
+Clearly amused user turns have a narrow laugh-only Realtime path that requests one genuine chuckle/laugh and no words. The classifier intentionally rejects factual/conversational uses of `funny`; an automated regression caught and repaired an early over-broad pattern where `Tell me why that was funny` could have been misrouted. Shared-screen observation can now conceptually choose `NO_COMMENT`, `LAUGH_ONLY`, or one short spoken reaction.
+
+A shared-glance path reuses already-proven sustained screen/head controls: when a spontaneous shared-screen reaction begins, the runtime can temporarily release the watch pose toward the user, react, then restore the prior watch attention if Screen is still authorized and the live session still exists. This avoids inventing a new animation asset for the social “did you see that?” signal.
+
+The return-greeting path was also refined so qualified returns use duration-aware greeting bands and a deterministic fallback rather than allowing model failure to erase recognition. Scheduled quiet-hours policy is separated from explicit temporary user-requested quiet so products can choose whether a qualified return should still receive a brief verbal acknowledgment at night.
+
+Automated regression coverage increased to 49 passing tests, with TypeScript typecheck and production build clean after the combined pass. Mouse-capture safety was reverified after restart. At this snapshot, the audible naturalness of the chosen voice's laugh and the social read of the shared glance during real viewing have not yet been human-validated, so those qualities are intentionally not marked end-to-end proven.
+
+See `docs/09e-fewer-words-more-presence.md` and `examples/nonverbal_social.ts`.
+
 ### Spoken “look at the screen” after the Realtime schema repair
 
 **Status: END-TO-END PROVEN**
@@ -319,7 +335,7 @@ A real several-hour absence exposed a regression: the presence loop skipped chec
 
 The repaired architecture reuses the already-running local eye-contact/gaze helper as the single webcam owner during interactive voice. That helper emits a low-rate boolean face-present heartbeat to Electron; no frames, landmarks, or identity labels are sent. When interactive voice is not active, the original one-shot local presence detector remains available. A qualified greeting may now be delivered through the already-open Realtime conversation rather than spawning a competing playback path or silently consuming the event.
 
-The modified helper was smoke-tested against the real webcam and emitted repeated `desk_presence: true` heartbeats while a face was present. Python compilation, 41 automated tests, TypeScript typecheck, and the production build passed. The prior simulated 30-minute `away confirmed -> arrival detected -> greeting sent` flow remains historical proof of the state machine; a fresh natural long-absence return after this active-voice repair is intentionally still pending.
+The modified helper was smoke-tested against the real webcam and emitted repeated `desk_presence: true` heartbeats while a face was present. The greeting contract was subsequently strengthened: once a return qualifies, it receives verbal recognition, with light/warm/reunion-like behavior selected from absence duration and a deterministic fallback if model generation fails. Scheduled quiet hours no longer automatically erase a qualified return in the reference policy, while explicit temporary quiet and OS interruption states remain meaningful constraints. Python compilation, 49 automated tests, TypeScript typecheck, and the production build passed. The prior simulated 30-minute `away confirmed -> arrival detected -> greeting sent` flow remains historical proof of the state machine; a fresh natural long-absence return after the active-voice and duration-aware repairs is intentionally still pending.
 
 ## Experimental / not a dependency of the core product
 

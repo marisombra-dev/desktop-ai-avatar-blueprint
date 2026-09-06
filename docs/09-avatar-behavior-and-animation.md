@@ -61,7 +61,7 @@ A convincing avatar should not wait until its own speaking turn to become expres
 1. when user speech starts, enter a subtle attentive/listening state without guessing emotion;
 2. when partial or final transcription supplies a strong semantic cue, allow **one** small face reaction for that user turn.
 
-Keep this layer much weaker than speaking expressions. Ordinary speech should usually produce no semantic reaction at all. Good examples are a tiny brow lift for surprise, a slight interested brow for “hear me out,” a small playfulness lift for teasing, or a softening for serious material.
+Keep this layer much weaker than speaking expressions. Ordinary speech should usually produce no semantic reaction at all. Good examples are a tiny brow lift for surprise, a slight interested brow for “hear me out,” a small playfulness lift for teasing, a softening for serious material, or a very small listening nod for strong agreement/continuation cues. If you add a listening head gesture, give it separate cooldown/authority from the assistant's later semantic response gesture so it cannot suppress a meaningful YES/NO/uncertainty motion.
 
 Do not make the voice pipeline depend on partial-transcript events. If the provider emits input-transcription deltas, use them opportunistically for earlier timing. If it does not, the completed transcript should trigger the same classifier immediately before the response.
 
@@ -359,4 +359,4 @@ If any answer is no, the gesture is not ready.
 11. hand gestures,
 12. advanced posture/body motion.
 
-The reference project learned this order after doing some of it backwards.
+The reference project learned this order after doing some of it backwards. Once these control paths are stable, see `09e-fewer-words-more-presence.md` for using laughter, shared glances, tiny nonverbal acknowledgments, and listening micro-gestures to reduce unnecessary speech without turning the avatar into a puppet show.

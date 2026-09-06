@@ -75,7 +75,9 @@ The reference system currently does all of the following end to end:
 - Local desk-presence logic can support restrained “welcome back” behavior after a meaningful absence without claiming that camera detection proves identity. During an open interactive voice session, the existing local gaze helper can also emit a minimal face-present heartbeat so return detection keeps working without a second process fighting for the webcam. Return detection and greeting delivery remain separate, and an already-open Realtime session must not cause a qualified greeting to be discarded.
 - Realtime audio drives MetaHuman lip sync. Additional local control packets drive mood/face state plus visually proven head turns, nods, shakes, sustained screen-attention posture, and a true clavicle-driven uncertainty shrug.
 - The visible avatar can use a separate Unreal presentation layer: a dedicated map places the MetaHuman in front of an unlit textured backdrop plane, keeping scenery independent from the character so backgrounds can later be swapped by context.
-- A restrained listening-reaction layer can add one subtle face response per user turn, using speech-start attentiveness plus semantic cues from partial/final transcription without making voice depend on streaming transcript deltas.
+- A restrained listening-reaction layer can add one subtle face/head response per user turn, using speech-start attentiveness plus semantic cues from partial/final transcription without making voice depend on streaming transcript deltas. Listening micro-gestures use separate authority from later response gestures so a tiny nod while the user speaks cannot suppress a substantive YES/NO/uncertainty gesture.
+- Nonverbal social routing can let tiny acknowledgments resolve as a soft nod instead of an unnecessary sentence, let clearly amused turns produce real laughter without spoken commentary, and give shared-screen observation a `LAUGH_ONLY` outcome when laughter is more natural than words.
+- During sustained shared watching, a bounded shared-glance pattern can temporarily release the screen-attention pose toward the user for a reaction, then safely restore the prior watch pose.
 - A visually calibrated expression palette can provide genuine happiness, surprise, subtle concern, skeptical eyebrow, anger, and brief fear/alarm. The friendly greeting smile is naturally validated in ordinary conversation, and calibrated expressions temporarily outrank generic response-start mood so face layers do not fight.
 - During an active interactive conversation, an optional privacy-first local gaze helper can recognize sustained eye contact from MediaPipe iris/head geometry, meet the user's gaze with a small eye-only MetaHuman override, and release immediately back to ordinary idle when the user looks away. Camera visual-awareness mode explicitly takes webcam ownership away from the gaze helper.
 - Head orientation can distinguish a brief screen glance from sustained watch-along attention; during sustained watching the avatar can remain oriented toward the display, partially return toward the user while speaking, then resume watching.
@@ -112,7 +114,8 @@ The reliable sequence is:
 21. Add bounded self-healing for local leaf processes and Realtime cleanup.
 22. Only after all of that is stable, add restrained listening micro-reactions and response-linked face tuning.
 23. Optionally add privacy-first eye contact as an eye-only layer with local calibration, hysteresis, webcam ownership arbitration, and watchdog release. See `docs/09a-privacy-first-eye-contact.md`.
-24. Add larger gestures one at a time. The reference build proved nod, head shake, and a clavicle-driven uncertainty shrug before attempting hand animation; keep hands and complex body acting last.
+24. Add nonverbal social presence: listening micro-nods, selective laugh-only reactions, tiny closure acknowledgments, and shared glances using already-proven gaze/head controls. See `docs/09e-fewer-words-more-presence.md`.
+25. Add larger gestures one at a time. The reference build proved nod, head shake, and a clavicle-driven uncertainty shrug before attempting hand animation; keep hands and complex body acting last.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 
@@ -980,12 +983,13 @@ Point it at this repository and tell it to read in this order:
 17. `docs/09b-metahuman-head-control.md`
 18. `docs/09c-metahuman-expression-calibration.md`
 19. `docs/09d-metahuman-shoulder-shrug.md`
-20. `docs/10-privacy-and-security.md`
-21. `docs/11-troubleshooting.md`
-22. `docs/11a-bounded-self-healing.md`
-23. `docs/12-build-order-checklist.md`
-24. `docs/13-what-we-tried-and-what-failed.md`
-25. `SOURCES.md`
+20. `docs/09e-fewer-words-more-presence.md`
+21. `docs/10-privacy-and-security.md`
+22. `docs/11-troubleshooting.md`
+23. `docs/11a-bounded-self-healing.md`
+24. `docs/12-build-order-checklist.md`
+25. `docs/13-what-we-tried-and-what-failed.md`
+26. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 
