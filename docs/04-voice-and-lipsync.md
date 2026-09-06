@@ -135,7 +135,11 @@ When user speech starts during assistant output:
 - let provider/server interruption semantics stop or truncate output as appropriate,
 - ensure local avatar audio/control does not keep “speaking” after the audible response was cancelled.
 
-If you create custom responses from local sensor requests, track whether a response is already active. The reference implementation cancels the current response before injecting a fresh screen/camera request, then waits a short beat before `response.create` to avoid overlapping default-conversation responses.
+If you create custom responses from local sensor requests, track response ownership explicitly. Treat a locally sent `response.create` as pending immediately rather than waiting for the later `response.created` event. If cancellation is in progress, queue at most one replacement response until cancellation is acknowledged. This closes the race where two rapid turns can otherwise trigger a provider error saying a response is already active.
+
+A separate turn-completion guard improves listening patience. If a completed transcript is linguistically unfinished, for example ending in `but`, `because`, `just`, or `the reason is`, hold it briefly rather than answering immediately. If speech resumes during that window, merge the continuation and keep listening. Complete turns bypass the hold entirely, so ordinary response latency does not increase.
+
+The reference build validated this with a deliberate mid-sentence pause: the avatar waited through the pause, answered only after the continuation, showed no apparent added latency on completion, and did not reproduce the overlapping-response error.
 
 ## 7. Delivery instructions should be small
 

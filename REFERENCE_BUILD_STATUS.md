@@ -23,6 +23,8 @@ The desktop voice is not treated as a separate generic persona. Ordinary substan
 - Chosen realtime voice works in normal conversation.
 - Transcript persistence into the desktop OpenClaw session works.
 - Wake greeting can be constrained to a deliberately short acknowledgement.
+- Clearly unfinished mid-sentence fragments can be held briefly without slowing complete turns; live validation confirmed a deliberate pause was tolerated and the completed thought answered normally.
+- Local response ownership now guards `response.create` immediately and queues replacement output across cancellation, preventing the overlapping-active-response race that previously surfaced as a visible error badge.
 
 ### Lip sync
 
