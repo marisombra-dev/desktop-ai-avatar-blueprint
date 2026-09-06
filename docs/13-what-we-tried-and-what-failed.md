@@ -540,6 +540,30 @@ A local sensor process needs minimal start/exit/error/event logging plus bounded
 
 ---
 
+## 43. Asking the model to “must speak” is not a forced delivery test
+
+### What happened
+
+A validation prompt explicitly told the decision model that it MUST choose to speak. The model still returned a high-confidence silence decision.
+
+### Lesson
+
+Policy validation and transport validation are separate experiments. To prove unsolicited delivery, bypass model choice locally for exactly one grounded eligible check, while keeping every downstream safety/output guard intact. Then remove the bypass.
+
+---
+
+## 44. Stale silence can spend a one-shot before the conversation starts
+
+### What happened
+
+A forced one-shot delivery test initially fired while the desktop avatar was still loading because the runtime inherited an old `lastUserInteractionAt` timestamp. The feature worked, but the test was spent before the intended live conversation began.
+
+### Lesson
+
+Arm one-shot social tests from a user turn in the current voice session, not merely from process uptime or persisted silence. Test harnesses need their own lifecycle boundaries just as much as production features do.
+
+---
+
 # The meta-lesson
 
 The project was not hard because any one component was impossible. It was hard because a desktop AI avatar is a stack of systems that fail in visually similar ways.

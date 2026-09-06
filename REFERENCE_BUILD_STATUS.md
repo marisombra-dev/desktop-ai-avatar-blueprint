@@ -321,29 +321,19 @@ TypeScript, 19 automated tests, production build, clean restart, Gateway health,
 
 See `docs/07b-shared-activity-continuity.md` and `examples/activity_continuity.ts`.
 
-### Proactive outreach
+### Proactive outreach / bounded spontaneity
 
-**Status: CONTEXT-AWARE DECISION LAYER IMPLEMENTED; MECHANICS/FAIL-CLOSED PARSING PROVEN; LIVE MODEL JUDGMENT PENDING QUOTA RESET**
+**Status: HUMAN-VALIDATED; PRODUCTION POLICY INTENTIONALLY RARE**
 
-The runtime has:
+The reference runtime now separates **opportunity** from **reason**. A period of silence can make a decision check permissible, but silence itself is never evidence that the assistant should speak. Local evidence must independently support an unfinished thread, a genuinely current shared event, a recently ended activity, repeated friction, or a narrowly relevant shared callback.
 
-- silence threshold,
-- long spoken cooldown,
-- reconsider interval,
-- quiet hours and temporary spoken quiet requests,
-- system-idle and lock/active-call suppression,
-- cancellation if the user interacts while the model is deciding,
-- current activity / meaningful screen-event context,
-- recent program-dialogue context when available,
-- recently ended shared-activity context,
-- unfinished-thread and repeated-friction signals,
-- relevant shared Obsidian continuity,
-- a structured `speak/confidence/kind/message` decision with a high confidence floor,
-- fail-closed behavior for malformed, vague, low-confidence, or unavailable model output.
+The live-session path is deliberately bounded: while an interactive voice session is already open, the runtime waits through a substantial quiet window, suppresses spontaneity during sustained Screen/Watch activity, preserves the current voice-session identity across the decision, aborts if the user interacts while deliberation is in flight, and applies the normal long spoken cooldown. The final line must pass a local one-sentence/no-question/no-generic-help filter before Realtime may speak it. Arrival greetings remain a separate event class.
 
-Silence itself is not evidence. Durable memory can enrich a concrete reason to speak but cannot create one by itself. The decision prompt explicitly asks whether speaking **now** would improve the moment and applies stricter interruption manners during video and focused desktop work.
+Human validation proved both sides of the contract. With a real unfinished thread and callback available, the decision layer repeatedly chose silence, demonstrating that the feature does not merely fire because a timer expired. A separate one-shot validation then bypassed model choice only after grounded evidence existed and proved that an unsolicited line could travel through the already-open Realtime session and be heard normally. The validation harness was removed afterward and the production timing restored.
 
-TypeScript, automated decision-parser tests, production build, restart, Gateway health, wake listener, and the normal avatar runtime were verified after this change. At this snapshot, the user's live model quota had not yet reset, so a real model-authored context-aware proactive utterance is intentionally not claimed as end-to-end proven yet.
+An important tuning lesson was that an instruction such as `you MUST speak` is not a deterministic plumbing test; the model may still choose silence. A real delivery test must bypass model choice locally for exactly one eligible check. That one-shot must also be armed by a current-session user turn, otherwise stale pre-launch silence can spend it during startup.
+
+See `examples/proactive_policy.ts`, `examples/context_aware_proactive.ts`, and `examples/bounded_spontaneity.ts`.
 
 ### Bounded self-healing and graceful recovery
 

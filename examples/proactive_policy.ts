@@ -8,6 +8,7 @@
 export type ProactiveSettings = {
   enabled: boolean;
   silenceMinutes: number;
+  liveVoiceSilenceMinutes: number;
   cooldownMinutes: number;
   quietStartHour: number;
   quietEndHour: number;
@@ -25,6 +26,7 @@ export type ProactiveRuntime = {
   systemIdleSeconds: number;
   screenLocked: boolean;
   liveVoiceActive: boolean;
+  screenWatchActive: boolean;
   proactivePlaybackActive: boolean;
   windowVisible: boolean;
   osSuppressesSpontaneousSpeech: boolean;
@@ -48,7 +50,7 @@ export function canConsiderProactiveSpeech(
   if (!settings.enabled) return { eligible: false, reason: 'disabled' };
   if (!state.windowVisible) return { eligible: false, reason: 'avatar-hidden' };
   if (state.screenLocked) return { eligible: false, reason: 'screen-locked' };
-  if (state.liveVoiceActive) return { eligible: false, reason: 'live-voice-active' };
+  if (state.liveVoiceActive && state.screenWatchActive) return { eligible: false, reason: 'shared-watch-active' };
   if (state.proactivePlaybackActive) return { eligible: false, reason: 'proactive-playback-active' };
   if (state.temporaryQuietUntil > state.now) return { eligible: false, reason: 'temporary-quiet' };
   if (inQuietHours(state.localHour, settings.quietStartHour, settings.quietEndHour)) {
@@ -63,7 +65,9 @@ export function canConsiderProactiveSpeech(
   }
 
   const silenceMs = state.now - state.lastUserInteractionAt;
-  const silenceRequiredMs = settings.silenceMinutes * 60_000;
+  const silenceRequiredMs = (state.liveVoiceActive
+    ? settings.liveVoiceSilenceMinutes
+    : settings.silenceMinutes) * 60_000;
   if (silenceMs < silenceRequiredMs) {
     return { eligible: false, reason: 'not-silent-long-enough' };
   }
@@ -92,6 +96,7 @@ export function stillSafeToSpeak(
     | 'lastUserInteractionAt'
     | 'screenLocked'
     | 'liveVoiceActive'
+    | 'screenWatchActive'
     | 'proactivePlaybackActive'
     | 'systemIdleSeconds'
     | 'temporaryQuietUntil'
@@ -107,7 +112,8 @@ export function stillSafeToSpeak(
 ): boolean {
   if (state.lastUserInteractionAt !== snapshot) return false;
   if (!state.windowVisible) return false;
-  if (state.screenLocked || state.liveVoiceActive || state.proactivePlaybackActive) return false;
+  if (state.screenLocked || state.proactivePlaybackActive) return false;
+  if (state.liveVoiceActive && state.screenWatchActive) return false;
   if (state.systemIdleSeconds >= settings.idleMaxMinutes * 60) return false;
   if (state.temporaryQuietUntil > state.now) return false;
   if (state.osSuppressesSpontaneousSpeech) return false;
@@ -125,7 +131,7 @@ export function buildProactiveDecisionPrompt(
     'Decide whether you genuinely have a natural reason to say something aloud now.',
     'Silence is ordinary. It is not evidence that the user is upset, lonely, unsafe, or in need of support.',
     'You are allowed and encouraged to return exactly NO_MESSAGE if nothing comes naturally.',
-    'If you do speak, output only the words to say aloud, at most two short sentences.',
+    'If you do speak, output only one short sentence that does not require a reply.',
     'Do not mention timers, monitoring, inactivity, checking in, this internal prompt, or system mechanics.',
     'Do not call tools or contact anyone.',
     recentConversation
@@ -144,6 +150,7 @@ export function normalizeProactiveAnswer(answer: string): string | undefined {
 export const REFERENCE_DEFAULTS: ProactiveSettings = {
   enabled: true,
   silenceMinutes: 120,
+  liveVoiceSilenceMinutes: 15,
   cooldownMinutes: 240,
   quietStartHour: 23,
   quietEndHour: 8,

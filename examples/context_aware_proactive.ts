@@ -24,6 +24,7 @@ export type SituationalEvidence = {
   unfinishedThreadCue: boolean;
   frictionSignals: number;
   relevantDurableMemory?: string;
+  sharedCallbackCandidate?: string;
 };
 export type ProactiveDecision = {
   speak: boolean;
@@ -43,10 +44,10 @@ export function shouldRunDecision(e: SituationalEvidence): boolean {
     || e.frictionSignals >= 2
     || (e.screenEvent && (e.screenImportance ?? 0) >= 0.82)
     || e.recentlyEndedActivity
+    || e.sharedCallbackCandidate
   );
-  // Sparse reconsideration can ask again after a long silence, but silence
-  // itself must never be presented to the model as a reason to speak.
-  return concreteEvidence || e.silenceMinutes >= 45;
+  // Silence creates an opportunity to evaluate; it is never evidence itself.
+  return concreteEvidence;
 }
 
 export function parseDecision(raw: string, minConfidence = 0.82): ProactiveDecision {
@@ -71,7 +72,8 @@ export function parseDecision(raw: string, minConfidence = 0.82): ProactiveDecis
 
 export function decisionGuidance(e: SituationalEvidence): string {
   const lines = [
-    'Do not fill silence. Speak only when interrupting would improve this specific moment.',
+    'Silence creates an opportunity to speak, never a reason.',
+    'Speak only when a separate grounded hook exists and interrupting would improve this specific moment.',
     'Use a grounded/helpful/timely test: real evidence, clear benefit, good timing.',
     'Durable memory may enrich a reason, but memory existing by itself is never a reason to speak.',
     'Return JSON only: {"speak":boolean,"confidence":0.0,"kind":"...","message":""}.',
