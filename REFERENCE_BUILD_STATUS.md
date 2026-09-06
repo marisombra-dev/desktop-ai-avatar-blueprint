@@ -189,17 +189,19 @@ See `docs/05c-social-intent-and-behavioral-priority.md` and `examples/social_int
 
 ### Nonverbal social presence / fewer-words-more-person pass
 
-**Status: IMPLEMENTED AND AUTOMATED-REGRESSION PROVEN; NATURAL LAUGHTER/SHARED-GLANCE QUALITY VALIDATION PENDING**
+**Status: RECIPROCAL SMILE, SHARED-WATCH CHOREOGRAPHY, AND RECIPROCAL LAUGHTER HUMAN-VALIDATED**
 
-The reference build now treats speech as one social output channel rather than the mandatory response to every turn. Tiny closure acknowledgments can resolve as a soft expression plus small nod with no spoken sentence. Listening agreement cues can produce a separate low-amplitude micro-nod while the user is still speaking without consuming the later assistant-response gesture budget.
+The reference build now treats speech as one social output channel rather than the mandatory response to every turn. Tiny closure acknowledgments can resolve as a soft expression plus small nod with no spoken sentence, and listening micro-reactions remain separate from later response gestures.
 
-Clearly amused user turns have a narrow laugh-only Realtime path that requests one genuine chuckle/laugh and no words. The classifier intentionally rejects factual/conversational uses of `funny`; an automated regression caught and repaired an early over-broad pattern where `Tell me why that was funny` could have been misrouted. Shared-screen observation can now conceptually choose `NO_COMMENT`, `LAUGH_ONLY`, or one short spoken reaction.
+Reciprocal smiling is end-to-end proven using the existing local MediaPipe face stream. It reacts to an observable high-confidence smile cue with a small avatar smile. The system does not infer mood, store frames, or send the face cue to the language model.
 
-A shared-glance path reuses already-proven sustained screen/head controls: when a spontaneous shared-screen reaction begins, the runtime can temporarily release the watch pose toward the user, react, then restore the prior watch attention if Screen is still authorized and the live session still exists. This avoids inventing a new animation asset for the social “did you see that?” signal.
+Shared-watch choreography is also human-validated: full turn toward the screen on activation; partial turn back toward the user when the user speaks; return to the screen after the exchange; and clean return to center when the shared activity ends. A regression where the initial acknowledgement immediately overwrote the full watch pose was repaired with explicit one-shot state ownership rather than a timing delay. Natural ending language such as “I’m closing it down” now exits the activity cleanly.
 
-The return-greeting path was also refined so qualified returns use duration-aware greeting bands and a deterministic fallback rather than allowing model failure to erase recognition. Scheduled quiet-hours policy is separated from explicit temporary user-requested quiet so products can choose whether a qualified return should still receive a brief verbal acknowledgment at night.
+Reciprocal laughter is human-validated after several failed approaches. Directly instructing the realtime voice to “laugh” sometimes produced literal spoken `ha ha ha`, and trying to splice a separate laugh response before normal prose introduced long latency. The successful live behavior used a local observable facial cue plus a dedicated non-speech amused vocal reaction instruction, followed by ordinary context-aware speech when appropriate. Pure laughter and speech-with-laughter were both validated by a human listener.
 
-Automated regression coverage increased to 49 passing tests, with TypeScript typecheck and production build clean after the combined pass. Mouse-capture safety was reverified after restart. At this snapshot, the audible naturalness of the chosen voice's laugh and the social read of the shared glance during real viewing have not yet been human-validated, so those qualities are intentionally not marked end-to-end proven.
+The local social-sensor helper now writes a minimal event log and automatically restarts after unexpected exit during an active voice session. This was added because silent helper death made smile/laughter regressions look like voice-model failures.
+
+Automated regression coverage is 56 passing tests with clean TypeScript typecheck and production build after the validated pass. Mouse-capture safety was reverified after restart.
 
 See `docs/09e-fewer-words-more-presence.md` and `examples/nonverbal_social.ts`.
 

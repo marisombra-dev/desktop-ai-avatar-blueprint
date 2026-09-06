@@ -68,37 +68,25 @@ Otherwise a tiny nod while the user speaks may suppress the later visible YES/NO
 
 ## 3. Let laughter be audio, not commentary
 
-If the moment is clearly funny, a brief real laugh can be the complete response.
+Human validation exposed an important voice-model edge case: asking a realtime voice to “laugh” can produce literal spoken `ha ha ha` instead of laughter. A stronger reusable contract is to request a **brief non-speech amused exhalation** with no lexical syllables, then let ordinary speech continue if the turn contains something to answer.
 
-Do not force the model to say:
-
-```text
-That's hilarious.
-That was funny.
-Haha, I love that.
-```
-
-when an actual chuckle already communicates the social response more naturally.
-
-A useful narrow response instruction is:
+A useful narrow instruction is:
 
 ```text
-Nonverbal social reaction only. Give one brief genuine amused chuckle or laugh and then stop. Do not speak words or narrate the reaction.
+Non-speech social reaction only. Produce one brief warm amused exhalation.
+No words, no syllables, no narration, then stop.
 ```
 
-Keep laughter routing conservative. Explicit laughter, a direct `laugh for me` request, or unmistakable short amusement is safer than merely seeing the word `funny`.
-
-A regression test should verify that:
+The reference build ultimately validated both cases in live use:
 
 ```text
-LOL                       -> laugh may be appropriate
-Hahaha                    -> laugh may be appropriate
-Laugh for me              -> laugh requested
-Tell me why that was funny -> analysis/conversation, NOT laugh-only
-That wasn't funny          -> NOT laugh-only
+pure user laughter        -> audible non-speech amused reaction + natural social follow-up
+speech containing laughter -> audible chuckle/amused reaction + context-aware verbal reply
 ```
 
-This distinction matters because keyword matching can otherwise let the companion escape a real question by giggling.
+Keep laughter detection conservative and based on **observable cues**, not inferred mood. One successful local detector combined a very strong bilateral smile cue with short-lived mouth/jaw movement, hysteresis, and cooldown. Exact thresholds are camera/person dependent and should be calibrated rather than copied. The local detector is a supplementary social cue, not an emotion classifier.
+
+If the voice can hear amusement but the dedicated local detector misses it, do not immediately make the language model responsible for synthesizing laughter inside normal prose. That experiment increased latency and produced lexicalized `ha ha ha` in the reference build. Separate recognition, reaction sound, and semantic reply whenever possible.
 
 ## 4. Give the screen observer a nonverbal option
 
@@ -155,6 +143,19 @@ Important rules:
 - preserve webcam/gaze ownership rules.
 
 The visible head turn is acting. Screen capture remains the perception source.
+
+## 5a. Treat watch attention as an owned state machine
+
+Shared-watch body language needs explicit priority, not timing guesses. The reference build regressed when a new “speaking” half-turn immediately replaced the full screen-facing pose created by the initial `watch` command. The durable repair used one-shot semantic ownership:
+
+```text
+watch activation -> protected full screen turn through its first acknowledgement
+later user speech -> temporary half-turn toward user
+reply/turn complete -> restore full watch pose
+activity ends -> clear watch state and return center
+```
+
+Do not encode that first transition as an arbitrary delay if an explicit state flag can express the ownership rule. Natural ending phrases such as “I’m closing it down”, “I’m turning it off”, or “I’m done with this” should exit the shared activity once and cleanly restore center. A pathological speech-repetition guard is also useful, but it should be an emergency brake for repeated multi-word phrases, not another hard brevity cap.
 
 ## 6. Make listening visibly responsive
 

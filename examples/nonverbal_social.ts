@@ -26,3 +26,14 @@ export function parseScreenReaction(comment: string | undefined): ScreenReaction
   if (/^LAUGH_ONLY[.!]?$/i.test(value)) return 'laugh';
   return { speak: value.slice(0, 500) };
 }
+
+export type WatchPose = 'center' | 'watch' | 'speaking';
+
+// Keep semantic ownership explicit: the first watch acknowledgement must not
+// immediately downgrade the full watch pose to the speaking half-turn.
+export function nextWatchPose(current: WatchPose, event: 'activate' | 'user_speaks' | 'reply_done' | 'activity_ends', preserveInitial = false): WatchPose {
+  if (event === 'activity_ends') return 'center';
+  if (event === 'activate') return 'watch';
+  if (event === 'user_speaks') return preserveInitial ? 'watch' : 'speaking';
+  return current === 'center' ? 'center' : 'watch';
+}

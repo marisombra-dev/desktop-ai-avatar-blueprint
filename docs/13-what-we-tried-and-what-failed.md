@@ -492,6 +492,54 @@ Nonverbal routing needs negative regression cases, not only positive examples. M
 
 ---
 
+## 39. A new listening pose can steal the initial watch pose
+
+### What happened
+
+A natural half-turn-toward-user behavior was added for conversation during shared viewing. On the initial `watch` command, the acknowledgement response immediately replaced the full screen-facing pose with the half-turn, so the user no longer perceived the intended screen turn.
+
+### Lesson
+
+Attention states need explicit ownership and priority. Protect the initial watch activation through its first acknowledgement, then allow later user speech to use the half-turn. Prefer semantic one-shot state over arbitrary timing windows.
+
+---
+
+## 40. Natural activity-ending language needs local intent coverage
+
+### What happened
+
+A phrase such as `I'm closing it down` was treated as ordinary companion conversation because the end-activity matcher expected explicit nouns such as `video`, `show`, or `game`. The assistant replied appropriately but kept staring at the now-closed content because watch mode never actually ended.
+
+### Lesson
+
+When context already supplies the object, support pronoun-only endings such as `I'm turning it off`, `I'm shutting it down`, and `I'm done with this`, with negation guards. Ending the activity should clear watch state once and restore center.
+
+---
+
+## 41. Asking a realtime voice to “laugh” can produce spoken `ha ha ha`
+
+### What happened
+
+The voice model understood that the user was laughing, but explicit instructions to laugh sometimes produced lexical syllables instead of a genuine nonverbal reaction. A later attempt to force a laugh before the ordinary response also created severe latency.
+
+### Lesson
+
+Treat laughter recognition, nonverbal reaction, and semantic reply as separate concerns. For some realtime voices, a narrowly requested non-speech amused exhalation is more reliable than the word `laugh`. Human ear-testing is mandatory.
+
+---
+
+## 42. Silent local-sensor death can masquerade as a voice problem
+
+### What happened
+
+Reciprocal social cues stopped appearing, while normal conversation remained socially appropriate. Without lifecycle telemetry, the failure initially looked like a problem in response routing. The local face/gaze helper had simply stopped being available during the active conversation.
+
+### Lesson
+
+A local sensor process needs minimal start/exit/error/event logging plus bounded restart during the session it serves. Log technical events only, not frames or inferred emotions. Prove the cue at the sensor boundary before debugging the voice model.
+
+---
+
 # The meta-lesson
 
 The project was not hard because any one component was impossible. It was hard because a desktop AI avatar is a stack of systems that fail in visually similar ways.
