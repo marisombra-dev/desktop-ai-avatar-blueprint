@@ -72,7 +72,7 @@ The reference system currently does all of the following end to end:
 - Proactive outreach is gated twice: local quiet/cooldown/idle checks first, then a context-aware evidence decision using current activity, meaningful screen events, recent dialogue, unfinished threads, and relevant durable memory. Silence itself is never treated as a reason to speak.
 - Core local subsystems use bounded self-healing: restart only the failed component with backoff, confirm stable health, and surface the real error only after a finite retry budget is exhausted.
 - Local desk-presence logic can support restrained “welcome back” behavior after a meaningful absence without claiming that camera detection proves identity. Return detection and greeting delivery remain separate so temporary suppression or a slow model cannot silently erase the event.
-- Realtime audio drives MetaHuman lip sync. Additional local control packets drive mood/face state plus visually proven head turns, nods, shakes, and sustained screen-attention posture.
+- Realtime audio drives MetaHuman lip sync. Additional local control packets drive mood/face state plus visually proven head turns, nods, shakes, sustained screen-attention posture, and a true clavicle-driven uncertainty shrug.
 - The visible avatar can use a separate Unreal presentation layer: a dedicated map places the MetaHuman in front of an unlit textured backdrop plane, keeping scenery independent from the character so backgrounds can later be swapped by context.
 - A restrained listening-reaction layer can add one subtle face response per user turn, using speech-start attentiveness plus semantic cues from partial/final transcription without making voice depend on streaming transcript deltas.
 - A visually calibrated expression palette can provide genuine happiness, surprise, subtle concern, skeptical eyebrow, anger, and brief fear/alarm. The friendly greeting smile is naturally validated in ordinary conversation, and calibrated expressions temporarily outrank generic response-start mood so face layers do not fight.
@@ -111,7 +111,7 @@ The reliable sequence is:
 21. Add bounded self-healing for local leaf processes and Realtime cleanup.
 22. Only after all of that is stable, add restrained listening micro-reactions and response-linked face tuning.
 23. Optionally add privacy-first eye contact as an eye-only layer with local calibration, hysteresis, webcam ownership arbitration, and watchdog release. See `docs/09a-privacy-first-eye-contact.md`.
-24. Add larger gestures, nods, head shakes, hand animation, and other mannerisms last.
+24. Add larger gestures one at a time. The reference build proved nod, head shake, and a clavicle-driven uncertainty shrug before attempting hand animation; keep hands and complex body acting last.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 
@@ -797,6 +797,7 @@ Then add explicit gestures one at a time:
 - head shake for strong no/negation,
 - eyebrow/question gesture,
 - occasional wink or amused expression if it suits the person,
+- a small shoulder shrug for genuine uncertainty,
 - later hand gestures such as chin touch or hair movement.
 
 Never ship a gesture because the property name sounds right. In the reference MetaHuman rig, several head-rotation experiments mapped to surprising axes or did nothing.
@@ -809,7 +810,7 @@ Record a probe matrix:
 control | value | visible effect | keep/reject
 ```
 
-and test each control on the *actual assembled MetaHuman*. For the full head-control method, smoothing, sustained attention, semantic gesture tool, and failed approaches, see `docs/09b-metahuman-head-control.md`. For expression-pose sampling, custom recipes, duration/amplitude calibration, expression priority, and greeting-smile validation, see `docs/09c-metahuman-expression-calibration.md`.
+and test each control on the *actual assembled MetaHuman*. For the full head-control method, smoothing, sustained attention, semantic gesture tool, and failed approaches, see `docs/09b-metahuman-head-control.md`. For expression-pose sampling, custom recipes, duration/amplitude calibration, expression priority, and greeting-smile validation, see `docs/09c-metahuman-expression-calibration.md`. For the live-proven clavicle/body route, exposed Translation-pin reconstruction trap, persistent vector-link fix, and numeric bone-transform validation, see `docs/09d-metahuman-shoulder-shrug.md`.
 
 Photorealism rewards tiny amplitude. If a gesture looks obvious in a still screenshot, it may already be too strong in motion.
 
@@ -965,12 +966,13 @@ Point it at this repository and tell it to read in this order:
 13. `docs/09a-privacy-first-eye-contact.md`
 14. `docs/09b-metahuman-head-control.md`
 15. `docs/09c-metahuman-expression-calibration.md`
-16. `docs/10-privacy-and-security.md`
-17. `docs/11-troubleshooting.md`
-18. `docs/11a-bounded-self-healing.md`
-19. `docs/12-build-order-checklist.md`
-20. `docs/13-what-we-tried-and-what-failed.md`
-21. `SOURCES.md`
+16. `docs/09d-metahuman-shoulder-shrug.md`
+17. `docs/10-privacy-and-security.md`
+18. `docs/11-troubleshooting.md`
+19. `docs/11a-bounded-self-healing.md`
+20. `docs/12-build-order-checklist.md`
+21. `docs/13-what-we-tried-and-what-failed.md`
+22. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 

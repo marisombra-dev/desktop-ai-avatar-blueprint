@@ -103,7 +103,7 @@ Ongoing screen awareness notices meaningful change without narrating routine mot
 The system can choose silence, respects quiet/cooldown/interruption rules, and never treats ordinary inactivity as distress.
 
 ### Gate N: Mannerisms
-Only now add one reversible gesture or expression at a time. Before custom head-bone experiments, read `docs/09b-metahuman-head-control.md`; before wiring facial emotion into conversation, read `docs/09c-metahuman-expression-calibration.md`. Both chapters record live-proven control paths and failed routes that should not be blindly repeated.
+Only now add one reversible gesture or expression at a time. Before custom head-bone experiments, read `docs/09b-metahuman-head-control.md`; before wiring facial emotion into conversation, read `docs/09c-metahuman-expression-calibration.md`; before modifying MetaHuman body bones for a shrug, read `docs/09d-metahuman-shoulder-shrug.md`. These chapters record live-proven control paths and failed routes that should not be blindly repeated.
 
 ## Implementation architecture to preserve
 

@@ -4,7 +4,7 @@ This file distinguishes **proven behavior**, **implemented plumbing**, and **exp
 
 It exists because “there is code for it” is not the same thing as “the human has objectively verified it.”
 
-Snapshot date: **2026-09-05**.
+Snapshot date: **2026-09-06**.
 
 ## Proven in repeated live use
 
@@ -45,6 +45,18 @@ A very low idle frame rate initially made eased motion appear jumpy. The referen
 The conversational layer also exposes an explicit narrow local head-gesture action so the live agent knows nod/shake are physical actions it can intentionally perform. A conservative transcript fallback can add one gesture for clear affirmative/negative answers, with duplicate suppression. Sustained screen attention has higher head-pose priority than conversational gestures.
 
 See `docs/09b-metahuman-head-control.md`.
+
+### Clavicle-driven shoulder shrug / uncertainty look
+
+**Status: END-TO-END VISUALLY AND NUMERICALLY PROVEN**
+
+The reference build now has a true body-bone shoulder shrug rather than a face-only approximation. The successful UE 5.8 route places component-space Modify Bone nodes for `clavicle_l` and `clavicle_r` after the final normal body-pose blend and immediately before Output Pose, with proper local/component-space conversion around the skeletal controls.
+
+The hardest failure was an exposed `Translation` input that silently remained or reconstructed to `0,0,0` even while the node's internal property appeared to contain a non-zero translation. Setting the exposed pin default programmatically reported success but did not survive a fresh reopen. The durable fix was to connect both Translation inputs to an actual Blueprint-pure FVector source. Runtime alpha had already been working; numeric bone logging proved the difference between a real pose change and a zero-motion graph.
+
+Human validation confirmed a symmetric shoulder lift, clean return to baseline, and a refined longer uncertainty gesture combining the shoulder envelope with a gentle head tilt and restrained smile. The semantic trigger is deliberately narrow: genuine uncertainty such as `I don't know`, `I'm not sure`, `beats me`, or `no idea`; ordinary hedge words such as `maybe` do not automatically shrug.
+
+See `docs/09d-metahuman-shoulder-shrug.md`.
 
 ### Calibrated facial expression palette and greeting smile
 

@@ -142,7 +142,9 @@ or
 GESTURE|SHAKE|0.75
 ```
 
-Then mark that response as having consumed the explicit head gesture.
+Before applying the generic negative fallback, classify genuine uncertainty separately. A response beginning with `I don't know` should trigger the uncertainty shrug, not the broader `I don't...` NO/head-shake pattern. Check the most specific semantic gesture first, then fall back to agreement/disagreement.
+
+Then mark that response as having consumed the explicit gesture.
 
 This layer should remain disabled until the actual MetaHuman gesture implementation is visually proven on the target avatar. In the reference build, nod and shake are now visually proven and intentionally invokable; see `09b-metahuman-head-control.md` for the working control path and duplicate-suppression rules.
 
@@ -156,6 +158,7 @@ Example future protocol:
 GESTURE|NOD|0.55|single
 GESTURE|SHAKE|0.45|small
 GESTURE|BROW_QUESTION|0.35
+GESTURE|SHRUG|0.75
 GESTURE|WINK_LEFT|0.40
 GESTURE|CHIN_TOUCH|0.30
 GESTURE|HAIR_PASS|0.20
@@ -278,7 +281,8 @@ Good low-frequency candidates:
 
 - brief chin touch during genuine thinking latency,
 - occasional hair pass,
-- tiny shrug/hand motion for uncertainty (still a later body-animation task in the reference build),
+- a small shoulder shrug for genuine uncertainty (now live-proven; see `09d-metahuman-shoulder-shrug.md`),
+- later hand motion for chin touch/hair interaction,
 - restrained laugh gesture.
 
 Do not loop them. Rare is better.
@@ -351,7 +355,8 @@ If any answer is no, the gesture is not ready.
 7. question brow,
 8. amused/laugh expression,
 9. deliberate screen/camera orientation if still desired,
-10. hand gestures,
-11. advanced posture/body motion.
+10. clavicle-driven shoulder shrug for genuine uncertainty,
+11. hand gestures,
+12. advanced posture/body motion.
 
 The reference project learned this order after doing some of it backwards.
