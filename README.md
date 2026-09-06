@@ -59,6 +59,7 @@ The reference system currently does all of the following end to end:
 - A short wake greeting can be spoken without generating a monologue.
 - Realtime voice uses a selected OpenAI voice while substantive answers preserve the OpenClaw person's personality and continuity.
 - The user can interrupt naturally while the AI is speaking.
+- A bounded session-only working-context window can cross the Realtime-to-agent boundary so current shorthand, corrections, and evolving ideas remain coherent without promoting them to durable memory.
 - “Thanks, <name>” / “Thank you, <name>” can end the live voice session locally and re-arm wake listening.
 - Spoken requests such as “Can you look at the screen?” enable screen awareness and immediately give the model fresh screen images.
 - Spoken requests such as “Can you look at me?” enable the webcam and immediately give the model a fresh camera frame.

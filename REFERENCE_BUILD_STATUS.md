@@ -26,6 +26,16 @@ The desktop voice is not treated as a separate generic persona. Ordinary substan
 - Clearly unfinished mid-sentence fragments can be held briefly without slowing complete turns; live validation confirmed a deliberate pause was tolerated and the completed thought answered normally.
 - Local response ownership now guards `response.create` immediately and queues replacement output across cancellation, preventing the overlapping-active-response race that previously surfaced as a visible error badge.
 
+### Bounded current-conversation working context
+
+**Status: HUMAN-VALIDATED**
+
+The reference build now carries a small session-only recent-dialogue window across the Realtime-to-agent consult boundary. It is character-bounded, excludes the duplicated current request when possible, and is explicitly framed as current conversational context rather than durable memory or new user speech.
+
+Live validation used an invented multi-step scenario with two labeled options, additional facts introduced later, a reasoning question, and a shorthand reversal. The assistant kept the accumulated facts coherent, reasoned over them correctly, and handled the later implicit reference without asking for a restatement. The buffer is cleared with the voice session and does not write those temporary facts into durable memory.
+
+See `docs/05-openclaw-and-continuity.md` and `examples/working_context.ts`.
+
 ### Lip sync
 
 **Status: PROVEN**

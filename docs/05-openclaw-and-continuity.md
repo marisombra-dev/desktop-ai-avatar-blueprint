@@ -181,6 +181,14 @@ This gives the long-lived person access to voice conversation history after the 
 
 Do not append provider system/internal prompts as if the user said them.
 
+### 9a. Carry a bounded current-conversation working context across consults
+
+Realtime may understand a live exchange perfectly, then lose shorthand when a later turn escalates into a separate agent consult. Give the consult a small session-only slice of recent dialogue so pronouns, corrections, labels, and evolving ideas survive that boundary.
+
+Keep it bounded: a handful of recent turns, a small character budget, and no raw audio or images. Exclude the current user turn if it is already supplied separately. Frame the block as runtime context, not new user speech or durable memory. Clear it when the live voice session ends.
+
+This is deliberately different from shared Markdown/Obsidian memory: working context answers “what are we talking about right now?” while durable memory answers “what should still matter later?” See `examples/working_context.ts`.
+
 ## 10. Relationship memory is separate from raw transcript
 
 If you add automatic memory capture, keep it conservative.

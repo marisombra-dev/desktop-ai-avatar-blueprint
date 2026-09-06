@@ -19,6 +19,7 @@ Files:
 - `social_intent_routing.ts` — generic social/analysis/quiet/operational lane classifier and response-policy pattern for preventing ambiguous social bids from collapsing into generic helper behavior.
 - `realtime_local_controls.ts` — Realtime local tool installation, command normalization, screen/camera/sleep interception, and fresh-image injection pattern.
 - `realtime_turn_ownership.ts` — immediate response-ownership guard, cancellation-safe replacement queue, and unfinished-turn patience pattern that does not delay complete turns.
+- `working_context.ts` — bounded session-only recent-dialogue context for preserving shorthand, corrections, and evolving ideas across the Realtime-to-agent consult boundary.
 - `screen_capture.ts` — bounded privileged Electron primary-display capture that refuses while screen privacy is OFF.
 - `camera_capture.ts` — renderer webcam lifecycle where OFF physically stops every media track, plus bounded JPEG still capture.
 - `gaze_tracker.py` — privacy-first local MediaPipe eye-contact pattern with user calibration, hysteresis, tiny face-follow offsets after contact, explicit release, and no published classifier weights.
