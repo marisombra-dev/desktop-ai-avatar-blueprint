@@ -29,6 +29,16 @@ Choose the real room, chair, desk, fireplace, stairs, or other large geometry fi
 
 This avoids spending days tuning animation against geometry that will be discarded.
 
+### Fit chairs with anchors, not actor roots
+
+A seated MetaHuman's actor origin is a poor proxy for where the body actually contacts a chair after animation bends the skeleton. Define a **SeatAnchor** on the chair at the intended cushion contact point and a **BodySeatAnchor** from the pelvis with a calibrated offset representing the seated contact point. Snap the two anchors, then use the chair's forward direction for orientation.
+
+Keep placement corrections separate from pose corrections. If the hips are wrong, move the anchored character; if the feet, knees, or hands are wrong after the hips are correct, fix animation/IK rather than moving the whole avatar again. This turns chair fitting from repeated visual nudging into deterministic geometry.
+
+### Own the Wide camera explicitly
+
+Do not allow a default pawn, inherited GameMode camera, or editor preview camera to compete with the intended Wide camera. The reference prototype became reliable only after the Wide map used an explicit no-pawn GameMode and deterministic camera ownership. Treat camera authority as a validation gate, not a cosmetic setting.
+
 ## 3. Wide View is a composition state
 
 A Wide View control should not simply maximize the existing window. It should trigger a deliberate camera/composition transition.
@@ -139,7 +149,15 @@ Ambient actors should yield to the avatar. If the avatar approaches their path, 
 Tiny environmental stories work better when motion has a physical origin and destination.
 
 A pet can have a preferred rug, chair, or window spot. A small animal can emerge from behind furniture, investigate a food surface, then return to cover. These anchors make even simple loops read as behavior rather than random animation.
-## 10. Performance budget matters more in Wide View
+## 10. Asset acquisition and staging discipline
+
+Environment assets are project-specific and often have their own licenses, engine-version ranges, and download/install behavior. Do not redistribute marketplace/Fab assets through a public blueprint repository. Document the role an asset fills, not the vendor-specific file itself, and let each builder acquire assets under their own account/license.
+
+Import large packages into an isolated staging area first. Inspect mesh names, bounds, materials, and dependencies before adding them to the production room. When a useful fireplace, chair, or prop is buried inside a much larger environment, prefer extracting or migrating only the needed reusable pieces rather than making the entire donor scene a permanent dependency.
+
+Measure major meshes before placement. A quick bounds pass for walls, trim, furniture, fireplace pieces, and props prevents scale/orientation surprises and makes scripted placement reproducible.
+
+## 11. Performance budget matters more in Wide View
 
 A room can easily cost more than the character.
 
@@ -155,14 +173,14 @@ Prefer:
 
 Measure GPU/CPU cost with the avatar, room, fire, media surface, and normal desktop workload running together. A beautiful library that makes the rest of the computer unpleasant is not a successful desktop companion.
 
-## 11. Build order
+## 12. Build order
 
 A reliable Wide View sequence is:
 
 1. freeze the known-good close view;
 2. choose the real architectural shell and major furniture;
 3. establish room scale, floor, walls, ceiling, and navigation clearance;
-4. fit the real conversation chair and seated pose;
+4. fit the real conversation chair with chair/body contact anchors, then tune the seated pose around that placement;
 5. prove deterministic camera ownership and close↔wide transitions;
 6. add fireplace/window/media anchor geometry;
 7. prove stand, sit, and one short movement route;
@@ -173,7 +191,7 @@ A reliable Wide View sequence is:
 12. add optional interactive media and physical conversation cues;
 13. regression-test every previously proven avatar capability.
 
-## 12. Validation gates
+## 13. Validation gates
 
 Do not call the room complete because it looks good in the editor.
 
@@ -182,7 +200,7 @@ Validate in layers:
 - [ ] Wide camera shows only intended room geometry; no default pawn/camera interference.
 - [ ] Close framing still matches the approved conversational presentation.
 - [ ] Pullback and return transitions are smooth and reversible.
-- [ ] The seated body fits the real chair without obvious floating or clipping.
+- [ ] Chair SeatAnchor and body contact anchor align deterministically, and the seated body fits without obvious floating or clipping.
 - [ ] Lip sync, face identity, gaze, blink, head controls, expressions, and gestures survive the wider body graph.
 - [ ] At least one stand/move/idle/return path works on navmesh.
 - [ ] Interactive objects fail quietly when their network/media source is unavailable.
@@ -192,7 +210,7 @@ Validate in layers:
 
 Only after these pass should the wider environment replace a proven simple backdrop in ordinary use.
 
-## 13. The design principle
+## 14. The design principle
 
 The environment should create **reasons for presence**.
 

@@ -367,7 +367,11 @@ The modified helper was smoke-tested against the real webcam and emitted repeate
 
 **Status: ACTIVE PROTOTYPE; NOT YET A CORE DEPENDENCY**
 
-The reference build is prototyping an optional transition from the proven close portrait presentation into a real 3D room. The design keeps the close view frozen, develops room geometry/camera/seated-body work in an isolated Wide namespace, and treats locomotion, interaction points, live media surfaces, and sparse ambient life as later layers. Asset choices are intentionally project-specific; the reusable architecture is documented in `docs/02b-living-environment-wide-view.md`.
+The reference build is prototyping an optional transition from the proven close portrait presentation into a real 3D room. The design keeps the close view frozen, develops room geometry/camera/seated-body work in an isolated Wide namespace, and treats locomotion, interaction points, live media surfaces, and sparse ambient life as later layers.
+
+The prototype has now proven several construction details: explicit no-pawn camera ownership removes default-view interference; a real chair can be fitted deterministically by snapping a chair SeatAnchor to a pelvis-derived body contact anchor rather than nudging the actor root; and large environment packages can be staged/inspected so only the needed reusable pieces become room dependencies. A real fireplace shell, grate/log assembly, dark firebox, and lightweight Niagara flame have been assembled in the experimental room without changing the frozen production close view.
+
+Asset choices are intentionally project-specific and marketplace assets are not redistributed through this repository; the reusable architecture is documented in `docs/02b-living-environment-wide-view.md`.
 
 ### Hand gestures such as chin touch / hair pass
 
