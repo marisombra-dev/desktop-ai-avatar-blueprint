@@ -4,7 +4,7 @@ This file distinguishes **proven behavior**, **implemented plumbing**, and **exp
 
 It exists because “there is code for it” is not the same thing as “the human has objectively verified it.”
 
-Snapshot date: **2026-09-06**.
+Snapshot date: **2026-09-07**.
 
 ## Proven in repeated live use
 
@@ -362,6 +362,12 @@ The repaired architecture reuses the already-running local eye-contact/gaze help
 The modified helper was smoke-tested against the real webcam and emitted repeated `desk_presence: true` heartbeats while a face was present. The greeting contract was subsequently strengthened: once a return qualifies, it receives verbal recognition, with light/warm/reunion-like behavior selected from absence duration and a deterministic fallback if model generation fails. Scheduled quiet hours no longer automatically erase a qualified return in the reference policy, while explicit temporary quiet and OS interruption states remain meaningful constraints. Python compilation, 49 automated tests, TypeScript typecheck, and the production build passed. The prior simulated 30-minute `away confirmed -> arrival detected -> greeting sent` flow remains historical proof of the state machine; a fresh natural long-absence return after the active-voice and duration-aware repairs is intentionally still pending.
 
 ## Experimental / not a dependency of the core product
+
+### Living environment / Wide View
+
+**Status: ACTIVE PROTOTYPE; NOT YET A CORE DEPENDENCY**
+
+The reference build is prototyping an optional transition from the proven close portrait presentation into a real 3D room. The design keeps the close view frozen, develops room geometry/camera/seated-body work in an isolated Wide namespace, and treats locomotion, interaction points, live media surfaces, and sparse ambient life as later layers. Asset choices are intentionally project-specific; the reusable architecture is documented in `docs/02b-living-environment-wide-view.md`.
 
 ### Hand gestures such as chin touch / hair pass
 

@@ -117,6 +117,7 @@ The reliable sequence is:
 23. Optionally add privacy-first eye contact as an eye-only layer with local calibration, hysteresis, webcam ownership arbitration, and watchdog release. See `docs/09a-privacy-first-eye-contact.md`.
 24. Add nonverbal social presence: listening micro-nods, selective laugh-only reactions, tiny closure acknowledgments, and shared glances using already-proven gaze/head controls. See `docs/09e-fewer-words-more-presence.md`.
 25. Add larger gestures one at a time. The reference build proved nod, head shake, and a clavicle-driven uncertainty shrug before attempting hand animation; keep hands and complex body acting last.
+26. Optionally expand the stable portrait into a real 3D living environment with a Wide View camera state, interaction points, navigation, media surfaces, and sparse ambient life. Keep this isolated until it preserves every proven close-view capability; see `docs/02b-living-environment-wide-view.md`.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 
@@ -970,27 +971,28 @@ Point it at this repository and tell it to read in this order:
 3. `docs/01-architecture.md`
 4. `docs/02-unreal-metahuman-monolith.md`
 5. `docs/02a-swappable-background-presentation-layer.md`
-6. `docs/03-reference-photo-to-metahuman.md`
-7. `docs/04-voice-and-lipsync.md`
-8. `docs/05-openclaw-and-continuity.md`
-9. `docs/05a-shared-obsidian-memory.md`
-10. `docs/05b-contextual-time-awareness.md`
-11. `docs/05c-social-intent-and-behavioral-priority.md`
-12. `docs/06-wake-sleep-and-local-controls.md`
-13. `docs/07-screen-and-camera-vision.md`
-14. `docs/08-proactive-presence.md`
-15. `docs/09-avatar-behavior-and-animation.md`
-16. `docs/09a-privacy-first-eye-contact.md`
-17. `docs/09b-metahuman-head-control.md`
-18. `docs/09c-metahuman-expression-calibration.md`
-19. `docs/09d-metahuman-shoulder-shrug.md`
-20. `docs/09e-fewer-words-more-presence.md`
-21. `docs/10-privacy-and-security.md`
-22. `docs/11-troubleshooting.md`
-23. `docs/11a-bounded-self-healing.md`
-24. `docs/12-build-order-checklist.md`
-25. `docs/13-what-we-tried-and-what-failed.md`
-26. `SOURCES.md`
+6. `docs/02b-living-environment-wide-view.md`
+7. `docs/03-reference-photo-to-metahuman.md`
+8. `docs/04-voice-and-lipsync.md`
+9. `docs/05-openclaw-and-continuity.md`
+10. `docs/05a-shared-obsidian-memory.md`
+11. `docs/05b-contextual-time-awareness.md`
+12. `docs/05c-social-intent-and-behavioral-priority.md`
+13. `docs/06-wake-sleep-and-local-controls.md`
+14. `docs/07-screen-and-camera-vision.md`
+15. `docs/08-proactive-presence.md`
+16. `docs/09-avatar-behavior-and-animation.md`
+17. `docs/09a-privacy-first-eye-contact.md`
+18. `docs/09b-metahuman-head-control.md`
+19. `docs/09c-metahuman-expression-calibration.md`
+20. `docs/09d-metahuman-shoulder-shrug.md`
+21. `docs/09e-fewer-words-more-presence.md`
+22. `docs/10-privacy-and-security.md`
+23. `docs/11-troubleshooting.md`
+24. `docs/11a-bounded-self-healing.md`
+25. `docs/12-build-order-checklist.md`
+26. `docs/13-what-we-tried-and-what-failed.md`
+27. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 
