@@ -118,6 +118,7 @@ The reliable sequence is:
 24. Add nonverbal social presence: listening micro-nods, selective laugh-only reactions, tiny closure acknowledgments, and shared glances using already-proven gaze/head controls. See `docs/09e-fewer-words-more-presence.md`.
 25. Add larger gestures one at a time. The reference build proved nod, head shake, and a clavicle-driven uncertainty shrug before attempting hand animation; keep hands and complex body acting last.
 26. Optionally expand the stable portrait into a real 3D living environment with a Wide View camera state, interaction points, navigation, media surfaces, and sparse ambient life. Keep this isolated until it preserves every proven close-view capability; see `docs/02b-living-environment-wide-view.md`.
+27. When Wide View gains full-body motion, preserve the active conversation, use cinematic cuts for chair transitions, anchor standing placement from real foot contact, and validate active-motion neck/head propagation before locomotion. See `docs/09f-wide-view-full-body-animation.md`.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 
@@ -987,12 +988,13 @@ Point it at this repository and tell it to read in this order:
 19. `docs/09c-metahuman-expression-calibration.md`
 20. `docs/09d-metahuman-shoulder-shrug.md`
 21. `docs/09e-fewer-words-more-presence.md`
-22. `docs/10-privacy-and-security.md`
-23. `docs/11-troubleshooting.md`
-24. `docs/11a-bounded-self-healing.md`
-25. `docs/12-build-order-checklist.md`
-26. `docs/13-what-we-tried-and-what-failed.md`
-27. `SOURCES.md`
+22. `docs/09f-wide-view-full-body-animation.md`
+23. `docs/10-privacy-and-security.md`
+24. `docs/11-troubleshooting.md`
+25. `docs/11a-bounded-self-healing.md`
+26. `docs/12-build-order-checklist.md`
+27. `docs/13-what-we-tried-and-what-failed.md`
+28. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 

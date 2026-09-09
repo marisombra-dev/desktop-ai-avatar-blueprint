@@ -4,7 +4,7 @@ This file distinguishes **proven behavior**, **implemented plumbing**, and **exp
 
 It exists because “there is code for it” is not the same thing as “the human has objectively verified it.”
 
-Snapshot date: **2026-09-07**.
+Snapshot date: **2026-09-09**.
 
 ## Proven in repeated live use
 
@@ -372,6 +372,24 @@ The reference build is prototyping an optional transition from the proven close 
 The prototype has now proven several construction details: explicit no-pawn camera ownership removes default-view interference; a real chair can be fitted deterministically by snapping a chair SeatAnchor to a pelvis-derived body contact anchor rather than nudging the actor root; and large environment packages can be staged/inspected so only the needed reusable pieces become room dependencies. A real fireplace shell, grate/log assembly, dark firebox, and lightweight Niagara flame have been assembled in the experimental room without changing the frozen production close view.
 
 Asset choices are intentionally project-specific and marketplace assets are not redistributed through this repository; the reusable architecture is documented in `docs/02b-living-environment-wide-view.md`.
+
+### Full-body Wide View animation / unified embodiment
+
+**Status: ARCHITECTURE + STANDING PLACEMENT PROVEN; RETARGET PIPELINE PROVEN; ACTIVE-MOTION NECK ISSUE UNRESOLVED**
+
+The close/seated presentation and full-room Wide View are now being treated as physical states of one continuous avatar, not separate phase-specific characters. Changing view should not break an already active conversation. A separate `Talk` action can open/close conversation wherever the avatar is, while a future `Phone` action can deliberately ring/summon the avatar back to the chair.
+
+A cinematic match cut removes unnecessary chair-transition engineering: show only the beginning of the rise in Close View, then cut to Wide View with the avatar already standing. The reverse sit can likewise be hidden after the return-to-chair/cat-clear sequence.
+
+Standing placement is visually proven using anatomical anchoring. A marker attached to a planted foot contact is translated to a chosen floor target rather than positioning from the seated actor/pelvis origin. The tested alignment reached zero marker error and the result was judged to look naturally just-risen from the chair.
+
+Selected donor clips were reviewed in a sandbox; target IK/retarget rigs were built with 29 automatically recognized chains, and representative Point and seated Stretch clips were baked successfully onto the target MetaHuman skeleton. UE 5.8 native MetaHuman standing/root-motion locomotion remains the preferred walking basis.
+
+The remaining blocker is active-motion head/neck propagation. Neutral standing can look correct while torso/shoulder motion exposes severe neck stretching. `Copy Pose From Mesh -> Use Mesh Pose` catastrophically corrupted this assembly. Suppressing the project's custom head-control curves fixed neutral idle only. Disabling those curves together with the live Face Post Process `EnableHeadMovementIK` property was confirmed at runtime but still did not fix Point-motion neck deformation.
+
+Therefore the next diagnostic boundary is the remaining face/body pose-propagation and post-process/retargeted neck-transform path. Do not promote any neck fix until an active-motion test passes.
+
+See `docs/09f-wide-view-full-body-animation.md`.
 
 ### Hand gestures such as chin touch / hair pass
 

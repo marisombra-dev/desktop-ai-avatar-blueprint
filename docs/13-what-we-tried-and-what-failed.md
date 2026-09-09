@@ -564,6 +564,32 @@ Arm one-shot social tests from a user turn in the current voice session, not mer
 
 ---
 
+## 45. Seated actor origins are poor standing-placement references
+
+### What happened
+
+The full-body test initially placed the avatar inside or beside the chair even though the standing animation itself was valid. The seated actor origin had been calibrated around chair/pelvis contact, not planted feet.
+
+### Lesson
+
+For posture changes, anchor from anatomy. Attach or compute a marker on a planted foot contact, place a target marker on the floor, and translate the actor by the marker delta. Verify the final contact error, then judge the result visually.
+
+---
+
+## 46. A clean MetaHuman idle can hide an active-motion neck failure
+
+### What happened
+
+Neutral standing looked normal, but an active pointing animation moved the torso and shoulders underneath a head/face stack that did not follow correctly, producing severe neck stretching. Plausible fixes that failed on this assembly included `Copy Pose From Mesh -> Use Mesh Pose`, suppressing the project's custom head-control curves, and suppressing those curves while also disabling the live Face Post Process `EnableHeadMovementIK` property.
+
+### Lesson
+
+Do not declare head/neck propagation fixed from idle alone. Validate with a body animation that significantly moves spine, shoulders, and head. Keep placement debugging separate from face/body pose-propagation debugging, and record rejected hypotheses so later sessions do not cycle back to them.
+
+See `docs/09f-wide-view-full-body-animation.md`.
+
+---
+
 # The meta-lesson
 
 The project was not hard because any one component was impossible. It was hard because a desktop AI avatar is a stack of systems that fail in visually similar ways.
