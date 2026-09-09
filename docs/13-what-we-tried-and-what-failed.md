@@ -46,15 +46,15 @@ Prioritize by impact. Document cosmetic edge cases and move on when the capabili
 
 ---
 
-## 4. MetaHuman head axes did not mean what we expected
+## 4. MetaHuman head-axis tests produced misleading results
 
 ### What happened
 
-Experimental face/body controls produced surprising results. Nominal yaw/pitch/roll names did not correspond cleanly to intuitive screen-space movement, and several upstream control routes changed values without moving the rendered head.
+Experimental face/body controls produced surprising motion because the assembled `head` bone's local axes did not match semantic yaw/pitch expectations. Several early constant-rotation tests also appeared to do nothing because an exposed Blueprint `Rotation` pin remained `0,0,0` and overrode the node struct value set by script.
 
 ### Lesson
 
-Never infer control semantics from names. Probe the assembled rig empirically, one channel at a time, with every competing head path disabled. Human-visible motion is the acceptance criterion.
+Never infer control semantics from names, and never trust a scripted AnimGraph edit until exposed pins are inspected after save/cold reload and runtime bone transforms are measured. The final reference mapping was empirically established as bone-space Pitch = shoulder tilt, Yaw = up/down, Roll = left/right. See `09g-metahuman-neck-head-ownership.md`.
 
 ---
 
@@ -68,7 +68,9 @@ The successful route came only after identifying the MetaHuman head-movement pro
 
 ### Lesson
 
-Perception and visual acting are independent, so prove screen vision first. When returning to acting, discover the final rig's actual authority/input contract before inventing another upstream rotation mechanism. See `09b-metahuman-head-control.md`.
+Perception and visual acting are independent, so prove screen vision first. When returning to acting, discover the final rig's actual authority/input contract before inventing another upstream rotation mechanism.
+
+The `HeadControlSwitch`/HeadMovementIK route described in `09b-metahuman-head-control.md` was genuinely successful for the close-view avatar. Full-body Point motion later showed that letting the Face-side HeadMovementIK solver retain structural ownership could stretch the neck. For a unified/full-body avatar, the newer Body-owned solution in `09g-metahuman-neck-head-ownership.md` supersedes that structural route.
 
 ---
 
@@ -580,13 +582,15 @@ For posture changes, anchor from anatomy. Attach or compute a marker on a plante
 
 ### What happened
 
-Neutral standing looked normal, but an active pointing animation moved the torso and shoulders underneath a head/face stack that did not follow correctly, producing severe neck stretching. Plausible fixes that failed on this assembly included `Copy Pose From Mesh -> Use Mesh Pose`, suppressing the project's custom head-control curves, and suppressing those curves while also disabling the live Face Post Process `EnableHeadMovementIK` property.
+Neutral standing looked normal, but the active Point animation exposed severe neck stretching. Several plausible fixes failed, including `Copy Pose From Mesh -> Use Mesh Pose`, stripping neck/head tracks, suppressing project-specific head curves, and setting the live Face Post Process `EnableHeadMovementIK` property false.
+
+The decisive isolation came later: disabling the entire Face post-process fixed the neck, and a graph-level bypass proved `CR_MetaHuman_HeadMovement_IK_Proc` was the conflicting stage. Bypassing only that Control Rig preserved RigLogic and facial animation while the full-body Point motion remained neck-safe.
 
 ### Lesson
 
-Do not declare head/neck propagation fixed from idle alone. Validate with a body animation that significantly moves spine, shoulders, and head. Keep placement debugging separate from face/body pose-propagation debugging, and record rejected hypotheses so later sessions do not cycle back to them.
+Do not declare head/neck propagation fixed from idle alone. Test an animation with meaningful spine/shoulder motion, distinguish a runtime property toggle from actually bypassing an evaluated node, and measure Body/Face head transforms before inventing more retarget fixes. Keep one structural head owner.
 
-See `docs/09f-wide-view-full-body-animation.md`.
+See `docs/09f-wide-view-full-body-animation.md` and `docs/09g-metahuman-neck-head-ownership.md`.
 
 ---
 

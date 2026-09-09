@@ -46,17 +46,17 @@ The reference project ultimately added a direct local PCM bridge to MetaHuman au
 
 ### Head orientation, sustained screen attention, nod, and head shake
 
-**Status: END-TO-END VISUALLY PROVEN**
+**Status: END-TO-END VISUALLY PROVEN; FULL-BODY-SAFE ROUTE VALIDATED IN QA**
 
-The reference build now has a working MetaHuman head-motion path. The successful route drives `HeadControlSwitch` together with MetaHuman head rotation animation curves through the same live curve-processing path used by the assembled character. Nominal axis names were mapped empirically because their visible screen-space effects were counterintuitive.
+The reference build first proved close-view head motion through MetaHuman `HeadControlSwitch` plus head rotation curves. Later full-body Point motion exposed an important limitation: the Face-side `CR_MetaHuman_HeadMovement_IK_Proc` solver could fight Body structural motion and stretch the neck.
 
-Live human validation proved: a smooth screen-directed head turn; a sustained watch posture that remains oriented toward the display; a partial return toward the user while speaking followed by renewed screen attention; a clearly readable single nod for YES; and a clearly readable single shake for NO.
+The validated unified/full-body route now gives Body ownership of structural head/neck motion, lets Face follow Body, bypasses that competing Face HeadMovementIK Control Rig, and preserves RigLogic/facial curves. Local bone-space axes were mapped empirically rather than inferred from yaw/pitch labels.
 
-A very low idle frame rate initially made eased motion appear jumpy. The reference build solved this by temporarily raising render FPS only during head transitions and then returning to the low-cost idle rate. Exact angles are intentionally not part of this public blueprint because calibration is avatar/window-position specific.
+Human regression proved left/right/up/down look, nod, head shake, sustained facial animation, and normal neck behavior. The older close-view curve route remains useful historical context, but should not be treated as the structural owner in the full-body assembly.
 
-The conversational layer also exposes an explicit narrow local head-gesture action so the live agent knows nod/shake are physical actions it can intentionally perform. A conservative transcript fallback can add one gesture for clear affirmative/negative answers, with duplicate suppression. Sustained screen attention has higher head-pose priority than conversational gestures.
+The conversational layer still exposes a narrow local head-gesture action for intentional nod/shake, and low idle FPS is temporarily raised during motion so eased turns remain visibly smooth.
 
-See `docs/09b-metahuman-head-control.md`.
+See `docs/09b-metahuman-head-control.md` for the earlier close-view route and `docs/09g-metahuman-neck-head-ownership.md` for the full-body-safe ownership fix.
 
 ### Clavicle-driven shoulder shrug / uncertainty look
 
@@ -375,21 +375,17 @@ Asset choices are intentionally project-specific and marketplace assets are not 
 
 ### Full-body Wide View animation / unified embodiment
 
-**Status: ARCHITECTURE + STANDING PLACEMENT PROVEN; RETARGET PIPELINE PROVEN; ACTIVE-MOTION NECK ISSUE UNRESOLVED**
+**Status: ARCHITECTURE + STANDING PLACEMENT + RETARGET PIPELINE PROVEN; ACTIVE-MOTION NECK FIX VALIDATED IN QA; PRODUCTIONIZATION PENDING**
 
-The close/seated presentation and full-room Wide View are now being treated as physical states of one continuous avatar, not separate phase-specific characters. Changing view should not break an already active conversation. A separate `Talk` action can open/close conversation wherever the avatar is, while a future `Phone` action can deliberately ring/summon the avatar back to the chair.
+The close/seated presentation and full-room Wide View are treated as physical states of one continuous avatar, not separate characters. Standing placement remains visually proven through anatomical foot anchoring, and representative Point and seated Stretch clips were baked successfully onto the target MetaHuman skeleton.
 
-A cinematic match cut removes unnecessary chair-transition engineering: show only the beginning of the rise in Close View, then cut to Wide View with the avatar already standing. The reverse sit can likewise be hidden after the return-to-chair/cat-clear sequence.
+The severe active-motion neck stretch is no longer an unresolved diagnostic. The decisive isolation showed that disabling the whole Face post-process fixed the neck but removed useful facial behavior. Narrowing that boundary proved `CR_MetaHuman_HeadMovement_IK_Proc` was the conflicting stage. Bypassing only that Control Rig while preserving Face Copy Pose and RigLogic kept the neck stable under full-body Point motion.
 
-Standing placement is visually proven using anatomical anchoring. A marker attached to a planted foot contact is translated to a chosen floor target rather than positioning from the seated actor/pelvis origin. The tested alignment reached zero marker error and the result was judged to look naturally just-risen from the chair.
+Procedural look/nod/shake were moved to a Body-owned head path. A separate exposed-pin bug had caused false negative tests: the Blueprint `Rotation` pin could remain `0,0,0` and override a non-zero Modify Bone struct value. After the actual pin was wired and local bone axes were mapped empirically, look/nod/shake all moved correctly with a normal neck.
 
-Selected donor clips were reviewed in a sandbox; target IK/retarget rigs were built with 29 automatically recognized chains, and representative Point and seated Stretch clips were baked successfully onto the target MetaHuman skeleton. UE 5.8 native MetaHuman standing/root-motion locomotion remains the preferred walking basis.
+Regression also passed shrug, smile/full facial-expression sweep, wink/brow controls, and audio-driven lip sync. Eye-contact was deferred only because the final test occurred in insufficient room light. The remaining work is to replace QA flags/assets with the permanent production graph and repeat the same no-flags regression.
 
-The remaining blocker is active-motion head/neck propagation. Neutral standing can look correct while torso/shoulder motion exposes severe neck stretching. `Copy Pose From Mesh -> Use Mesh Pose` catastrophically corrupted this assembly. Suppressing the project's custom head-control curves fixed neutral idle only. Disabling those curves together with the live Face Post Process `EnableHeadMovementIK` property was confirmed at runtime but still did not fix Point-motion neck deformation.
-
-Therefore the next diagnostic boundary is the remaining face/body pose-propagation and post-process/retargeted neck-transform path. Do not promote any neck fix until an active-motion test passes.
-
-See `docs/09f-wide-view-full-body-animation.md`.
+See `docs/09f-wide-view-full-body-animation.md` and `docs/09g-metahuman-neck-head-ownership.md`.
 
 ### Hand gestures such as chin touch / hair pass
 

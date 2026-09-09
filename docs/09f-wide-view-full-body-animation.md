@@ -138,85 +138,37 @@ then allow contextual gestures
 Point became a window-only/contextual behavior. Near a live window it can support a proactive invitation such as “look at that,” then wait for the user to decide whether to start Talk.
 ## 8. Full-body animation exposed a separate MetaHuman neck/head-authority problem
 
-The seated reference build already had a proven face/head-control system. Once larger body mocap was introduced, the visible head could remain comparatively fixed while the torso moved underneath it, producing severe neck stretching.
+The seated reference build already had a visually proven face/head-control system. Larger body mocap exposed a deeper conflict: neutral standing could look correct while torso/shoulder motion made the neck stretch badly.
 
-This is a different problem from actor placement. The foot-anchor solution can be correct while the neck still fails.
+Offline inspection showed the Point source and retargeted clip did not contain destructive neck/head translation. Runtime measurements then showed Body `head` motion was reaching Face correctly and facial descendants stayed stable relative to `head`. Copy Pose was not secretly canceling the motion.
 
-The reference investigation established the following facts:
+The decisive diagnostic was the Face post-process. Disabling the whole Face post-process made the neck immediately correct, but also removed wanted facial behavior. Bypassing only `CR_MetaHuman_HeadMovement_IK_Proc` preserved RigLogic/facial animation and fixed the active-motion neck distortion.
 
-- the Face component was attached correctly,
-- the Face animation graph already used `Copy Pose From Mesh`,
-- `Use Attached Parent` was already enabled,
-- the full-body retarget did not explode limbs or change overall proportions,
-- neutral standing could look correct while an active torso/arm animation exposed the neck failure.
+## 9. Important false leads and diagnostics
 
-That last distinction matters. Always test with an animation that significantly moves spine/shoulders/head. A neutral idle can produce a false sense of success.
+The following did not solve this assembly as permanent fixes: `Copy Pose From Mesh -> Use Mesh Pose`, forcing Face to a head socket, stripping neck/head tracks from Point, filtering only `FACIAL_C_FacialRoot`, bypassing only the second Copy Pose stage, or disabling the entire Face post-process.
 
-## 9. Neck fixes that were tested and rejected
+A runtime `EnableHeadMovementIK=False` property test also did not prove the solver node was actually removed from the evaluation path. The later graph-level bypass of `CR_MetaHuman_HeadMovement_IK_Proc` was the decisive test.
 
-### `Copy Pose From Mesh -> Use Mesh Pose`
+Another major trap was scripted AnimGraph authoring. A `Transform (Modify) Bone` struct could contain a non-zero rotation while its exposed Blueprint `Rotation` pin still saved as `0,0,0`, overriding the struct and creating a false no-motion result. Always inspect exposed pins after save/cold reload and verify the live bone transform.
 
-A community suggestion was tested in a QA-only Face AnimBP. On this assembled UE 5.8 MetaHuman it catastrophically corrupted the pose. Do not treat this checkbox as a universal fix.
+## 10. Validated QA architecture after the fix
 
-### Disable the project-specific head-control curves
-
-The reference avatar had an existing seated-era head system writing:
+The current validated QA route is:
 
 ```text
-HeadControlSwitch
-HeadYaw
-HeadPitch
-HeadRoll
-```
-A QA command-line gate suppressed those outputs during full-body motion. Neutral standing then looked correct, proving that the old head controller could contribute to the conflict.
-
-However, active body motion still produced the neck failure. Therefore suppressing the custom head controller is **not sufficient**.
-
-### Disable MetaHuman `EnableHeadMovementIK`
-
-The live Face Post Process AnimBP in the reference build exposed:
-
-```text
-EnableHeadMovementIK = True
+Body owns structural neck/head motion
+Face Copy Pose follows Body
+Face HeadMovementIK Control Rig bypassed
+RigLogic/facial curves preserved
+procedural look/nod/shake applied on Body
 ```
 
-A runtime-only QA switch successfully changed that property to `False` on the live post-process instance. The log confirmed the change.
+The target head bone's local axes were mapped empirically: bone-space Pitch = shoulder tilt, Yaw = up/down, Roll = left/right. After semantic controls were remapped to those visible axes, left/right/up/down look, nod, and shake all worked with a normal neck.
 
-The test was then repeated with both:
+The original looping Point animation was then re-tested in the full-body view and remained visually normal. Shrug, smile/full expression sweep, winks/brows, and audio-driven lip sync also passed. This closes the active-motion diagnostic, but the architecture is still running through QA assets/flags and must be productionized before the project calls the fix final.
 
-```text
-project-specific head controls suppressed
-MetaHuman EnableHeadMovementIK disabled
-```
-
-Active body animation still produced the neck problem.
-
-Therefore that combination is also **not the complete fix** for this assembly.
-
-## 10. Current neck-debug boundary
-
-At the current checkpoint:
-
-```text
-PROVEN GOOD:
-- standing position derived by foot anchor
-- neutral standing idle can look normal
-- target retarget bridges and baked body animations work structurally
-- face/lip-sync system remains intact in the baseline
-
-FIRST FAILING BOUNDARY:
-- active upper-body/full-body animation causes visible neck/head separation
-
-RULED OUT AS COMPLETE FIXES:
-- actor-origin nudging
-- Copy Pose Use Mesh Pose
-- disabling only custom HeadControl curves
-- disabling custom HeadControl curves + EnableHeadMovementIK
-```
-
-The next investigation should therefore focus on the remaining face/body pose propagation and post-process/retargeted neck-transform path. Do not reopen already eliminated hypotheses unless new evidence changes the assembly.
-
-Keep all experiments in duplicate QA maps/assets until the active-motion neck test passes.
+See `09g-metahuman-neck-head-ownership.md` for the detailed evidence and diagnostic sequence.
 
 ## 11. Suggested validation ladder for a full-room embodiment
 

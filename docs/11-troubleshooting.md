@@ -145,6 +145,12 @@ with other head/gaze modifiers disabled. Record actual result and coordinate spa
 
 The reference project observed nominal yaw/pitch controls behaving counterintuitively. This is normal enough that empirical axis mapping should be part of development.
 
+### If head motion stretches the neck
+
+Do not immediately blame the animation asset. First test whether two runtime stages both believe they own the head/neck chain. In the reference build, disabling the whole Face post-process removed the stretch, and the safe final fix was narrower: Body owns structural head/neck motion, Face follows Body, the Face HeadMovementIK Control Rig is bypassed, and RigLogic remains active.
+
+Also inspect exposed AnimGraph pins after scripted edits. A saved `Rotation` pin at `0,0,0` can override a non-zero `Transform (Modify) Bone` struct value and create a false "this stage does nothing" result. See `09g-metahuman-neck-head-ownership.md` for the complete diagnostic sequence.
+
 ---
 
 ## 8. Wake word is not heard
@@ -541,23 +547,24 @@ A production-ready desktop companion must pass a cold reboot test.
 
 ## 33. MetaHuman head command reaches Unreal but the visible head does not move
 
-Do not immediately escalate to larger angles or skeleton surgery.
+Do not immediately escalate to larger angles or skeleton surgery. First identify which structural ownership model the assembled avatar is using.
 
-Check in this order:
+For the current unified/full-body reference path, check in this order:
 
-1. Is the assembled character using MetaHuman head-movement rig logic such as `CR_MetaHuman_HeadMovement_IK_Proc`?
-2. Are `HeadControlSwitch` and the chosen head rotation curve being supplied together through a curve path that actually reaches the live AnimBP?
-3. Is an older `ModifyBone`, custom target curve, body rotation, or other head-authority path still active at the same time?
-4. Have you empirically mapped the visible axes on this assembled character rather than trusting yaw/pitch/roll names?
-5. Is the test amplitude large enough to see at the avatar's actual desktop size?
+1. Is Body the sole owner of structural neck/head motion?
+2. Is the competing Face `CR_MetaHuman_HeadMovement_IK_Proc` stage actually bypassed, not merely toggled by a property that may leave the node in the evaluation path?
+3. Does the Body `Transform (Modify) Bone` exposed `Rotation` pin contain or receive the intended value after save/cold reload?
+4. Does the runtime Body `head` transform change, and does Face `head` follow it?
+5. Have you empirically mapped the visible local bone axes rather than trusting yaw/pitch/roll names?
+6. Is the test amplitude large enough to see at the avatar's actual desktop size?
 
-A changed variable or received UDP command proves transport, not visible animation.
+For a close-only avatar still using the historical MetaHuman curve route, see `09b-metahuman-head-control.md`. For unified/full-body ownership, see `09g-metahuman-neck-head-ownership.md`. A changed variable or received UDP command proves transport, not visible animation.
 
 ## 34. Correct head turn is jumpy or snaps to attention
 
 Check render cadence before rewriting interpolation. A low-cost desktop avatar may idle at very low FPS, leaving only a few visible frames inside a normal easing duration.
 
-Temporarily raise render FPS only while the head transition is active, use eased interpolation, then restore the low idle FPS. Keep `HeadControlSwitch` stable through the transition rather than flickering ownership on/off.
+Temporarily raise render FPS only while the head transition is active, use eased interpolation, then restore the low idle FPS. Keep whichever head owner is active stable through the transition; do not hand structural control back and forth mid-gesture. On the historical close-only curve path, that specifically means keeping `HeadControlSwitch` stable.
 
 ## 35. Avatar can physically nod/shake but says it does not know how
 

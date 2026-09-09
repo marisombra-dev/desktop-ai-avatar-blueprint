@@ -1,10 +1,12 @@
-# 09a — MetaHuman Head Control Without the Rabbit Holes
+# 09b - MetaHuman Head Control Without the Rabbit Holes
 
 This chapter documents a head-motion path that was visually proven on an assembled Unreal Engine 5.8 MetaHuman after many plausible alternatives failed.
 
 The important discovery was not “rotate the head bone harder.” It was identifying the control contract already consumed by Epic's MetaHuman head-movement rig and feeding that contract through a curve path that was known to reach the live character.
 
 Treat every angle and axis as rig-specific. Copy the method, not somebody else's calibration numbers.
+
+> **Full-body update:** this chapter records the earlier close/seated route that was visually proven before Wide View body motion existed. The route depends on MetaHuman HeadMovementIK. Later Point/full-body testing proved that the Face-side `CR_MetaHuman_HeadMovement_IK_Proc` stage could fight Body structural head/neck motion and stretch the neck. For a unified avatar that must survive active torso/shoulder motion, use the Body-owned architecture in `09g-metahuman-neck-head-ownership.md`. Keep this chapter as historical close-view guidance and for its gesture/tooling lessons, not as the final structural ownership contract.
 
 ## 1. The working control contract
 
@@ -21,7 +23,9 @@ They are consumed by MetaHuman head-movement Control Rig logic including `CR_Met
 
 The key detail is `HeadControlSwitch`: when head rotation curves are supplied, the switch must be asserted as part of the same active control state. Sending rotation values without the corresponding authority/switch curve can produce no visible head movement.
 
-In the reference build, the curves were inserted through an existing `CurveMap` / `ModifyCurve` path already proven to drive facial controls.## 2. Do not trust the names of the axes
+In the reference build, the curves were inserted through an existing `CurveMap` / `ModifyCurve` path already proven to drive facial controls.
+
+## 2. Do not trust the names of the axes
 
 The reference MetaHuman did **not** map the nominal curve names to intuitive screen-space motion.
 
@@ -43,7 +47,9 @@ Use an empirical probe matrix:
 
 At desktop-avatar scale, tiny probes can be visually meaningless. Use a clearly visible but safe test amplitude, then reduce it after the axis is identified.
 
-The acceptance criterion is the human's naked-eye observation of the live avatar, not a changed variable, screenshot drift, or landmark measurement.## 3. Isolate the test or the result is meaningless
+The acceptance criterion is the human's naked-eye observation of the live avatar, not a changed variable, screenshot drift, or landmark measurement.
+
+## 3. Isolate the test or the result is meaningless
 
 Never let two head-control systems run during calibration.
 
@@ -115,7 +121,9 @@ nod:   center -> down -> slightly up -> center
 
 Use restrained amplitude and a single cycle. The goal is unmistakable semantic communication, not maximum motion.
 
-A correct test question is not “did the head move?” It is “did the human immediately read that as YES/NO rather than stronger idle?”## 7. The conversational model must know the gesture exists
+A correct test question is not “did the head move?” It is “did the human immediately read that as YES/NO rather than stronger idle?”
+
+## 7. The conversational model must know the gesture exists
 
 A perfect Unreal animation is useless if the live conversational layer cannot intentionally invoke it.
 
@@ -135,7 +143,9 @@ Install the tool into every fresh Realtime session just like other local tools. 
 
 Also intercept extremely narrow direct phrases locally if desired, so “nod your head yes” does not depend entirely on model tool choice.
 
-Add duplicate suppression so the explicit tool and transcript fallback cannot both fire for the same response.## 8. Rabbit holes that did not solve the reference build
+Add duplicate suppression so the explicit tool and transcript fallback cannot both fire for the same response.
+
+## 8. Rabbit holes that did not solve the reference build
 
 These approaches were plausible enough to consume real debugging time. Do not retry them blindly as though they are new discoveries:
 
@@ -181,7 +191,8 @@ Do not call the feature complete until all of these pass:
 - [ ] sustained watch holds its target without continuous high FPS,
 - [ ] speaking posture partially returns toward the user and then resumes watch,
 - [ ] nod reads clearly as YES,
-- [ ] shake reads clearly as NO,- [ ] explicit spoken request can intentionally invoke nod/shake,
+- [ ] shake reads clearly as NO,
+- [ ] explicit spoken request can intentionally invoke nod/shake,
 - [ ] ordinary conversational fallback does not overfire,
 - [ ] lip sync remains correct,
 - [ ] blink/gaze remain correct,
@@ -197,4 +208,4 @@ If a new motion layer becomes jumpy, deformed, or unstable, restore that checkpo
 
 The shortest summary of the entire investigation is:
 
-> Use the MetaHuman rig's own head-control contract, empirically map the visible axes, keep only one head authority active, interpolate at enough rendered frames to look human, and give the conversational model an explicit gesture action.
+> For the earlier close-only path, use the MetaHuman rig's proven control contract and keep one authority active. For unified/full-body motion, Body must own structural head/neck placement and the competing Face HeadMovementIK solver must be bypassed. In both cases, empirically map visible axes and give the conversational model an explicit gesture action.

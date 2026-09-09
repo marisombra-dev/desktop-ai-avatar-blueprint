@@ -189,6 +189,8 @@ Record results in a table:
 
 The reference project discovered that nominal head axes did not correspond cleanly to expected screen-space movement. Never assume names prove behavior. The eventual working route used MetaHuman head-control animation curves plus `HeadControlSwitch`; see `09b-metahuman-head-control.md`.
 
+Also verify **structural ownership**. In the final reference architecture, Body owns neck/head placement, Face follows Body, the competing Face HeadMovementIK stage is bypassed, and RigLogic remains active for facial curves. See `09g-metahuman-neck-head-ownership.md` for the full failure analysis, axis map, exposed-pin trap, and regression procedure.
+
 ## 8. Screen-looking gesture is optional, not proof of perception
 
 It is visually appealing for the avatar to glance toward the screen when screen awareness activates. But the actual perception pipeline is image capture → model input.
