@@ -16,6 +16,7 @@ The stationary layer waits through a randomized quiet interval, performs one sma
 The moving layer runs on a longer clock. When it fires, it cancels any pending stationary action, owns the avatar until the excursion completes, and restarts the stationary cycle only after the avatar returns.
 
 This avoids stacked gestures and makes the room feel inhabited rather than choreographed.
+
 ## Quiet time is part of the animation system
 
 Early reference tuning used roughly 10–25 seconds of quiet standing between stationary actions and a much longer randomized interval for moving excursions. Those numbers are not a contract. The important design rule is that dead time remains abundant.
@@ -37,6 +38,7 @@ stand quietly
 Do not try to squeeze every available animation into each minute. Repetition becomes obvious faster than silence does.
 
 Distinctive actions should also have their own cooldowns. A head turn can recur relatively often; a scratch, stretch, or expressive gesture should be rarer so it does not become a nervous tic.
+
 ## Let the environment cue attention without commanding it
 
 The Wide View window rotates through live scenic feeds. A scene change is therefore a useful attention cue, but not every change should trigger a visible response.
@@ -56,6 +58,7 @@ Most scene changes can pass without comment. A small fraction of noticed scenes 
 Metadata should be silent grounding, not narration. The line should sound like a thought escaping rather than a camera database being read aloud.
 
 A larger pointing-and-remark behavior can remain a separate, rarer event. Do not make every glance escalate into speech.
+
 ## Keep body fidgets from stealing head ownership
 
 Full-body animation had already shown how easily a MetaHuman neck can be damaged when multiple systems try to own the same structure.
@@ -78,6 +81,7 @@ One early `LookAround` body clip was technically valid, head-neutral, and logged
 The correct response was not to defend the asset because its name sounded appropriate. The clip was removed from the randomized pool while the good ScratchArm and head-only behaviors were retained.
 
 For embodied systems, **semantic fit must be judged on the actual avatar**, not inferred from filenames or successful montage playback.
+
 ## Priority and cancellation rules
 
 Ambient behavior should never compete with interaction.

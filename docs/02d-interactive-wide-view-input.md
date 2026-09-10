@@ -22,6 +22,7 @@ EnableWindow(False)
 ```
 
 That was appropriate when Unreal was meant to behave only as a visual layer. It made an interactive room impossible.
+
 ## Use different input policy for close and Wide states
 
 The successful architecture gives the Unreal HWND two modes.
@@ -45,6 +46,7 @@ The successful architecture gives the Unreal HWND two modes.
 The reference implementation derives the native-window mode from the active presentation size/state rather than globally changing the user's normal click-through preference.
 
 This preserves the safe portrait behavior while allowing the same Unreal runtime to become a real interactive environment in Wide View.
+
 ## Diagnose shared failures before rewriting individual props
 
 A useful symptom in the reference build was that **radio and TV broke at the same time**.
@@ -65,6 +67,7 @@ General rule:
 Driver-ready logs are not interaction proof. A real validation must exercise the user action and observe the expected device state change.
 
 For the reference build, the acceptance test was deliberately simple: enter Wide View, right-click the radio, right-click the TV, and verify that both actually toggle. Human confirmation closed the bug.
+
 ## Keep interaction semantics separate from who triggers them
 
 The user may click a device today while the avatar physically approaches and operates it tomorrow. Do not create two unrelated implementations of `radio on` or `TV off`.
