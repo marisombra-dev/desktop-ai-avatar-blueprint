@@ -99,6 +99,16 @@ These were useful diagnostics, but not the final solution:
 
 The whole-Face-PP-off test was especially valuable because it proved the deformation lived in that stack, but shipping it would freeze or remove wanted facial behavior.
 
+## Encode hard pose invariants below the masking layer
+
+A later Wide View regression exposed a related failure mode: the base Body AnimBP still contained legacy additive seated rotations. While a standing montage was active, those offsets were hidden. If the montage dropped, the avatar could visibly fold into a seated pose at a standing world position.
+
+If a pose is forbidden by product design, do not rely on another montage to cover it. Neutralize the lower-level source.
+
+The reference build kept the legacy seated Blueprint function names so old graph references remained valid, but changed their implementations to return zero rotations. This made the rule "production Ethan never sits" an invariant of the pose source rather than a happy side effect of the current montage stack.
+
+General rule: **hard embodiment rules belong below transient animation layers**. A fallback path should remain valid even when every optional montage stops.
+
 ## Validated QA architecture
 
 1. Let the Body animation path own structural neck/head motion.

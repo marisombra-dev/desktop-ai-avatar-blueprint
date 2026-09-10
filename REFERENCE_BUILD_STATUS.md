@@ -4,7 +4,7 @@ This file distinguishes **proven behavior**, **implemented plumbing**, and **exp
 
 It exists because “there is code for it” is not the same thing as “the human has objectively verified it.”
 
-Snapshot date: **2026-09-09**.
+Snapshot date: **2026-09-10**.
 
 ## Proven in repeated live use
 
@@ -365,19 +365,23 @@ The modified helper was smoke-tested against the real webcam and emitted repeate
 
 ### Living environment / Wide View
 
-**Status: ACTIVE PROTOTYPE; NOT YET A CORE DEPENDENCY**
+**Status: ACTIVE PROTOTYPE; CORE ROOM, TRANSITION, LOCOMOTION, MEDIA INPUT, AND INITIAL AMBIENT IDLES HUMAN-VALIDATED**
 
-The reference build is prototyping an optional transition from the proven close portrait presentation into a real 3D room. The design keeps the close view frozen, develops room geometry/camera/seated-body work in an isolated Wide namespace, and treats locomotion, interaction points, live media surfaces, and sparse ambient life as later layers.
+The reference build now has an optional transition from the proven close portrait presentation into a real 3D room. The room remains an experimental extension rather than a dependency of the core assistant, but several formerly speculative layers are now working together in live use: video-backed entry, standing Wide baseline, locomotion, interactive media props, live scenic window content, and sparse ambient behavior.
 
-The prototype has now proven several construction details: explicit no-pawn camera ownership removes default-view interference; a real chair can be fitted deterministically by snapping a chair SeatAnchor to a pelvis-derived body contact anchor rather than nudging the actor root; and large environment packages can be staged/inspected so only the needed reusable pieces become room dependencies. A real fireplace shell, grate/log assembly, dark firebox, and lightweight Niagara flame have been assembled in the experimental room without changing the frozen production close view.
+Construction details remain proven: explicit no-pawn camera ownership removes default-view interference; a real chair can be fitted deterministically by snapping a chair SeatAnchor to a pelvis-derived body contact anchor rather than nudging the actor root; and large environment packages can be staged/inspected so only the needed reusable pieces become room dependencies. A real fireplace shell, grate/log assembly, dark firebox, lightweight Niagara flame, live window surface, radio, TV, telephone table, and other props are present without changing the frozen production close view.
 
-Asset choices are intentionally project-specific and marketplace assets are not redistributed through this repository; the reusable architecture is documented in `docs/02b-living-environment-wide-view.md`.
+Right-click toggles for radio and TV are human-validated after repairing native-window input ownership. The important failure was not in either media driver: the Unreal HWND was still configured as disabled, mouse-transparent, and non-activating for portrait-overlay use. Wide View now switches the Unreal window into an enabled interactive mode while the transparent Electron room surface passes ordinary room clicks through and reclaims input only for its own controls.
+
+Initial ambient embodiment is also live-proven. Ethan can stand quietly at the window, perform sparse head attention and a ScratchArm fidget, notice some window-scene changes, and complete a clean fireplace round trip. A technically valid LookAround body clip was removed from the random pool after human QA because its arm motion read as an odd fly-swat / held-arm pose. Exact idle weights and future room wanderings remain tunable rather than locked.
+
+See `docs/02b-living-environment-wide-view.md`, `docs/02c-video-backed-wide-view-transition.md`, `docs/02d-interactive-wide-view-input.md`, and `docs/02e-ambient-wide-view-idle-behavior.md`.
 
 ### Full-body Wide View animation / unified embodiment
 
 **Status: ARCHITECTURE + STANDING PLACEMENT + RETARGET PIPELINE PROVEN; ACTIVE-MOTION NECK FIX VALIDATED IN QA; PRODUCTIONIZATION PENDING**
 
-The close/seated presentation and full-room Wide View are treated as physical states of one continuous avatar, not separate characters. Standing placement remains visually proven through anatomical foot anchoring, and representative Point and seated Stretch clips were baked successfully onto the target MetaHuman skeleton.
+The close portrait presentation and full-room Wide View are treated as physical states of one continuous avatar, not separate characters. Standing placement remains visually proven through anatomical foot anchoring, and representative Point plus source Stretch clips were baked successfully onto the target MetaHuman skeleton. Production Wide behavior now enforces a hard standing-only invariant: legacy seated additive pose getters remain callable for Blueprint compatibility but return zero rotations, so a dropped montage cannot fold Ethan into a seated pose at a standing world position.
 
 The severe active-motion neck stretch is no longer an unresolved diagnostic. The decisive isolation showed that disabling the whole Face post-process fixed the neck but removed useful facial behavior. Narrowing that boundary proved `CR_MetaHuman_HeadMovement_IK_Proc` was the conflicting stage. Bypassing only that Control Rig while preserving Face Copy Pose and RigLogic kept the neck stable under full-body Point motion.
 

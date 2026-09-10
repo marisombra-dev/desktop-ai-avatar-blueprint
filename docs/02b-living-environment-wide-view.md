@@ -180,10 +180,10 @@ A reliable Wide View sequence is:
 1. freeze the known-good close view;
 2. choose the real architectural shell and major furniture;
 3. establish room scale, floor, walls, ceiling, and navigation clearance;
-4. fit the real conversation chair with chair/body contact anchors, then tune the seated pose around that placement;
+4. fit major furniture deterministically with explicit contact anchors; only build a seated body pose if sitting is actually part of your product design;
 5. prove deterministic camera ownership and close↔wide transitions;
 6. add fireplace/window/media anchor geometry;
-7. prove stand, sit, and one short movement route;
+7. prove the intended standing baseline and one short movement route;
 8. add navigation points and destination idles;
 9. add architectural finish such as trim, wall treatment, floor material, and lighting;
 10. add a restrained amount of decorative clutter;
@@ -200,7 +200,7 @@ Validate in layers:
 - [ ] Wide camera shows only intended room geometry; no default pawn/camera interference.
 - [ ] Close framing still matches the approved conversational presentation.
 - [ ] Pullback and return transitions are smooth and reversible.
-- [ ] Chair SeatAnchor and body contact anchor align deterministically, and the seated body fits without obvious floating or clipping.
+- [ ] Furniture/body contact anchors align deterministically for any physical pose the product actually supports; forbidden poses are not left as hidden fallbacks beneath transient montages.
 - [ ] Lip sync, face identity, gaze, blink, head controls, expressions, and gestures survive the wider body graph.
 - [ ] At least one stand/move/idle/return path works on navmesh.
 - [ ] Interactive objects fail quietly when their network/media source is unavailable.

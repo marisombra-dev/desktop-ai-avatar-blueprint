@@ -82,6 +82,7 @@ The reference system currently does all of the following end to end:
 - A visually calibrated expression palette can provide genuine happiness, surprise, subtle concern, skeptical eyebrow, anger, and brief fear/alarm. The friendly greeting smile is naturally validated in ordinary conversation, and calibrated expressions temporarily outrank generic response-start mood so face layers do not fight.
 - During an active interactive conversation, an optional privacy-first local gaze helper can recognize sustained eye contact from MediaPipe iris/head geometry, meet the user's gaze with a small eye-only MetaHuman override, and release immediately back to ordinary idle when the user looks away. Camera visual-awareness mode explicitly takes webcam ownership away from the gaze helper.
 - Head orientation can distinguish a brief screen glance from sustained watch-along attention; during sustained watching the avatar can remain oriented toward the display, partially return toward the user while speaking, then resume watching.
+- The optional Wide View now has human-validated room interaction and initial ambient embodiment: clickable radio/TV media props, sparse head/window attention, a safe ScratchArm fidget, and a clean fireplace excursion. Stillness remains the default, and future idle weights are intentionally not locked.
 - The avatar runs as a resizable, draggable, always-on-top desktop element with Mic / Screen / Camera controls.
 
 ---
@@ -118,7 +119,9 @@ The reliable sequence is:
 24. Add nonverbal social presence: listening micro-nods, selective laugh-only reactions, tiny closure acknowledgments, and shared glances using already-proven gaze/head controls. See `docs/09e-fewer-words-more-presence.md`.
 25. Add larger gestures one at a time. The reference build proved nod, head shake, and a clavicle-driven uncertainty shrug before attempting hand animation; keep hands and complex body acting last.
 26. Optionally expand the stable portrait into a real 3D living environment with a Wide View camera state, interaction points, navigation, media surfaces, and sparse ambient life. Keep this isolated until it preserves every proven close-view capability; see `docs/02b-living-environment-wide-view.md`.
-27. When Wide View gains full-body motion, preserve the active conversation, use cinematic cuts for chair transitions, anchor standing placement from real foot contact, and validate active-motion neck/head propagation before locomotion. See `docs/09f-wide-view-full-body-animation.md`.
+27. If the room should be clickable, define native-window input ownership explicitly. Electron click-through is not enough if the Unreal HWND is still disabled or mouse-transparent; see `docs/02d-interactive-wide-view-input.md`.
+28. When Wide View gains full-body motion, preserve the active conversation, use cinematic cuts for pose/state transitions, anchor standing placement from real foot contact, and validate active-motion neck/head propagation before locomotion. See `docs/09f-wide-view-full-body-animation.md`.
+29. Add ambient embodiment only after movement is stable: abundant quiet standing, sparse stationary fidgets, longer moving idles, event-cued attention, per-action cooldowns, and strict cancellation/priority rules. See `docs/02e-ambient-wide-view-idle-behavior.md`.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 
