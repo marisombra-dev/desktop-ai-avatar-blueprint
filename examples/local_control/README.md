@@ -1,6 +1,6 @@
 # Local Control Examples
 
-These files accompany [`docs/10d-local-browser-control-validated-2026-09-12.md`](../../docs/10d-local-browser-control-validated-2026-09-12.md).
+These files accompany [`docs/10d-local-browser-control-validated-2026-09-12.md`](../../docs/10d-local-browser-control-validated-2026-09-12.md) and [`docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md`](../../docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md).
 
 They capture the first narrow local-computer-control tier from the Desktop Ethan reference build.
 
@@ -8,23 +8,17 @@ They capture the first narrow local-computer-control tier from the Desktop Ethan
 
 - `desktop_control_bridge.py` — Windows bridge for browser, file, and top-level application/window control.
 - `browser_intent_routing.ts` — deterministic natural-language routing pattern for common browser commands, plus the open-ended fallback boundary.
+- `browser_search_routing.ts` — explicit search/weather intent routing plus stale-tool, ambiguous-verdict, and post-watch lifecycle rules.
 
 ## Validation status
 
-### Browser control
+### Browser control and search
 
 **HUMAN-VALIDATED IN NATURAL CONVERSATION**
 
-The reference build was live-tested for:
+The reference build was live-tested for repeated tab creation/closing, switching among existing tabs, opening unopened sites, web/YouTube/Wikipedia/GitHub search, named-place Weather.com lookup with a fresh visual answer stage, shared-video conversation, return from Watch into ordinary browser control, and user barge-in.
 
-- repeated new-tab creation;
-- repeated tab closing;
-- switching among existing tabs;
-- opening websites that were not already open;
-- returning from ordinary shared-video conversation directly into browser control;
-- user barge-in while the assistant was speaking.
-
-The final validation build passed 28 browser-language regression cases and the full 114-test project suite.
+The final cross-capability validation chained YouTube watch-along, media-tab close, Wikipedia navigation, tab switching, Camera activation, and fresh visual reasoning in one uninterrupted live conversation. The final gate was 42 browser-language regression cases inside the full **128-test** project suite, plus a 40-run verdict-channel stress test with zero blank/bad helper results.
 
 ### File control
 

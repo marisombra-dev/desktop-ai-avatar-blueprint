@@ -26,19 +26,21 @@ The desktop voice is not treated as a separate generic persona. Ordinary substan
 - Clearly unfinished mid-sentence fragments can be held briefly without slowing complete turns; live validation confirmed a deliberate pause was tolerated and the completed thought answered normally.
 - Local response ownership now guards `response.create` immediately and queues replacement output across cancellation, preventing the overlapping-active-response race that previously surfaced as a visible error badge.
 
-### Local browser control
+### Local browser control and search
 
-**Status: HUMAN-VALIDATED IN NATURAL CONVERSATION**
+**Status: HUMAN-VALIDATED ACROSS MULTIPLE CAPABILITIES**
 
-The reference build can now open a new Chrome tab, close the current tab, switch among existing tabs by natural site/title language, and open a website that is not already open. Browser manipulation does not require Screen sharing; Screen remains a perception capability for questions about what is visually present on a page.
+The reference build can open/close/switch Chrome tabs, open sites that are not already open, and perform explicit browser searches across the web, YouTube, Wikipedia, and GitHub. Named-place weather questions resolve to Weather.com and then use fresh Screen perception to answer the actual question rather than stopping after navigation.
 
-The validated route uses deterministic local intent handling for common browser commands, Electron IPC, a short-lived Windows bridge, Win32 discovery of actual Chrome windows, UI Automation attached only to those windows, filtering to Chrome's real `TabContainerImpl` tab strip, and post-action verification before success is acknowledged. Natural follow-ups such as `try again`, `open another one`, `close another one`, and switching back are supported, and user speech immediately cancels an in-progress spoken response.
+Search-only navigation returns directly to listening instead of generating an unnecessary spoken success response. Ordinary factual conversation is not automatically converted into browser activity.
 
-Human testing verified the important mode transition: while watching YouTube together and conversing normally, the user changed her mind and asked Ethan to close the tab; he immediately returned to competent browser control without requiring a special command mode.
+Live debugging exposed several post-search failures that only appeared across skill transitions: a successful Wikipedia search could be followed by a cleanly terminated Realtime voice session; the bridge could visibly complete an action yet return an ambiguous/no-result verdict; and closing a watched YouTube tab could leave Watch state alive long enough for a stale browser tool call to execute without a matching fresh user turn. The repaired build hardens the bridge verdict channel, suppresses confident failure narration for ambiguous infrastructure results, ends Watch state when the media context closes, rejects stale browser tool calls, and gives a genuinely stale Realtime transport one bounded reconnect attempt.
 
-The debugging history is intentionally preserved because several plausible designs failed: desktop-wide UIA enumeration caused 12-second scans and timeouts; page-level `TabItem` controls masqueraded as browser tabs; actions were falsely acknowledged before Chrome settled; generic model tool choice sometimes narrated actions without executing them; exact-phrase parsers failed on ordinary conversational wording; transcript persistence blocked local actions; and `open YouTube` was temporarily misclassified as `switch to an existing YouTube tab`.
+Final human validation crossed the repaired boundaries in one uninterrupted conversation: YouTube opened, a video was watched with normal companion commentary, the media tab closed, the Henry VIII Wikipedia page opened and closed, GitHub was selected again, then Camera awareness activated and answered a fresh visual question correctly. The user described the run as flawless.
 
-See `docs/10d-local-browser-control-validated-2026-09-12.md` and `examples/local_control/`. File and general window/application controls in the same bridge are implemented and smoke-tested, but do not yet have the same depth of natural-voice human validation as browser control.
+The final local project gate was **25 test files / 128 tests**, clean TypeScript, clean production build, 42 browser-language regression cases, plus 40 consecutive browser-helper verdict-channel runs with zero blank/bad results.
+
+See `docs/10d-local-browser-control-validated-2026-09-12.md`, `docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md`, and `examples/local_control/`. File and general window/application controls remain implemented and smoke-tested but do not yet have equivalent natural-voice human validation.
 
 ### Bounded current-conversation working context
 
