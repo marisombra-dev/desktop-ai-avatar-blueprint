@@ -1,4 +1,4 @@
-# 10e â€” Browser Search and Post-Watch Stability: Validated 2026-09-12
+# 10e - Browser Search and Post-Watch Stability: Validated 2026-09-12
 
 **Status: HUMAN-VALIDATED ACROSS MULTIPLE CAPABILITIES**
 
