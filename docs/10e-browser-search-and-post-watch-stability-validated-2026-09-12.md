@@ -1,4 +1,4 @@
-﻿# 10e â€” Browser Search and Post-Watch Stability: Validated 2026-09-12
+# 10e â€” Browser Search and Post-Watch Stability: Validated 2026-09-12
 
 **Status: HUMAN-VALIDATED ACROSS MULTIPLE CAPABILITIES**
 
@@ -26,6 +26,7 @@ Supported deterministic search families include:
 - general web/Google search.
 
 Ordinary factual conversation is intentionally not converted into browser activity. `Who was Catherine de' Medici?` remains conversation. `Look up Catherine de' Medici` is a browser request.
+
 ## Weather routing
 
 A naive Weather.com city URL is not reliable because Weather.com's human-readable location paths include internal location identifiers.
@@ -59,6 +60,7 @@ act -> verify -> return to listening
 ```
 
 No extra success narration is required when the browser visibly moved.
+
 ## Failure: successful Wikipedia search followed by total silence
 
 The first live search run looked excellent at first: weather worked, YouTube search worked, and Wikipedia navigation succeeded. Immediately afterward Ethan stopped acknowledging speech entirely.
@@ -86,6 +88,7 @@ even though the requested navigation had occurred.
 The bridge verdict channel was hardened so JSON output is flushed reliably and ambiguous infrastructure failures are distinguished from verified browser failures. A 40-run result-channel stress test produced zero blank results and zero malformed results after the repair.
 
 The conversational rule was also tightened: an ambiguous missing verdict must not become a confident spoken failure that contradicts visible reality.
+
 ## Failure: browser control died after closing a watched YouTube tab
 
 The next regression only appeared after a longer natural interaction:
@@ -120,6 +123,7 @@ The stabilized build applies these rules:
 - a genuinely stale Realtime transport gets one bounded automatic reconnect attempt instead of silently leaving Ethan deaf.
 
 The local deterministic command path still owns ordinary tab actions. The Realtime browser tool remains an escape hatch for open-ended navigation/search resolution, but it is no longer allowed to execute old browser intent long after the user has moved on.
+
 ## Final cross-capability human validation
 
 The final live run deliberately crossed several previously fragile boundaries in one uninterrupted session:
@@ -150,6 +154,7 @@ After the final repairs the local project passed:
 - 40 consecutive bridge-result stress runs with zero blank/bad verdicts.
 
 The final acceptance criterion, however, was the human cross-capability session above.
+
 ## Implementation rules worth carrying forward
 
 1. Search navigation and tab manipulation are different intents; keep them separate.
