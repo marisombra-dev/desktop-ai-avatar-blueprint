@@ -4,7 +4,7 @@ This file distinguishes **proven behavior**, **implemented plumbing**, and **exp
 
 It exists because “there is code for it” is not the same thing as “the human has objectively verified it.”
 
-Snapshot date: **2026-09-10**.
+Snapshot date: **2026-09-12**.
 
 ## Proven in repeated live use
 
@@ -25,6 +25,20 @@ The desktop voice is not treated as a separate generic persona. Ordinary substan
 - Wake greeting can be constrained to a deliberately short acknowledgement.
 - Clearly unfinished mid-sentence fragments can be held briefly without slowing complete turns; live validation confirmed a deliberate pause was tolerated and the completed thought answered normally.
 - Local response ownership now guards `response.create` immediately and queues replacement output across cancellation, preventing the overlapping-active-response race that previously surfaced as a visible error badge.
+
+### Local browser control
+
+**Status: HUMAN-VALIDATED IN NATURAL CONVERSATION**
+
+The reference build can now open a new Chrome tab, close the current tab, switch among existing tabs by natural site/title language, and open a website that is not already open. Browser manipulation does not require Screen sharing; Screen remains a perception capability for questions about what is visually present on a page.
+
+The validated route uses deterministic local intent handling for common browser commands, Electron IPC, a short-lived Windows bridge, Win32 discovery of actual Chrome windows, UI Automation attached only to those windows, filtering to Chrome's real `TabContainerImpl` tab strip, and post-action verification before success is acknowledged. Natural follow-ups such as `try again`, `open another one`, `close another one`, and switching back are supported, and user speech immediately cancels an in-progress spoken response.
+
+Human testing verified the important mode transition: while watching YouTube together and conversing normally, the user changed her mind and asked Ethan to close the tab; he immediately returned to competent browser control without requiring a special command mode.
+
+The debugging history is intentionally preserved because several plausible designs failed: desktop-wide UIA enumeration caused 12-second scans and timeouts; page-level `TabItem` controls masqueraded as browser tabs; actions were falsely acknowledged before Chrome settled; generic model tool choice sometimes narrated actions without executing them; exact-phrase parsers failed on ordinary conversational wording; transcript persistence blocked local actions; and `open YouTube` was temporarily misclassified as `switch to an existing YouTube tab`.
+
+See `docs/10d-local-browser-control-validated-2026-09-12.md` and `examples/local_control/`. File and general window/application controls in the same bridge are implemented and smoke-tested, but do not yet have the same depth of natural-voice human validation as browser control.
 
 ### Bounded current-conversation working context
 

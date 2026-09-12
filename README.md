@@ -59,6 +59,7 @@ The reference system currently does all of the following end to end:
 - A short wake greeting can be spoken without generating a monologue.
 - Realtime voice uses a selected OpenAI voice while substantive answers preserve the OpenClaw person's personality and continuity.
 - The user can interrupt naturally while the AI is speaking.
+- Human-validated local Chrome control can open and close tabs, switch among existing tabs, and open websites that are not already open. Common browser commands are routed locally, verified against actual Chrome state, and do not require Screen unless the user asks the assistant to visually inspect page contents. See `docs/10d-local-browser-control-validated-2026-09-12.md`.
 - A bounded session-only working-context window can cross the Realtime-to-agent boundary so current shorthand, corrections, and evolving ideas remain coherent without promoting them to durable memory.
 - “Thanks, <name>” / “Thank you, <name>” can end the live voice session locally and re-arm wake listening.
 - Spoken requests such as “Can you look at the screen?” enable screen awareness and immediately give the model fresh screen images.
@@ -122,6 +123,7 @@ The reliable sequence is:
 27. If the room should be clickable, define native-window input ownership explicitly. Electron click-through is not enough if the Unreal HWND is still disabled or mouse-transparent; see `docs/02d-interactive-wide-view-input.md`.
 28. When Wide View gains full-body motion, preserve the active conversation, use cinematic cuts for pose/state transitions, anchor standing placement from real foot contact, and validate active-motion neck/head propagation before locomotion. See `docs/09f-wide-view-full-body-animation.md`.
 29. Add ambient embodiment only after movement is stable: abundant quiet standing, sparse stationary fidgets, longer moving idles, event-cued attention, per-action cooldowns, and strict cancellation/priority rules. See `docs/02e-ambient-wide-view-idle-behavior.md`.
+30. Optionally add bounded local computer control only after voice, interruption, and sensor routing are stable. Start with browser actions, keep manipulation separate from visual perception, verify every mutation against real OS/browser state, and preserve failed approaches so future builders do not repeat them. See `docs/10d-local-browser-control-validated-2026-09-12.md`.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 
