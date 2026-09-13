@@ -159,18 +159,20 @@ Use this as the execution checklist for a new AI person such as Lyra. Do not mar
 
 ---
 
-## Phase I — Same-person routing
+## Phase I - Same-person routing
 
-- [ ] Use agent-consult architecture.
-- [ ] Configure force-agent-consult or current equivalent.
-- [ ] Use minimal provider-facing delivery instruction.
-- [ ] Forward `openclaw_agent_consult` through Gateway.
-- [ ] Wait for run-id final response.
-- [ ] Return result to provider.
-- [ ] Do not expose “checking with Lyra” architecture in spoken response.
-- [ ] Run baseline continuity questions.
+- [ ] Use the agent-consult architecture.
+- [ ] Choose exactly one consult-to-speech owner: provider-owned or application-owned.
+- [ ] Do not enable provider force-consult and a second app-owned consult for the same finalized turn.
+- [ ] Use a minimal provider-facing delivery instruction.
+- [ ] Correlate consult/run id, response request id, provider response id, and response origin.
+- [ ] If the application owns the answer, disable automatic provider response for that turn and create one isolated no-tool delivery response.
+- [ ] Cancel by exact `response_id` and clear queued audio before replacing a stale response.
+- [ ] Ignore late `response.done` events from older response ids.
+- [ ] Do not expose internal consultation/routing in speech.
+- [ ] Run baseline continuity questions and compare the heard answer with the logged consult result.
 
-**Gate I test:** Human cannot detect a separate generic realtime persona in ordinary conversation.
+**Gate I test:** Human cannot detect a separate generic realtime persona, and the response that is actually heard is causally tied to the intended long-lived agent answer.
 
 ---
 
@@ -191,6 +193,28 @@ Use this as the execution checklist for a new AI person such as Lyra. Do not mar
 **Gate I2 test:** Known shared context is retrieved when relevant, irrelevant vault material stays out, and a mundane session creates no durable memory.
 
 See `05a-shared-obsidian-memory.md`.
+
+---
+
+## Phase I2a - Historical import and live cross-surface continuity
+
+- [ ] Keep bulk historical exports/archive files separate from curated durable memory.
+- [ ] Normalize imported records into a searchable private archive without treating every transcript line as memory.
+- [ ] Create compact curated historical capsules/timelines only where useful.
+- [ ] Capture fresh conversation-edge context from each trusted surface into a bounded recent file or equivalent store.
+- [ ] Preserve stable message ordering with explicit sequence numbers when DOM virtualization or partial snapshots are possible.
+- [ ] Use atomic writes with unique temp names/retries on Windows.
+- [ ] Define precedence explicitly: current live words > fresh cross-surface context > curated durable memory > raw history.
+- [ ] Detect explicit cross-surface continuity questions before generic memory retrieval.
+- [ ] When a fresh matching conversation exists, suppress stale lower-priority context that could override it.
+- [ ] Keep sensitive/raw records private; publish only sanitized architecture/examples.
+- [ ] Instrument finalized transcript -> classifier -> consult -> response id -> audio playback while debugging.
+- [ ] Add regression tests for queued authoritative answers, stale `response.done`, and lower-priority response overwrite.
+- [ ] Scan generated source patches for control characters such as accidental backspace `0x08` in regex boundaries.
+
+**Gate I2a test:** Put a unique fact/project detail on Surface A, then ask for it naturally on Surface B. Surface B must answer correctly from fresh context without requiring that detail to have been promoted into durable memory, and the spoken answer must match the authoritative consult result.
+
+See `05d-historical-import-and-cross-surface-continuity.md`.
 
 ---
 

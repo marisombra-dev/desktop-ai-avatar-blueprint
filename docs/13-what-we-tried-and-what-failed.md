@@ -594,6 +594,130 @@ See `docs/09f-wide-view-full-body-animation.md` and `docs/09g-metahuman-neck-hea
 
 ---
 
+## 47. Tail-only fresh-context windows can preserve the ending and lose the answer
+
+### What happened
+
+A fresh conversation mirror was technically present, but the retrieval window kept only the tail. The actual project definition lived earlier in the conversation, so the desktop surface repeatedly received recent text that described the debugging failure rather than the work being asked about.
+
+### Lesson
+
+For bounded active-conversation mirrors, preserve both the beginning and the end when the file exceeds budget, or use another structure that protects topic-defining context. Freshness alone does not help if truncation removes the decisive evidence.
+
+---
+
+## 48. Provider force-consult plus application-owned consult created two answer paths
+
+### What happened
+
+The realtime provider could automatically consult the agent while the desktop application also launched its own deterministic consult after finalized transcription. Both looked individually correct. Together they raced.
+
+### Lesson
+
+Choose one consult-to-speech owner per user turn. Provider-owned and application-owned consultation are both viable; combining them is not redundancy, it is a race condition.
+
+---
+
+## 49. A correct consult result did not prove the user would hear that answer
+
+### What happened
+
+Direct agent tests returned the correct fresh-continuity answer, while live voice still spoke stale uncertainty. The retrieval and reasoning layer was working; a later Realtime response independently authored something else.
+
+### Lesson
+
+Validate the whole causal chain. Log the consult result and correlate it to the exact provider response id and audio playback that the user hears. Do not declare memory fixed because one intermediate log line is correct.
+
+---
+
+## 50. Tool output followed by bare `response.create` let Realtime answer again
+
+### What happened
+
+One consult path returned a function result to Realtime and then issued an unqualified `response.create`. The provider was free to synthesize a new answer from its own conversation state rather than faithfully speaking the consulted answer.
+
+### Lesson
+
+For application-owned consultation, create an isolated delivery response containing the already-decided answer, disable tools for that response, and tag it with request/origin metadata.
+
+---
+
+## 51. Untargeted cancellation and uncleared audio allowed stale speech to survive
+
+### What happened
+
+Cancelling without a specific response id could affect the wrong response, and cancelling generation did not necessarily remove already-buffered WebRTC audio. A stale answer could therefore remain audible after logic had moved on.
+
+### Lesson
+
+Cancel the exact active response id and clear the output-audio buffer when the provider supports it. Generation state and audible playback state are separate boundaries.
+
+---
+
+## 52. One global response boolean was not a response coordinator
+
+### What happened
+
+Late `response.done`, overlapping `response.create`, cancellation, and queued authoritative answers all shared a few booleans. An old event could reset state for a newer response, or a lower-priority response could overwrite a queued agent answer.
+
+### Lesson
+
+Track request ids, provider response ids, origins, active response ownership, and queued priority explicitly. Ignore stale completion events whose id does not match the active response.
+
+---
+
+## 53. Browser DOM order was not stable conversation order
+
+### What happened
+
+A live chat capture initially assumed the browser DOM represented the full conversation in stable order. Virtualized/re-rendered message nodes could reorder or omit content.
+
+### Lesson
+
+Assign monotonic sequence numbers when messages are first observed and merge snapshots by stable identity/sequence. Treat the browser DOM as a view, not the canonical transcript database.
+
+---
+
+## 54. Windows temp-file reuse made atomic-looking writes unreliable
+
+### What happened
+
+A capture server reused a predictable temporary filename while replacing JSON snapshots. Windows file locking occasionally caused replacement failures.
+
+### Lesson
+
+Use unique temp filenames, bounded retry/backoff, and a safe fallback. A live continuity bridge should fail softly rather than corrupt or lose the current conversation mirror.
+
+---
+
+## 55. Renderer console logs were not enough for response-race debugging
+
+### What happened
+
+The main development log showed agent consultation, but the critical Realtime response events lived in the renderer and were not reliably visible after the fact. That made several races look mysterious.
+
+### Lesson
+
+During difficult realtime debugging, write a small structured on-disk ledger across the actual boundaries: finalized transcript, classifier result, consult start/result, response request, response id, audio start/stop, and completion. Keep it technical and omit private content where possible.
+
+---
+
+## 56. Generated source code turned regex word boundaries into backspace characters
+
+### What happened
+
+A source patch generated through Python wrote `\b` incorrectly. Python interpreted the escape while constructing the patch, leaving literal `0x08` backspace characters in a JavaScript regex. The source looked nearly normal during casual inspection, but the cross-surface intent classifier could never match phrases it was explicitly designed to recognize.
+
+### Symptom
+
+Fresh context, direct agent consultation, and response delivery all tested correctly in isolation, yet live cross-surface questions never entered the consult path and Realtime kept giving the same stale answer.
+
+### Lesson
+
+When code is generated by another language, validate the resulting bytes, not just the visual source. Scan for control characters, run the exact classifier against the exact user phrase, and keep a branch ledger that proves whether the intended route fired. Tiny invisible encoding defects can impersonate architectural failures for hours.
+
+---
+
 # The meta-lesson
 
 The project was not hard because any one component was impossible. It was hard because a desktop AI avatar is a stack of systems that fail in visually similar ways.

@@ -85,46 +85,55 @@ Questions:
 
 If a manually launched Gateway works but the scheduled/startup service fails, fix startup. Do not rewrite the Electron client or erase OpenClaw state.
 
-## 5. Realtime brain routing
+## 5. Realtime brain routing needs one response owner
 
-Current OpenClaw Talk supports the concept of:
+The requirement is not a particular config label. The requirement is that exactly one path owns each substantive user turn from transcription through agent consultation to speech.
+
+Two architectures are valid:
+
+### Provider-owned consultation
+
+The realtime provider decides to call `openclaw_agent_consult`. The desktop client forwards that tool call to the Gateway, waits for the run-id result, returns the tool output, and allows the provider to continue the same response. In this architecture, a force-consult setting can be appropriate because the provider is the sole consult owner.
+
+### Application-owned consultation
+
+The desktop client disables automatic provider responses for finalized user turns, classifies the completed transcript itself, invokes the OpenClaw consult directly, then asks Realtime to speak the already-decided answer. In this architecture, disable automatic provider/Gateway consult fallback for those turns and do not expose `openclaw_agent_consult` as a competing live provider tool.
+
+The reference cross-surface implementation ultimately used the second shape because it needed deterministic fresh-context injection before consultation and precise response ownership afterward.
+
+**Do not combine both architectures.** If provider-owned force-consult and application-owned consult are active at the same time, two agent runs or two response paths can race. The user may hear a stale provider answer even though a correct agent answer was produced in parallel.
+
+## 6. Correlate the consult result with the response that actually speaks
+
+A correct agent answer in a log is not end-to-end proof. The spoken response must be causally tied to that answer.
+
+For an application-owned client, track at least:
 
 ```text
-realtime brain: agent-consult
-consult routing: force-agent-consult
+turn token / user transcript id
+consult call id or run id
+response request id
+provider response id
+response origin
+active response id
+queued authoritative response, if any
 ```
 
-The goal is that normal finalized spoken user turns are routed through the OpenClaw agent even if the realtime provider could answer directly.
+When the consult result arrives, create an isolated response whose input contains the already-decided answer and whose metadata includes the request id/origin. Disable tools for that delivery response. This prevents Realtime from treating the tool result as permission to independently answer the original question again.
 
-Why force it?
+If another response is active, cancel the exact `response_id`, clear the WebRTC output audio buffer, queue the authoritative answer, and release it only after the cancelled response is actually done. A lower-priority generic response must never overwrite an already-queued consult answer.
 
-Without force-consult, the provider may decide some turns are easy enough to answer itself. Those answers can be perfectly competent but subtly lack:
+Ignore a late `response.done` event whose response id does not match the currently active response. Otherwise an old response can reset ownership state for a newer one.
 
-- current memories,
-- relationship tone,
-- project continuity,
-- agent-specific opinions,
-- the same humor.
+A common failed pattern is:
 
-That inconsistency is especially noticeable in a persistent avatar because the face/voice creates a strong expectation of personhood continuity.
-
-## 6. Tool-call forwarding
-
-For a client-owned realtime transport, provider calls to `openclaw_agent_consult` should be forwarded to Gateway policy.
-
-Conceptually:
-
-```ts
-if (toolName === 'openclaw_agent_consult') {
-  const started = await gateway.request('talk.client.toolCall', input);
-  const runId = started.runId;
-  const answer = await waitForRunFinalText(runId);
-  sendFunctionCallOutput(callId, { result: answer });
-  send({ type: 'response.create' });
-}
+```text
+consult result -> function_call_output -> bare response.create
 ```
 
-Wait for normal Gateway chat lifecycle events keyed by the returned run id. Do not poll the history blindly and guess which message belongs to the consult.
+That can cause the provider to synthesize a new answer from its own conversation state instead of faithfully speaking the consulted answer. If the user hears something different from the logged consult result, debug response ownership before debugging memory retrieval.
+
+For the full historical-import, conversation-edge, precedence, and response-coordinator design, see `05d-historical-import-and-cross-surface-continuity.md`.
 
 ## 7. Local commands must intercept the consult path too
 
@@ -262,7 +271,7 @@ The goal is not to prove supernatural memory. It is to prove the desktop surface
 ## 14. Common continuity failures
 
 ### Realtime sounds generic
-Check whether finalized turns are actually force-consulting the agent.
+Check whether finalized turns are actually reaching the intended agent consult path, and whether that path owns the response that is ultimately spoken.
 
 ### Realtime says “Let me check with Lyra”
 Your provider-facing delivery instruction is exposing architecture. Tell it that it **is** the same first-person speaker and must not narrate routing.
@@ -278,7 +287,7 @@ Move it earlier into local intent interception.
 
 ## 15. Test social behavior separately from continuity
 
-Force-consult can prove that the same long-lived agent authored the answer and still leave the desktop surface socially wrong. Models are generally optimized to be useful, so ambiguous remarks can be pulled toward explaining, correcting, advising, or offering help even when the user was making a social bid.
+Correct agent consultation can prove that the same long-lived agent authored the answer and still leave the desktop surface socially wrong. Models are generally optimized to be useful, so ambiguous remarks can be pulled toward explaining, correcting, advising, or offering help even when the user was making a social bid.
 
 Do not keep rewriting identity files to fight this. Define a separate behavioral contract: what counts as social companionship, what counts as explicit analysis, which local modes are operational, and when silence is the correct response. Put compatible guidance in every route that can actually generate speech.
 

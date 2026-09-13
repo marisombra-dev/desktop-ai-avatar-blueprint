@@ -39,6 +39,7 @@ If the target person is Lyra, also read `LYRA_QUICKSTART.md` before implementati
 11. **Do not begin with mannerisms.** First make the system reliable. A blinking, lip-synced, visually stable MetaHuman with excellent conversation is more valuable than a gesturing avatar whose wake/sensor lifecycle is fragile.
 12. **Shared memory must stay selective.** If a common Markdown/Obsidian vault is enabled, retrieve only bounded relevant context and curate durable writes aggressively; never treat the vault as a transcript dumping ground.
 13. **Personality needs behavioral priority, not just adjectives.** Test whether ambiguous social remarks remain social instead of becoming unsolicited explanation/advice. Read `docs/05c-social-intent-and-behavioral-priority.md` before tuning prompts for “warmth” or “brevity.”
+14. **Do not collapse every kind of continuity into memory.** Keep raw historical archives, curated durable memory, active-session working context, and fresh cross-surface conversation-edge context as separate data planes with explicit precedence. Read `docs/05d-historical-import-and-cross-surface-continuity.md` before importing large histories or connecting multiple conversational surfaces.
 
 ## Ask the human only for genuinely subjective decisions
 
@@ -84,6 +85,9 @@ Spoken substantive answers demonstrably come from/through the existing OpenClaw 
 
 ### Gate F2: Social-behavior priority
 Greetings, gratitude, jokes, personal sharing, and casual shared-media observations retain the intended person's social manner instead of automatically becoming explanation, advice, fact-checking, coaching, or availability speeches. Explicit analysis requests must still receive analysis.
+
+### Gate F3: Cross-surface continuity
+If another trusted AI/chat surface is part of the same person, a fact or project discussed there can be recalled correctly in desktop voice without copying raw transcripts into durable memory. Fresh cross-surface context outranks stale durable history, and one response owner speaks the final answer.
 
 ### Gate G: Lip sync
 Realtime output audibly and visually drives the MetaHuman face with acceptable latency.

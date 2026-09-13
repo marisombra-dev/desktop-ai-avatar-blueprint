@@ -61,6 +61,7 @@ The reference system currently does all of the following end to end:
 - The user can interrupt naturally while the AI is speaking.
 - Human-validated local Chrome control can open/close/switch tabs, open unopened sites, search the web/YouTube/Wikipedia/GitHub, and route named-place weather questions through Weather.com before answering from fresh page pixels. A final cross-capability run survived shared YouTube watching, media-tab cleanup, Wikipedia navigation, existing-tab switching, and Camera visual reasoning in one uninterrupted conversation. See `docs/10d-local-browser-control-validated-2026-09-12.md` and `docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md`.
 - A bounded session-only working-context window can cross the Realtime-to-agent boundary so current shorthand, corrections, and evolving ideas remain coherent without promoting them to durable memory.
+- Historical records can be imported into a private archive and distilled into curated continuity, while fresh conversations from other trusted surfaces can be captured into short-lived conversation-edge files. Explicit precedence rules keep current live words above fresh cross-surface context, which stays above durable memory and raw history. See `docs/05d-historical-import-and-cross-surface-continuity.md`.
 - “Thanks, <name>” / “Thank you, <name>” can end the live voice session locally and re-arm wake listening.
 - Spoken requests such as “Can you look at the screen?” enable screen awareness and immediately give the model fresh screen images.
 - Spoken requests such as “Can you look at me?” enable the webcam and immediately give the model a fresh camera frame.
@@ -103,8 +104,8 @@ The reliable sequence is:
 7. Connect Electron to the OpenClaw Gateway.
 8. Establish realtime WebRTC voice with no screen/camera yet.
 9. Make audio drive MetaHuman lip sync.
-10. Preserve personality continuity by forcing ordinary realtime dialogue through the existing OpenClaw agent.
-11. Optionally add a shared Markdown/Obsidian continuity vault with bounded retrieval and conservative session-end curation.
+10. Preserve personality continuity by routing ordinary substantive dialogue through the existing OpenClaw agent with exactly one consult-to-speech owner; do not combine provider-owned and application-owned consult paths.
+11. Optionally add a shared Markdown/Obsidian continuity vault with bounded retrieval and conservative session-end curation. If multiple trusted surfaces must share fresh context or an existing history corpus, add the archive/import + conversation-edge bridge in `docs/05d-historical-import-and-cross-surface-continuity.md`.
 12. Add contextual local-time awareness from the computer's actual clock/timezone.
 13. Add local wake and sleep lifecycle.
 14. Add manual Screen and Camera toggles.
@@ -435,7 +436,7 @@ The browser must never receive the user's long-lived OpenAI API key. Use the eph
 
 ## Keep one person, not two
 
-Configure OpenClaw realtime routing so finalized user speech is consistently consulted through the existing agent. In current OpenClaw terminology, `agent-consult` plus `force-agent-consult` is the relevant architecture. The exact configuration surface may move, so check current OpenClaw Talk documentation.
+Configure realtime routing so finalized substantive user speech is consistently consulted through the existing agent, with exactly one consult-to-speech owner. Provider-owned force-consult can work when the provider is the sole owner; an application-owned consult path should instead suppress competing automatic provider consultation/responses for the same turn. Check current OpenClaw Talk documentation because the exact configuration surface may move.
 
 Use a lightweight realtime system instruction only for **delivery**, for example:
 
@@ -984,22 +985,23 @@ Point it at this repository and tell it to read in this order:
 10. `docs/05a-shared-obsidian-memory.md`
 11. `docs/05b-contextual-time-awareness.md`
 12. `docs/05c-social-intent-and-behavioral-priority.md`
-13. `docs/06-wake-sleep-and-local-controls.md`
-14. `docs/07-screen-and-camera-vision.md`
-15. `docs/08-proactive-presence.md`
-16. `docs/09-avatar-behavior-and-animation.md`
-17. `docs/09a-privacy-first-eye-contact.md`
-18. `docs/09b-metahuman-head-control.md`
-19. `docs/09c-metahuman-expression-calibration.md`
-20. `docs/09d-metahuman-shoulder-shrug.md`
-21. `docs/09e-fewer-words-more-presence.md`
-22. `docs/09f-wide-view-full-body-animation.md`
-23. `docs/10-privacy-and-security.md`
-24. `docs/11-troubleshooting.md`
-25. `docs/11a-bounded-self-healing.md`
-26. `docs/12-build-order-checklist.md`
-27. `docs/13-what-we-tried-and-what-failed.md`
-28. `SOURCES.md`
+13. `docs/05d-historical-import-and-cross-surface-continuity.md`
+14. `docs/06-wake-sleep-and-local-controls.md`
+15. `docs/07-screen-and-camera-vision.md`
+16. `docs/08-proactive-presence.md`
+17. `docs/09-avatar-behavior-and-animation.md`
+18. `docs/09a-privacy-first-eye-contact.md`
+19. `docs/09b-metahuman-head-control.md`
+20. `docs/09c-metahuman-expression-calibration.md`
+21. `docs/09d-metahuman-shoulder-shrug.md`
+22. `docs/09e-fewer-words-more-presence.md`
+23. `docs/09f-wide-view-full-body-animation.md`
+24. `docs/10-privacy-and-security.md`
+25. `docs/11-troubleshooting.md`
+26. `docs/11a-bounded-self-healing.md`
+27. `docs/12-build-order-checklist.md`
+28. `docs/13-what-we-tried-and-what-failed.md`
+29. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 

@@ -73,7 +73,7 @@ OpenAI Realtime supplies:
 - local function calls,
 - multimodal image input for current screen/camera views.
 
-It does **not** become a second long-lived persona. In the reference architecture, OpenClaw Talk uses agent consultation and force-consult routing so ordinary finalized user turns go through the existing agent.
+It does **not** become a second long-lived persona. Ordinary substantive finalized user turns must go through the existing agent, and exactly one path must own consultation plus final speech. Provider-owned force-consult is one valid shape; application-owned consultation is another. Do not run both for the same turn.
 
 The realtime layer can have a tiny delivery instruction, e.g. “speak in first person as the same person; do not expose routing; preserve the consulted response's humor and tone.” That is delivery glue, not a personality database.
 

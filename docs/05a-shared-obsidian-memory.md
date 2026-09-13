@@ -10,6 +10,8 @@ The core rule is:
 
 > **Retrieve selectively, curate aggressively, and never turn the vault into a transcript archive.**
 
+This chapter describes the **durable curated** layer only. Do not make these files carry three other jobs: a bulk archive of old records, a current-session working buffer, or a fresh mirror of another conversational surface. Those data planes have different retention and precedence rules. If you are importing years of project/conversation records or connecting live chat and desktop voice so each can know what just happened on the other surface, use `05d-historical-import-and-cross-surface-continuity.md` alongside this chapter.
+
 ## 1. Why use a Markdown vault
 
 A local Markdown vault has useful properties:

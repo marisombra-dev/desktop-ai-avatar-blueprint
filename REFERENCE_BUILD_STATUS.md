@@ -4,7 +4,7 @@ This file distinguishes **proven behavior**, **implemented plumbing**, and **exp
 
 It exists because “there is code for it” is not the same thing as “the human has objectively verified it.”
 
-Snapshot date: **2026-09-12**.
+Snapshot date: **2026-09-13**.
 
 ## Proven in repeated live use
 
@@ -13,6 +13,20 @@ Snapshot date: **2026-09-12**.
 **Status: PROVEN**
 
 The desktop voice is not treated as a separate generic persona. Ordinary substantive voice conversation is routed through the existing long-lived OpenClaw agent using the agent-consult architecture. Increasing reasoning effort improved quality, but continuity depends primarily on routing to the same agent rather than on a particular reasoning setting.
+
+### Historical import + live cross-surface continuity
+
+**Status: HUMAN-VALIDATED END TO END**
+
+The reference build now separates four continuity planes: raw historical archive, curated durable Markdown/Obsidian memory, bounded current-session working context, and fresh cross-surface conversation-edge context. Historical records can be normalized and indexed without turning every transcript line into durable memory. Fresh conversation mirrors are captured separately with explicit recency/precedence rules.
+
+Precedence is explicit: current live user words first, then fresh matching cross-surface context, then curated durable continuity, then raw historical records. Explicit cross-surface questions can temporarily suppress stale lower-priority context so an older failed retrieval attempt cannot override a fresh conversation that contains the answer.
+
+The desktop voice path was human-validated by asking about work that existed only in the fresh chat surface. After repairing routing and response ownership, the desktop avatar answered correctly on repeated live tests. A technical ledger proved the full path: finalized transcript -> cross-surface classifier -> agent consult -> isolated response request/id -> audible playback.
+
+The validation also exposed several reusable failure modes: tail-only context truncation, duplicate provider/app consult ownership, stale response races, bare `response.create` after tool output, untargeted cancellation, uncleared output audio, stale `response.done`, DOM virtualization/order assumptions, Windows temp-file replacement races, and an accidental `0x08` backspace embedded in a generated JavaScript regex where `\b` word boundaries were intended.
+
+See `docs/05d-historical-import-and-cross-surface-continuity.md` and the corresponding failures in `docs/13-what-we-tried-and-what-failed.md`.
 
 ### Realtime voice
 
