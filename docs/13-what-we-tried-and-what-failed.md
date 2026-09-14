@@ -814,6 +814,54 @@ Snapshot the user-turn generation/timestamp before slow work and discard the eve
 
 ---
 
+## 65. Mixed provider/app response ownership created an avoidable race
+
+### What happened
+
+Realtime VAD was configured with `create_response:false`, but the provider could still call the agent consult tool and application code could also trigger a continuation. Two layers could therefore believe they owned the substantive answer.
+
+### Lesson
+
+Choose one response owner. Persist the finalized user transcript once, run the long-lived agent consult from application code, then use Realtime only to speak the already-decided answer. Correlate response ids/origins and reject stale completion events.
+
+---
+
+## 66. The Talk schema advertised a brain mode the live gateway rejected
+
+### What happened
+
+OpenClaw 2026.9.2's installed schema exposed `brain: "none"`, but the live `talk.client.create` route rejected it and accepted `brain: "agent-consult"`.
+
+### Lesson
+
+When schema and runtime disagree, treat the live gateway as authoritative and record the version-specific mismatch. A playback-only session can still remain safe by opening no microphone and creating only a tool-disabled exact-line response.
+
+---
+
+## 67. A second visible Electron shell detached the control overlay
+
+### What happened
+
+A playback test launched another Electron shell against the same composite avatar. The overlay follower could bind to the wrong `Desktop Lyra` window, leaving the control bars detached or apparently duplicated.
+
+### Lesson
+
+Do not test a composite Electron/Unreal avatar by launching a competing visible shell with the same window identity. Reuse the existing voice session or isolate the test so only one shell can own the overlay pairing.
+
+---
+
+## 68. Proactive speech should reuse an open quiet voice session
+
+### What happened
+
+An early conservative policy blocked proactive speech whenever a voice session was open. That was safe but unnecessarily prevented bounded spontaneity during a long quiet live call.
+
+### Lesson
+
+Use two delivery paths: recv-only playback when voice is closed, and the already-open Realtime session when it is open but quiet. Suppress during shared Watch/Screen, cancel immediately on new user speech, and only stamp the spoken cooldown after audio actually begins.
+
+---
+
 # The meta-lesson
 
 The project was not hard because any one component was impossible. It was hard because a desktop AI avatar is a stack of systems that fail in visually similar ways.
