@@ -89,3 +89,45 @@ The silence tail mattered visibly because provider generation completion can pre
 ## Validation status
 
 The response-owner refactor and open-session proactive delivery were human-validated. The long-duration Phase U restraint soak remains a separate acceptance test; a one-shot forced delivery proves plumbing, not social restraint.
+
+## Bounded self-healing validation
+
+A later port pass added bounded recovery for expendable leaf processes rather than restarting the whole desktop-avatar stack.
+
+Human failure injection validated these independent recoveries:
+
+- wake listener process killed: only wake restarted and reached `READY`;
+- overlay helper killed: only the overlay helper restarted and survived its stability window;
+- packaged Unreal runtime killed: the exact approved executable relaunched with the same command-line flags while the overlay helper remained alive and rebound;
+- Screen-audio transcriber killed while Screen permission was ON: one bounded retry relaunched it and reached `READY`;
+- Screen turned OFF: the transcriber exited and did not resurrect after the retry window.
+
+The recovery ledger records only technical lifecycle data such as subsystem, attempt, action, timestamp, and reason. It does not contain transcript, screen, audio, or private-memory content.
+
+### Voice-turn overlap found during the same pass
+
+Realtime VAD can finalize a hesitation as several user fragments. Two application-owned agent consults were initially allowed to overlap, so one stale run could finish after a newer fragment and produce a stray failure fallback.
+
+The validated fix serializes substantive consults. If a newer finalized fragment arrives while a consult is active, only the newest pending turn is retained. The older result is discarded if its turn generation is stale, then the newest turn is consulted against the updated session context.
+
+A deliberate pause-in-the-middle voice test produced one coherent audible answer and no stale failure response.
+
+### Screen authorization must not belong to Mic cleanup
+
+An older cleanup path automatically disabled Screen when a Realtime Mic session ended. Once Screen became an independent watcher capability, that coupling was wrong: ending Mic also intentionally stopped program-audio Whisper, which made a recovery test look like a failed respawn.
+
+The corrected ownership rule is explicit: Mic cleanup owns microphone/camera and wake re-arming; the Screen button owns Screen authorization and its observer/program-audio helpers.
+
+### DPI-aware geometry checks prevented a false overlay fix
+
+A diagnostic initially reported the recovered Unreal inset as the wrong top/bottom band size. The probe was DPI-unaware, so Windows virtualized its coordinates at the display scaling factor. A per-monitor-DPI-aware probe showed the composite geometry was correct apart from expected one-pixel rounding.
+
+Portable lesson: make validation probes DPI-aware before changing otherwise stable overlay code.
+
+### Child stdin `EPIPE` needs asynchronous handling
+
+Killing the Screen-audio helper while PCM was still arriving produced a Windows JavaScript error dialog even though the helper later recovered. A synchronous `try/catch` around `stdin.write()` was insufficient because `EPIPE` can arrive asynchronously on the stream.
+
+The validated repair added a child-stdin `error` listener plus `destroyed`/`writable` guards before writes. The first retest accidentally used an Electron main process that had been running before the rebuild, so the old code still threw. After a clean main-process restart, killing the helper again recovered silently with no uncaught exception.
+
+Portable lesson: when validating a main-process fix in Electron dev mode, prove that the running main process actually loaded the rebuilt bundle before judging the patch.

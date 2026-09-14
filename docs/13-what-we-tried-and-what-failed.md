@@ -862,6 +862,56 @@ Use two delivery paths: recv-only playback when voice is closed, and the already
 
 ---
 
+
+## 69. Realtime hesitation fragments launched overlapping agent consults
+
+### What happened
+
+VAD finalized a paused sentence into several user fragments. Application-owned consults overlapped, allowing a stale run to finish after a newer fragment and emit an unrelated failure fallback.
+
+### Lesson
+
+Serialize substantive consults. Retain only the newest pending finalized turn, discard stale results by turn generation, then consult the newest turn against updated conversation context.
+
+---
+
+## 70. Voice cleanup accidentally owned Screen permission
+
+### What happened
+
+Ending a Mic session also disabled Screen, which intentionally stopped Screen-audio Whisper even though the user had left Screen enabled.
+
+### Lesson
+
+Capability ownership must stay explicit. Mic cleanup owns mic/camera and wake; Screen authorization is owned only by the Screen control and must survive unrelated voice-session cleanup.
+
+---
+
+
+## 71. A DPI-unaware geometry probe falsely accused the overlay
+
+### What happened
+
+After Unreal recovery, a diagnostic reported the wrong top/bottom control-band sizes. The probe was DPI-unaware, so Windows virtualized its coordinates at display scaling and made correct geometry look wrong.
+
+### Lesson
+
+Make window-geometry probes per-monitor-DPI-aware before changing stable overlay code. Validation instrumentation can be the bug.
+
+---
+
+## 72. Killing a stdin-fed helper surfaced an asynchronous `EPIPE`
+
+### What happened
+
+The Screen-audio transcriber recovered after being killed, but PCM writes still in flight produced a JavaScript error dialog. `try/catch` around `stdin.write()` did not catch the asynchronous stream error.
+
+### Lesson
+
+Attach an error listener to child stdin and check `destroyed`/`writable` before writes. After rebuilding Electron main-process code, restart the main process before retesting; a stale dev process can make a correct patch appear broken.
+
+---
+
 # The meta-lesson
 
 The project was not hard because any one component was impossible. It was hard because a desktop AI avatar is a stack of systems that fail in visually similar ways.
