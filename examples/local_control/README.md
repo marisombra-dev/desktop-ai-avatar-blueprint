@@ -1,6 +1,6 @@
 # Local Control Examples
 
-These files accompany [`docs/10d-local-browser-control-validated-2026-09-12.md`](../../docs/10d-local-browser-control-validated-2026-09-12.md) and [`docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md`](../../docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md).
+These files accompany [`docs/10d-local-browser-control-validated-2026-09-12.md`](../../docs/10d-local-browser-control-validated-2026-09-12.md), [`docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md`](../../docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md), and [`docs/10f-window-file-and-rich-browser-control-validated-2026-09-14.md`](../../docs/10f-window-file-and-rich-browser-control-validated-2026-09-14.md).
 
 They capture the first narrow local-computer-control tier from the Desktop Ethan reference build.
 
@@ -9,6 +9,9 @@ They capture the first narrow local-computer-control tier from the Desktop Ethan
 - `desktop_control_bridge.py` — Windows bridge for browser, file, and top-level application/window control.
 - `browser_intent_routing.ts` — deterministic natural-language routing pattern for common browser commands, plus the open-ended fallback boundary.
 - `browser_search_routing.ts` — explicit search/weather intent routing plus stale-tool, ambiguous-verdict, and post-watch lifecycle rules.
+- `browser_page_routing.ts` — deterministic Back/Forward/scroll/named-link routing, kept separate from tab control.
+- `window_intent_routing.ts` — conservative natural-language application/window routing.
+- `file_intent_routing.ts` — conservative file intent routing with explicit root folders and no delete action.
 
 ## Validation status
 
@@ -18,11 +21,11 @@ They capture the first narrow local-computer-control tier from the Desktop Ethan
 
 The reference build was live-tested for repeated tab creation/closing, switching among existing tabs, opening unopened sites, web/YouTube/Wikipedia/GitHub search, named-place Weather.com lookup with a fresh visual answer stage, shared-video conversation, return from Watch into ordinary browser control, and user barge-in.
 
-The final cross-capability validation chained YouTube watch-along, media-tab close, Wikipedia navigation, tab switching, Camera activation, and fresh visual reasoning in one uninterrupted live conversation. The final gate was 42 browser-language regression cases inside the full **128-test** project suite, plus a 40-run verdict-channel stress test with zero blank/bad helper results.
+The later 2026-09-14 pass added verified Back/Forward, directional scrolling, and named-link activation, then live-tested natural Wikipedia topic navigation and shorthand ChatGPT-tab switching. The expanded project gate reached **204/204 tests across 29 files**, with clean TypeScript and production build. Earlier verdict-channel stress testing also completed 40 consecutive runs with zero blank/bad helper results.
 
 ### File control
 
-**IMPLEMENTED AND DIRECTLY SMOKE-TESTED; NOT YET EQUIVALENTLY HUMAN-VALIDATED THROUGH VOICE**
+**HUMAN-VALIDATED THROUGH NATURAL VOICE**
 
 Implemented actions:
 
@@ -34,11 +37,11 @@ Implemented actions:
 - move;
 - rename.
 
-The first tier intentionally has no delete action and refuses overwrite when the destination already exists.
+The first tier intentionally has no delete action and refuses overwrite when the destination already exists. Copy/move/rename verify filesystem postconditions, filename resolution refuses ambiguous matches, and open distinguishes dispatch from a confirmed application window.
 
 ### Application/window control
 
-**IMPLEMENTED AND DIRECTLY SMOKE-TESTED; NOT YET EQUIVALENTLY HUMAN-VALIDATED THROUGH VOICE**
+**HUMAN-VALIDATED THROUGH NATURAL VOICE**
 
 Implemented actions:
 
@@ -50,7 +53,7 @@ Implemented actions:
 - restore;
 - close.
 
-A modern Notepad smoke test exposed a useful warning: launching an application does not guarantee a fresh blank instance. Session-restoring applications may reopen previous documents. Report observed state rather than assuming launch semantics.
+Live QA verified ordinary application open/minimize/close and Chrome minimize/bring-back. Window mutations are verified against real minimized/maximized/foreground/closed state. Modern packaged applications may require controlling an `ApplicationFrameHost` shell frame while using the real app process as identity evidence.
 
 ## Dependencies
 

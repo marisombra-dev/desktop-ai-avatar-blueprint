@@ -32,6 +32,12 @@ export function parseBrowserSearchIntent(text: string): BrowserSearchIntent | un
   match = compact.match(/^search wikipedia for (.+)$/);
   if (match?.[1]) return { action: 'search-wikipedia', query: match[1].trim(), answerFromPage: false };
 
+  match = compact.match(/^(?:open|go to) (?:the )?wikipedia page (?:for|on|about) (.+)$/);
+  if (match?.[1]) return { action: 'search-wikipedia', query: match[1].trim(), answerFromPage: false };
+
+  match = compact.match(/^(?:open|go to) (.+?)(?:'s|s) wikipedia page$/);
+  if (match?.[1]) return { action: 'search-wikipedia', query: match[1].trim(), answerFromPage: false };
+
   match = compact.match(/^look up (.+) on wikipedia$/);
   if (match?.[1]) return { action: 'search-wikipedia', query: match[1].trim(), answerFromPage: false };
 

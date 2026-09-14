@@ -4,7 +4,7 @@ This file distinguishes **proven behavior**, **implemented plumbing**, and **exp
 
 It exists because “there is code for it” is not the same thing as “the human has objectively verified it.”
 
-Snapshot date: **2026-09-13**.
+Snapshot date: **2026-09-14**.
 
 ## Proven in repeated live use
 
@@ -52,9 +52,23 @@ Live debugging exposed several post-search failures that only appeared across sk
 
 Final human validation crossed the repaired boundaries in one uninterrupted conversation: YouTube opened, a video was watched with normal companion commentary, the media tab closed, the Henry VIII Wikipedia page opened and closed, GitHub was selected again, then Camera awareness activated and answered a fresh visual question correctly. The user described the run as flawless.
 
-The final local project gate was **25 test files / 128 tests**, clean TypeScript, clean production build, 42 browser-language regression cases, plus 40 consecutive browser-helper verdict-channel runs with zero blank/bad results.
+The expanded local-control project gate is now **29 test files / 204 tests**, clean TypeScript, and a clean production build. Browser control now also includes verified Back/Forward, directional scrolling, and named-link activation, with live regressions covering natural Wikipedia phrasing and shorthand tab switching.
 
-See `docs/10d-local-browser-control-validated-2026-09-12.md`, `docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md`, and `examples/local_control/`. File and general window/application controls remain implemented and smoke-tested but do not yet have equivalent natural-voice human validation.
+See `docs/10d-local-browser-control-validated-2026-09-12.md`, `docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md`, `docs/10f-window-file-and-rich-browser-control-validated-2026-09-14.md`, and `examples/local_control/`. File and general window/application control are now also human-validated through natural voice.
+
+### Local application/window control
+
+**Status: HUMAN-VALIDATED THROUGH NATURAL VOICE**
+
+The reference build can launch/focus/minimize/maximize/restore/close a conservative set of ordinary Windows applications and visible top-level windows. Live QA verified Calculator open/minimize/close, Chrome minimize/bring-back, and contextual pronoun close. Completion is based on observable Windows state, not command dispatch. Modern packaged-app shell frames are handled as possible UI control surfaces.
+
+### Conservative local file control
+
+**Status: HUMAN-VALIDATED THROUGH NATURAL VOICE; DELETE/OVERWRITE DELIBERATELY EXCLUDED**
+
+The reference build can find/list/read/open/copy/move/rename local files using narrow folder roots and ambiguity refusal. Copy/move/rename verify filesystem postconditions; opening distinguishes dispatch from a confirmed application window. Live QA verified filename discovery, naming, reading, and opening while the destructive boundary remained closed.
+
+See `docs/10f-window-file-and-rich-browser-control-validated-2026-09-14.md`.
 
 ### Bounded current-conversation working context
 

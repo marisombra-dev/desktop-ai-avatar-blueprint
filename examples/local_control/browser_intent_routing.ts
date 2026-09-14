@@ -62,7 +62,6 @@ export function parseLocalBrowserCommand(text: string): LocalBrowserCommand | un
   if (
     /\b(?:close|shut)\b[^.?!]*\b(?:this|that|current|active)?\s*tab\b/.test(compact)
     || /\b(?:close|shut)\b[^.?!]*\btab\s+(?:that\s+)?(?:we(?:'re| are)\s+on|i(?:'m| am)\s+on)\b/.test(compact)
-    || /\b(?:close|shut)\s+(?:it|that one)\b/.test(compact)
   ) {
     return { action: 'close-tab', query: 'current' };
   }
@@ -71,7 +70,7 @@ export function parseLocalBrowserCommand(text: string): LocalBrowserCommand | un
     return { action: 'next-tab' };
   }
 
-  if ((/\b(?:previous|prior) tab\b|\b(?:switch|go|move)\s+back(?:\s+one)?(?:\s+tab)?\b/.test(compact)) && !/\bto\b/.test(compact)) {
+  if ((/\b(?:previous|prior) tab\b|\b(?:switch|move)\s+back(?:\s+one)?(?:\s+tab)?\b/.test(compact)) && !/\bto\b/.test(compact)) {
     return { action: 'previous-tab' };
   }
 
