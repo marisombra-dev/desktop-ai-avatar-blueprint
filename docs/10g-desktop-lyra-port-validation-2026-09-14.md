@@ -131,3 +131,19 @@ Killing the Screen-audio helper while PCM was still arriving produced a Windows 
 The validated repair added a child-stdin `error` listener plus `destroyed`/`writable` guards before writes. The first retest accidentally used an Electron main process that had been running before the rebuild, so the old code still threw. After a clean main-process restart, killing the helper again recovered silently with no uncaught exception.
 
 Portable lesson: when validating a main-process fix in Electron dev mode, prove that the running main process actually loaded the rebuilt bundle before judging the patch.
+
+## Screen watcher input-priority mitigation
+
+A human-visible regression appeared with Screen enabled: the mouse cursor paused roughly once per second.
+
+The watcher was calling `desktopCapturer.getSources()` every 1000 ms with a 640x360 thumbnail, then resizing and JPEG-encoding a full frame on every tick even though model analysis only occurred every 5-20 seconds.
+
+A narrow mitigation was human-validated on the port:
+
+- if Windows reports user input within the previous 2 seconds, skip the watcher sample entirely;
+- reduce the hot-path thumbnail to 160x90 and keep only its bitmap fingerprint;
+- perform a full JPEG capture only when a scene-change analysis or heartbeat is actually due.
+
+After a clean main-process restart, the user reported the cursor was smooth with Screen enabled.
+
+This intentionally favors live human interaction over continuous observation. During sustained input, watcher sampling may defer for an extended period. Treat this as a responsiveness-first mitigation, not proof that repeated `desktopCapturer.getSources()` is the ideal long-term watcher source.

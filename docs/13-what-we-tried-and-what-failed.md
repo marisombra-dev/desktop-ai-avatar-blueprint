@@ -912,6 +912,18 @@ Attach an error listener to child stdin and check `destroyed`/`writable` before 
 
 ---
 
+## 73. One-second desktop capture cadence stalled pointer motion
+
+### What happened
+
+With Screen enabled, the mouse visibly paused about once per second. The watcher enumerated/captured the desktop every 1000 ms, built a thumbnail, and JPEG-encoded a larger frame even when no model analysis was due.
+
+### Lesson
+
+Prioritize interactive input. A validated mitigation skips watcher sampling during recent user input, uses only a tiny fingerprint on the hot path, and captures a full JPEG only when analysis is actually due. Document the tradeoff: sustained input can defer observation, so a persistent low-cost capture stream may still be a better long-term architecture.
+
+---
+
 # The meta-lesson
 
 The project was not hard because any one component was impossible. It was hard because a desktop AI avatar is a stack of systems that fail in visually similar ways.
