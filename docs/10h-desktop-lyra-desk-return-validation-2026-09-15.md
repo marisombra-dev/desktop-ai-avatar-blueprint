@@ -36,12 +36,14 @@ After the repair, the detector-only live soak produced fifteen consecutive `pres
 
 Portable lesson: for desk-return sensing, false absence is more socially expensive than delayed absence. Prefer conservative hysteresis and redundant local evidence over trying to make one frame classifier decisive.
 
-## Current validation status
+## Final validation status
 
-Automated gates are green for the pure policy, controller orchestration with a fake sensor, helper lifecycle, detector self-test, and the complete production build.
+Automated gates are green for the pure policy, controller orchestration with a fake sensor, helper lifecycle, detector self-test, live-session route selection, and the complete production build.
 
-The fast live profile has also demonstrated technically valid closed-voice away/return cycles: confirmed absence, confirmed return, pending greeting creation, playback-only dispatch, and playback completion. Human confirmation of the audible line remains separate from the technical log.
+Live validation passed both required lifecycles. With voice closed, a qualified away/return cycle dispatched through microphone-free playback and completed. With an interactive voice session left open, desk presence continued independently, a qualified return dispatched through the existing Realtime session, and the greeting was spoken without opening a second voice transport.
 
-The required Gate V open-voice lifecycle is still in progress at the time of this note. The remaining live proof is to keep an interactive voice session open, qualify a real away interval, return without speaking first, and confirm that the greeting uses the existing Realtime session while webcam ownership remains singular.
+A live test also exposed that raw VAD `speech_started` was incorrectly counted as meaningful user interaction. That allowed incidental voice activity to cancel a spontaneous line and permanently consume the pending return. The repair separates low-level voice activity from a finalized user turn: VAD may interrupt speech and refresh generic recency, while only a completed user/UI interaction consumes the pending arrival event. The open-voice lifecycle passed after this change.
 
-Do not mark Phase V fully green until both the closed-voice and open-voice human-visible lifecycles have passed.
+Webcam ownership is singular. Explicit Camera acquisition first pauses and awaits shutdown of the local presence helper; follow-up Camera questions reuse the already-open stream; Camera release makes desk sensing eligible again. A human fresh-frame check correctly localized a small visible object to its current position, confirming that the reused Camera stream was current rather than stale.
+
+Phase V is GREEN.

@@ -968,3 +968,26 @@ The presence-helper wrapper expected `(scriptPath, pythonExecutable, callback)`,
 Exercise helper construction and lifecycle before enabling a new sensor. Constructor argument order is a mundane bug with high privacy impact when the child owns a camera or microphone, so validate the disabled path, helper self-test, and process teardown before first live activation.
 
 ---
+## 76. Raw VAD activity consumed a pending desk return
+
+### What happened
+
+The open-voice return path selected the correct live Realtime delivery route, but an `input_audio_buffer.speech_started` event was also treated as meaningful user interaction. Incidental voice activity could therefore interrupt the greeting and permanently consume the pending return before any finalized user turn existed.
+
+### Lesson
+
+Separate interruption from semantic interaction. Low-level VAD should be allowed to cancel spontaneous audio immediately and refresh generic activity recency, but only a finalized user turn or real UI action should consume a pending arrival event. This preserves user priority without giving breath, chair noise, or false VAD a permanent veto.
+
+---
+
+## 77. Composite avatar topmost state can drift after initial stacking
+
+### What happened
+
+The Electron control bars remained visible while the separate Unreal avatar panel slipped behind a normal application window. Geometry was still correct. The overlay helper established `TOPMOST` during prepare/sync but deliberately avoided later z-order churn, so a lost Unreal topmost flag could persist indefinitely.
+
+### Lesson
+
+Avoid periodic geometry hammering, but monitor the actual topmost bit at low frequency. Reassert z-order only when the Unreal or Electron window has genuinely lost `TOPMOST`. Failure injection that deliberately stripped the Unreal flag confirmed the narrow watchdog restored it without moving the window.
+
+---
