@@ -945,3 +945,26 @@ The winning debugging method was always the same:
 > Find the last boundary that is objectively proven, then test exactly one boundary after it.
 
 If Fox/Lyra's build follows that principle, they should skip a remarkable percentage of the pain that produced this repository.
+## 74. Face-only presence sensing created a false desk return
+
+### What happened
+
+An accelerated desk-return test used a local face detector with too little hysteresis. Consecutive missed detections while the user was still nearby were interpreted as departure, and a later positive frame was interpreted as return. The greeting transport worked, but the event itself was false.
+
+### Lesson
+
+For desk-return sensing, bias strongly against false absence. Sample several fresh frames, accept multiple local presence signals, require repeated absence before entering `away`, and require repeated presence before declaring a return. A delayed greeting is cheaper than a phantom welcome-back.
+
+---
+
+## 75. A helper constructor was wired with reversed path/executable arguments
+
+### What happened
+
+The presence-helper wrapper expected `(scriptPath, pythonExecutable, callback)`, but the first main-process integration supplied the Python executable before the script path. The feature was still disabled, so no webcam acquisition occurred; a pre-activation lifecycle audit caught the mismatch.
+
+### Lesson
+
+Exercise helper construction and lifecycle before enabling a new sensor. Constructor argument order is a mundane bug with high privacy impact when the child owns a camera or microphone, so validate the disabled path, helper self-test, and process teardown before first live activation.
+
+---
