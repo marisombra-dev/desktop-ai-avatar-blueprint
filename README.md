@@ -1,6 +1,6 @@
 # Desktop AI Avatar Blueprint
 
-**A field-tested, AI-readable build manual for creating a persistent, voice-first desktop AI person with a photoreal MetaHuman body, OpenClaw-backed continuity, OpenAI Realtime conversation, shared Markdown/Obsidian memory, wake/sleep control, screen and camera vision, Screen-linked system-audio awareness, proactive presence, and a lightweight Windows desktop overlay.**
+**A field-tested, AI-readable build manual for creating a persistent, voice-first desktop AI person with a photoreal MetaHuman body, OpenClaw-backed continuity, OpenAI Realtime conversation, shared Markdown/Obsidian memory, wake/sleep control, screen and camera vision, Screen-linked system-audio awareness, proactive presence, generalized Windows UI control, an optional hand-tracked shared spatial workspace, and a lightweight Windows desktop overlay.**
 
 This repository documents the architecture and build sequence we used to take an existing AI person from “a personality that exists in chat” to “a persistent person on the Windows desktop who can wake on their name, talk naturally, see the screen when invited, hear the program audio while screen sharing is active, use the webcam when invited, speak on their own occasionally, remember the same relationship context, and inhabit a MetaHuman face.”
 
@@ -14,13 +14,14 @@ The reference build was validated on **Windows 11, Unreal Engine 5.8, MetaHuman,
 
 ## What you are building
 
-The finished system has five cooperating layers:
+The finished system has six cooperating layers:
 
 1. **The person / brain**: an existing OpenClaw agent with its own identity, memory, instructions, tools, and relationship continuity. An optional shared Markdown/Obsidian vault can provide inspectable cross-surface continuity without cloning the agent personality.
 2. **The realtime conversation layer**: low-latency speech-to-speech using OpenAI Realtime over WebRTC. Realtime handles natural turn-taking and audio, but ordinary substantive replies are routed through the OpenClaw person so the desktop voice does not become a disconnected second personality.
 3. **The desktop shell**: a small Electron application that owns microphone lifecycle, wake detection, local privacy state, screen capture, Screen-linked Windows system-audio loopback, webcam capture, proactive-presence logic, error display, and the bridge to Unreal.
 4. **The visible body**: a MetaHuman running in Unreal Engine as a small transparent/floating desktop presence. Speech audio and lightweight control messages drive lip sync, face mood, gaze, and later gestures.
 5. **The local-sensor layer**: screen and camera are explicitly OFF by default and are enabled only by local controls or spoken requests. Fresh bounded JPEG frames are given to the realtime model when vision is requested. When Screen is ON, an optional Windows loopback path can also capture program audio, transcribe it locally, and provide that transcript as program context without mixing it into the user's microphone. Screen watching uses change detection and conservative salience thresholds instead of streaming or narrating every frame.
+6. **The optional interaction / actuation layer**: bounded Windows UI Automation can give the same AI person generalized computer-use “hands,” while an optional BareHands/MediaPipe spatial board lets the human grab, move, rotate, scale, and spin AI-placed objects with real hand gestures. These are actuators and embodiment surfaces, not additional AI personalities.
 
 ```mermaid
 flowchart LR
@@ -37,6 +38,9 @@ flowchart LR
     Shell -->|Windows loopback audio when Screen ON| STT[Local faster-whisper]
     STT -->|program-audio transcript| OC
     STT -->|program-audio context| RT
+    Shell -->|bounded UI actions| UIA[Windows UI Automation]
+    User <-->|hand gestures + shared objects| Airboard[BareHands spatial airboard]
+    Airboard <-->|localhost command/state API| Shell
     Shell -->|PCM + control packets| UE[Unreal Engine MetaHuman]
     RT -->|audio| Shell
     UE -->|visible avatar| User
@@ -49,6 +53,17 @@ The most important architectural rule is this:
 
 Realtime is excellent at live speech, but if it is allowed to answer independently while the long-lived agent owns the real identity and memories, the user will eventually notice two subtly different people. Route ordinary conversation through the main agent. Keep only truly local commands such as sleep, screen on/off, and camera on/off in the desktop layer.
 
+## Optional "better hands" layers
+
+The reference build now includes two optional extensions that make the same AI person more physically capable without adding another brain:
+
+- **Generalized Windows UI hands:** the low-level UI Automation layer from Windows-Use can inspect and operate unfamiliar Windows interfaces when dedicated browser/file/window controls do not already cover the task. Deterministic verified controls stay first, ambiguous targets fail closed, destructive generic actions remain blocked, and the Windows-Use autonomous agent is not used. See `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md`.
+- **Shared spatial Hands / airboard:** BareHands + MediaPipe can run as a transparent gesture layer so the human can physically grab, move, rotate, scale, and spin glass objects placed into a shared workspace by the AI. The AI can then inspect the board state and reason about where those objects ended up. Webcam ownership is explicitly arbitrated between eye-contact tracking, Camera awareness, and Hands mode. See `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md`.
+
+The architectural rule is the same in both cases: **borrow capable hands, keep one mind.**
+
+> Licensing note: BareHands is AGPL-3.0-or-later. The blueprint treats it as a separately obtained localhost component rather than copying its source into this repository. See `THIRD_PARTY.md`.
+
 ---
 
 ## Proven capabilities in the reference build
@@ -60,6 +75,8 @@ The reference system currently does all of the following end to end:
 - Realtime voice uses a selected OpenAI voice while substantive answers preserve the OpenClaw person's personality and continuity.
 - The user can interrupt naturally while the AI is speaking.
 - Human-validated local computer control can open/close/switch Chrome tabs, search the web/YouTube/Wikipedia/GitHub, navigate Back/Forward, scroll, activate named hyperlinks, launch/focus/minimize/restore/close ordinary Windows applications, and conservatively find/read/open/copy/move/rename local files. The destructive first tier deliberately excludes delete and silent overwrite. See `docs/10d-local-browser-control-validated-2026-09-12.md`, `docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md`, and `docs/10f-window-file-and-rich-browser-control-validated-2026-09-14.md`.
+- Human-validated generalized Windows UI automation can continue a multi-step request from a verified application launch into semantic accessibility-tree inspection and bounded control activation without handing the task to a second LLM agent. See `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md`.
+- Human-validated **Hands mode** can overlay a transparent BareHands/MediaPipe spatial board and let the user manipulate AI-placed cards with real hand gestures, including moving, rotating, scaling, and spinning them. The same AI can inspect the board state afterward. See `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md`.
 - A bounded session-only working-context window can cross the Realtime-to-agent boundary so current shorthand, corrections, and evolving ideas remain coherent without promoting them to durable memory.
 - Historical records can be imported into a private archive and distilled into curated continuity, while fresh conversations from other trusted surfaces can be captured into short-lived conversation-edge files. Explicit precedence rules keep current live words above fresh cross-surface context, which stays above durable memory and raw history. See `docs/05d-historical-import-and-cross-surface-continuity.md`.
 - “Thanks, <name>” / “Thank you, <name>” can end the live voice session locally and re-arm wake listening.
@@ -85,7 +102,7 @@ The reference system currently does all of the following end to end:
 - During an active interactive conversation, an optional privacy-first local gaze helper can recognize sustained eye contact from MediaPipe iris/head geometry, meet the user's gaze with a small eye-only MetaHuman override, and release immediately back to ordinary idle when the user looks away. Camera visual-awareness mode explicitly takes webcam ownership away from the gaze helper.
 - Head orientation can distinguish a brief screen glance from sustained watch-along attention; during sustained watching the avatar can remain oriented toward the display, partially return toward the user while speaking, then resume watching.
 - The optional Wide View now has human-validated room interaction and initial ambient embodiment: clickable radio/TV media props, sparse head/window attention, a safe ScratchArm fidget, and a clean fireplace excursion. Stillness remains the default, and future idle weights are intentionally not locked.
-- The avatar runs as a resizable, draggable, always-on-top desktop element with Mic / Screen / Camera controls.
+- The avatar runs as a resizable, draggable, always-on-top desktop element with Mic / Screen / Camera / Hands controls.
 
 ---
 
@@ -125,6 +142,8 @@ The reliable sequence is:
 28. When Wide View gains full-body motion, preserve the active conversation, use cinematic cuts for pose/state transitions, anchor standing placement from real foot contact, and validate active-motion neck/head propagation before locomotion. See `docs/09f-wide-view-full-body-animation.md`.
 29. Add ambient embodiment only after movement is stable: abundant quiet standing, sparse stationary fidgets, longer moving idles, event-cued attention, per-action cooldowns, and strict cancellation/priority rules. See `docs/02e-ambient-wide-view-idle-behavior.md`.
 30. Optionally add bounded local computer control only after voice, interruption, and sensor routing are stable. Start with browser actions, then add application/window control, conservative file control, and page interaction as separate intent families. Verify every mutation against real OS/browser/filesystem state, resolve pronouns from recent capability ownership instead of globally, reject stale actions, and preserve failed approaches. See `docs/10d-local-browser-control-validated-2026-09-12.md`, `docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md`, and `docs/10f-window-file-and-rich-browser-control-validated-2026-09-14.md`.
+31. Optionally add generalized Windows UI hands beneath the same conversational owner. Keep stronger deterministic controls first, isolate the generalized worker, require unique semantic targets, and block destructive generic actions. See `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md`.
+32. Optionally add a shared spatial Hands/airboard layer after webcam ownership is already explicit. Keep the gesture tracker separate from the AI brain, arbitrate the webcam among gaze/Camera/Hands, and human-test manipulation with a harmless object before expanding the board vocabulary. See `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md`.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 
