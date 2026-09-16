@@ -41,6 +41,7 @@ If the target person is Lyra, also read `LYRA_QUICKSTART.md` before implementati
 13. **Personality needs behavioral priority, not just adjectives.** Test whether ambiguous social remarks remain social instead of becoming unsolicited explanation/advice. Read `docs/05c-social-intent-and-behavioral-priority.md` before tuning prompts for “warmth” or “brevity.”
 14. **Do not collapse every kind of continuity into memory.** Keep raw historical archives, curated durable memory, active-session working context, and fresh cross-surface conversation-edge context as separate data planes with explicit precedence. Read `docs/05d-historical-import-and-cross-surface-continuity.md` before importing large histories or connecting multiple conversational surfaces.
 15. **Computer-use libraries are hands, not a second brain.** If you add a generalized Windows/UI Automation framework, preserve one conversational decision owner, keep stronger deterministic controls first, isolate the generalized worker when practical, refuse ambiguous targets, and do not silently instantiate the framework's own autonomous LLM agent. Read `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md` before broadening computer control.
+16. **Spatial gesture systems are body/input layers, not another assistant.** If webcam hand tracking is added, preserve the existing identity/voice/memory stack and explicitly arbitrate webcam ownership among gaze tracking, Camera awareness, and hand tracking. Read `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md` before adding a gesture board or transparent hand-tracking overlay.
 
 ## Ask the human only for genuinely subjective decisions
 
@@ -117,6 +118,9 @@ Only now add one reversible gesture or expression at a time. Before custom head-
 ### Gate O: Generalized UI hands, if enabled
 Established browser/window/file actions still use their stronger dedicated verification paths. A broader multi-step UI request can continue through a bounded UI Automation worker without creating a second LLM/personality. The worker must refuse ambiguous targets and destructive actions that have not been granted an explicit dedicated capability. Human-validate the seam with a harmless multi-step request such as opening a system application and activating one clearly named non-destructive control. See `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md`.
 
+### Gate P: Shared spatial Hands / airboard, if enabled
+A hand-tracked spatial board must remain a body/input layer beneath the existing person. The transparent tracker should not replace the avatar, voice, memory, or conversational owner. Webcam ownership must be deterministic: gaze tracking, explicit Camera awareness, and gesture tracking may not race for the same device. Human-validate at least one live object manipulation such as grab/move/rotate while the rest of the desktop companion remains healthy. See `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md`.
+
 ## Implementation architecture to preserve
 
 ```text
@@ -131,11 +135,18 @@ Unreal MetaHuman runtime
         ↓ local computer-control routing
         ├── deterministic verified browser/window/file controls
         └── bounded generalized UI-hands worker → Windows UI Automation
+
+optional shared spatial input
+human webcam → explicit camera owner → local hand tracker → transparent airboard
+                                          ↑                ↓
+                                          └── localhost board state/commands ↔ existing Ethan tool loop
 ```
 
 Use separate OpenClaw session keys for the main desktop conversation, proactive decision-making, and screen-observer summaries when possible. Internal observation prompts should not become ordinary conversation history.
 
 If generalized UI hands are enabled, they are an actuator beneath the existing decision owner. Do not insert another autonomous conversational agent between the user and the operating system merely because a computer-use framework ships with one.
+
+If a shared spatial hand-tracking layer is enabled, keep its webcam lifecycle and licensing boundary explicit. A local gesture engine should not become a second perception/identity stack, and it should not silently steal the camera from eye contact or explicit Camera awareness.
 
 ## First machine-inventory report
 
@@ -170,6 +181,8 @@ If the Screen button turns on but the AI cannot describe the screen, the toggle 
 
 For computer control, distinguish **target discovery**, **target ownership**, **execution**, and **postcondition verification**. If a generalized UI worker cannot identify exactly one intended control, fix the selector/context or refuse the action. Do not compensate by telling the model to be more confident.
 
+For shared webcam consumers, distinguish **camera ownership**, **capture**, **local inference**, and **AI vision**. A MediaPipe hand tracker does not need to send webcam frames to the language model, and explicit Camera awareness must not be left logically "on" while another component owns the device.
+
 This project became tractable once every subsystem was treated as a boundary with a test.
 
 ## Completion definition
@@ -188,5 +201,7 @@ The project is ready for daily use when the human can, without touching code:
 10. see a stable MetaHuman whose facial behavior helps rather than distracts.
 
 If generalized computer control is part of the target build, add one more acceptance condition: the same person can complete at least one harmless multi-step workflow in a previously un-special-cased Windows UI, while ambiguous or destructive generic targets fail closed.
+
+If shared spatial Hands are part of the target build, add another acceptance condition: the human can activate the hand tracker, physically manipulate at least one shared object, and return to ordinary camera/gaze behavior without breaking the companion's existing voice or sensor lifecycle.
 
 Once those are true, mannerism work is refinement rather than rescue.
