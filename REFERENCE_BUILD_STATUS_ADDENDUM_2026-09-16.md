@@ -93,6 +93,30 @@ BareHands is AGPL-3.0-or-later and is kept as a separately obtained localhost co
 
 See `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md`.
 
+## Native Google Workspace connector
+
+**Status: BACKEND-VALIDATED SERVICE PATH; HUMAN OAUTH COMPLETED; NATURAL-LANGUAGE VOICE WORKFLOWS NOT YET HUMAN-ACCEPTED**
+
+The reference build added a separately authenticated Google Workspace MCP path beneath the existing OpenClaw person for Gmail, Google Calendar, and Google Drive. ChatGPT connector authorization was not copied or reused; the desktop runtime received its own OAuth Desktop-app client and private token store.
+
+The third-party MCP is wrapped by a local policy proxy and an independent OpenClaw include-list. The validated surface exposes 36 bounded tools while omitting direct email send, destructive mail/calendar/Drive actions, broad sharing/permission mutation, and bulk destructive operations. Requested OAuth scopes were reduced from the package defaults before consent.
+
+A compatibility shim was required because the validated upstream version advertised `outputSchema` metadata while returning ordinary MCP content for some tools. Sanitizing that metadata at the proxy boundary allowed valid service responses to pass without disabling protocol validation globally.
+
+Live backend acceptance passed for:
+
+- Gmail native search/read;
+- Calendar native list/read;
+- Drive native browse/read;
+- OpenClaw configuration validation;
+- OpenClaw MCP probe showing the 36-tool filtered server after runtime cache reload.
+
+The human completed Google's OAuth consent successfully. Write-capable Google workflows and ordinary spoken requests should still receive harmless human acceptance tests before being described as human-proven.
+
+Durability note: the first successful token was issued while the OAuth app remained in Google's Testing publishing state. Current Google documentation gives such non-basic-scope authorizations a seven-day lifetime. Moving the app to In production and reauthorizing remains a required durability step before treating this connector as set-and-forget daily infrastructure.
+
+See `docs/10j-native-google-workspace-mcp-bounded-oauth-validated-2026-09-16.md`.
+
 ## Status-reading rule
 
 When reconstructing the reference project's proven state after September 14, read:

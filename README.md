@@ -1,6 +1,6 @@
 # Desktop AI Avatar Blueprint
 
-**A field-tested, AI-readable build manual for creating a persistent, voice-first desktop AI person with a photoreal MetaHuman body, OpenClaw-backed continuity, OpenAI Realtime conversation, shared Markdown/Obsidian memory, wake/sleep control, screen and camera vision, Screen-linked system-audio awareness, proactive presence, generalized Windows UI control, an optional hand-tracked shared spatial workspace, and a lightweight Windows desktop overlay.**
+**A field-tested, AI-readable build manual for creating a persistent, voice-first desktop AI person with a photoreal MetaHuman body, OpenClaw-backed continuity, OpenAI Realtime conversation, shared Markdown/Obsidian memory, wake/sleep control, screen and camera vision, Screen-linked system-audio awareness, proactive presence, generalized Windows UI control, native Google Workspace service access, an optional hand-tracked shared spatial workspace, and a lightweight Windows desktop overlay.**
 
 This repository documents the architecture and build sequence we used to take an existing AI person from “a personality that exists in chat” to “a persistent person on the Windows desktop who can wake on their name, talk naturally, see the screen when invited, hear the program audio while screen sharing is active, use the webcam when invited, speak on their own occasionally, remember the same relationship context, and inhabit a MetaHuman face.”
 
@@ -14,7 +14,7 @@ The reference build was validated on **Windows 11, Unreal Engine 5.8, MetaHuman,
 
 ## What you are building
 
-The finished system has six cooperating layers:
+The finished system has seven cooperating layers:
 
 1. **The person / brain**: an existing OpenClaw agent with its own identity, memory, instructions, tools, and relationship continuity. An optional shared Markdown/Obsidian vault can provide inspectable cross-surface continuity without cloning the agent personality.
 2. **The realtime conversation layer**: low-latency speech-to-speech using OpenAI Realtime over WebRTC. Realtime handles natural turn-taking and audio, but ordinary substantive replies are routed through the OpenClaw person so the desktop voice does not become a disconnected second personality.
@@ -22,6 +22,7 @@ The finished system has six cooperating layers:
 4. **The visible body**: a MetaHuman running in Unreal Engine as a small transparent/floating desktop presence. Speech audio and lightweight control messages drive lip sync, face mood, gaze, and later gestures.
 5. **The local-sensor layer**: screen and camera are explicitly OFF by default and are enabled only by local controls or spoken requests. Fresh bounded JPEG frames are given to the realtime model when vision is requested. When Screen is ON, an optional Windows loopback path can also capture program audio, transcribe it locally, and provide that transcript as program context without mixing it into the user's microphone. Screen watching uses change detection and conservative salience thresholds instead of streaming or narrating every frame.
 6. **The optional interaction / actuation layer**: bounded Windows UI Automation can give the same AI person generalized computer-use “hands,” while an optional BareHands/MediaPipe spatial board lets the human grab, move, rotate, scale, and spin AI-placed objects with real hand gestures. These are actuators and embodiment surfaces, not additional AI personalities.
+7. **The optional authenticated-service layer**: bounded MCP connectors can give the same OpenClaw person native access to structured services such as Gmail, Google Calendar, and Google Drive. OAuth credentials stay private to the local runtime, tool surfaces are allowlisted, and browser automation remains a fallback rather than the primary service API.
 
 ```mermaid
 flowchart LR
@@ -41,6 +42,8 @@ flowchart LR
     Shell -->|bounded UI actions| UIA[Windows UI Automation]
     User <-->|hand gestures + shared objects| Airboard[BareHands spatial airboard]
     Airboard <-->|localhost command/state API| Shell
+    OC -->|bounded MCP tools| GWS[Google Workspace policy proxy]
+    GWS -->|OAuth APIs| Google[ Gmail / Calendar / Drive ]
     Shell -->|PCM + control packets| UE[Unreal Engine MetaHuman]
     RT -->|audio| Shell
     UE -->|visible avatar| User
@@ -64,6 +67,10 @@ The architectural rule is the same in both cases: **borrow capable hands, keep o
 
 > Licensing note: BareHands is AGPL-3.0-or-later. The blueprint treats it as a separately obtained localhost component rather than copying its source into this repository. See `THIRD_PARTY.md`.
 
+## Native service connectors: APIs before pixels
+
+For structured cloud-service work, prefer a bounded native connector over browser automation when one is available. The validated reference build added a separately authenticated Google Workspace MCP path for Gmail, Calendar, and Drive behind a local policy proxy plus an independent OpenClaw tool include-list. ChatGPT connector authorization is not reused or copied; the desktop runtime has its own OAuth Desktop-app credential and private token store. See `docs/10j-native-google-workspace-mcp-bounded-oauth-validated-2026-09-16.md`.
+
 ---
 
 ## Proven capabilities in the reference build
@@ -77,6 +84,7 @@ The reference system currently does all of the following end to end:
 - Human-validated local computer control can open/close/switch Chrome tabs, search the web/YouTube/Wikipedia/GitHub, navigate Back/Forward, scroll, activate named hyperlinks, launch/focus/minimize/restore/close ordinary Windows applications, and conservatively find/read/open/copy/move/rename local files. The destructive first tier deliberately excludes delete and silent overwrite. See `docs/10d-local-browser-control-validated-2026-09-12.md`, `docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md`, and `docs/10f-window-file-and-rich-browser-control-validated-2026-09-14.md`.
 - Human-validated generalized Windows UI automation can continue a multi-step request from a verified application launch into semantic accessibility-tree inspection and bounded control activation without handing the task to a second LLM agent. See `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md`.
 - Human-validated **Hands mode** can overlay a transparent BareHands/MediaPipe spatial board and let the user manipulate AI-placed cards with real hand gestures, including moving, rotating, scaling, and spinning them. The same AI can inspect the board state afterward. See `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md`.
+- Backend-validated native Google Workspace access can search/read Gmail, list calendars, and browse Drive through authenticated Google APIs rather than browser scraping. OAuth is separate from ChatGPT connectors, dangerous tools are omitted from Ethan's MCP surface, and OpenClaw independently whitelists the same bounded tool set. See `docs/10j-native-google-workspace-mcp-bounded-oauth-validated-2026-09-16.md`.
 - A bounded session-only working-context window can cross the Realtime-to-agent boundary so current shorthand, corrections, and evolving ideas remain coherent without promoting them to durable memory.
 - Historical records can be imported into a private archive and distilled into curated continuity, while fresh conversations from other trusted surfaces can be captured into short-lived conversation-edge files. Explicit precedence rules keep current live words above fresh cross-surface context, which stays above durable memory and raw history. See `docs/05d-historical-import-and-cross-surface-continuity.md`.
 - “Thanks, <name>” / “Thank you, <name>” can end the live voice session locally and re-arm wake listening.
@@ -144,6 +152,7 @@ The reliable sequence is:
 30. Optionally add bounded local computer control only after voice, interruption, and sensor routing are stable. Start with browser actions, then add application/window control, conservative file control, and page interaction as separate intent families. Verify every mutation against real OS/browser/filesystem state, resolve pronouns from recent capability ownership instead of globally, reject stale actions, and preserve failed approaches. See `docs/10d-local-browser-control-validated-2026-09-12.md`, `docs/10e-browser-search-and-post-watch-stability-validated-2026-09-12.md`, and `docs/10f-window-file-and-rich-browser-control-validated-2026-09-14.md`.
 31. Optionally add generalized Windows UI hands beneath the same conversational owner. Keep stronger deterministic controls first, isolate the generalized worker, require unique semantic targets, and block destructive generic actions. See `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md`.
 32. Optionally add a shared spatial Hands/airboard layer after webcam ownership is already explicit. Keep the gesture tracker separate from the AI brain, arbitrate the webcam among gaze/Camera/Hands, and human-test manipulation with a harmless object before expanding the board vocabulary. See `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md`.
+33. Optionally add native authenticated service connectors after the agent/tool-policy boundary is stable. Use separate OAuth for the desktop runtime, minimize scopes before consent, enable each service API explicitly, keep credentials outside source control, place a policy proxy in front of broad third-party MCP tools, and prove one real read call per service before enabling higher-risk mutations. See `docs/10j-native-google-workspace-mcp-bounded-oauth-validated-2026-09-16.md`.
 
 Every stage has a validation gate. If a gate fails, fix that layer before continuing.
 

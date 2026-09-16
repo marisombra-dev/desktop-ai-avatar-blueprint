@@ -43,6 +43,8 @@ If the target person is Lyra, also read `LYRA_QUICKSTART.md` before implementati
 14. **Do not collapse every kind of continuity into memory.** Keep raw historical archives, curated durable memory, active-session working context, and fresh cross-surface conversation-edge context as separate data planes with explicit precedence. Read `docs/05d-historical-import-and-cross-surface-continuity.md` before importing large histories or connecting multiple conversational surfaces.
 15. **Computer-use libraries are hands, not a second brain.** If you add a generalized Windows/UI Automation framework, preserve one conversational decision owner, keep stronger deterministic controls first, isolate the generalized worker when practical, refuse ambiguous targets, and do not silently instantiate the framework's own autonomous LLM agent. Read `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md` before broadening computer control.
 16. **Spatial gesture systems are body/input layers, not another assistant.** If webcam hand tracking is added, preserve the existing identity/voice/memory stack and explicitly arbitrate webcam ownership among gaze tracking, Camera awareness, and hand tracking. Read `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md` before adding a gesture board or transparent hand-tracking overlay.
+17. **Authenticated service connectors need their own trust boundary.** Do not assume OAuth granted to ChatGPT, a browser, or another host automatically belongs to the desktop runtime. Use separate credentials, least-privilege scopes, private token storage, explicit API enablement, and a bounded tool allowlist under the existing OpenClaw person. Read `docs/10j-native-google-workspace-mcp-bounded-oauth-validated-2026-09-16.md` before adding Gmail/Calendar/Drive or a similar service connector.
+18. **Human input ownership is absolute.** Desktop automation may assist with the computer, but it must never leave global modifier keys held, trap the keyboard/mouse, or require the human to surrender practical control of the machine. Prefer background APIs and semantic accessibility actions over global keystroke injection.
 
 ## Ask the human only for genuinely subjective decisions
 
@@ -122,6 +124,9 @@ Established browser/window/file actions still use their stronger dedicated verif
 ### Gate P: Shared spatial Hands / airboard, if enabled
 A hand-tracked spatial board must remain a body/input layer beneath the existing person. The transparent tracker should not replace the avatar, voice, memory, or conversational owner. Webcam ownership must be deterministic: gaze tracking, explicit Camera awareness, and gesture tracking may not race for the same device. Human-validate at least one live object manipulation such as grab/move/rotate while the rest of the desktop companion remains healthy. See `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md`.
 
+### Gate Q: Native authenticated services, if enabled
+The desktop runtime has its own private OAuth credential/token store rather than borrowing another host application's authorization. Each required service API is explicitly enabled, requested OAuth scopes are minimized before consent, and the agent sees only a bounded allowlisted tool surface. Prove at least one real read call per service before enabling write operations, then human-test harmless natural-language workflows. See `docs/10j-native-google-workspace-mcp-bounded-oauth-validated-2026-09-16.md`.
+
 ## Implementation architecture to preserve
 
 ```text
@@ -141,6 +146,10 @@ optional shared spatial input
 human webcam → explicit camera owner → local hand tracker → transparent airboard
                                           ↑                ↓
                                           └── localhost board state/commands ↔ existing Ethan tool loop
+
+optional authenticated services
+existing OpenClaw person -> bounded MCP policy proxy -> OAuth service APIs
+                                              └-> Gmail / Calendar / Drive
 ```
 
 Use separate OpenClaw session keys for the main desktop conversation, proactive decision-making, and screen-observer summaries when possible. Internal observation prompts should not become ordinary conversation history.
@@ -204,5 +213,7 @@ The project is ready for daily use when the human can, without touching code:
 If generalized computer control is part of the target build, add one more acceptance condition: the same person can complete at least one harmless multi-step workflow in a previously un-special-cased Windows UI, while ambiguous or destructive generic targets fail closed.
 
 If shared spatial Hands are part of the target build, add another acceptance condition: the human can activate the hand tracker, physically manipulate at least one shared object, and return to ordinary camera/gaze behavior without breaking the companion's existing voice or sensor lifecycle.
+
+If native authenticated services are part of the target build, add another acceptance condition: the same person can retrieve real data from each enabled service through the bounded connector without browser scraping, while unavailable/destructive service actions remain absent from the generic tool surface.
 
 Once those are true, mannerism work is refinement rather than rescue.

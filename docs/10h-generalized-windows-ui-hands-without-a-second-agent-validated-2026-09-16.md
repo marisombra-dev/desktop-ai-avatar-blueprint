@@ -413,6 +413,18 @@ Status is therefore **HUMAN-VALIDATED** for the generalized-hands architecture i
 
 ---
 
+## 11a. Human input ownership is a hard invariant
+
+A later Google Cloud setup exercise exposed a safety failure in the generalized automation path: global synthetic keyboard input left a modifier key logically held after an interrupted action, temporarily preventing the human from using the keyboard normally.
+
+The bridge was hardened to release Shift/Ctrl/Alt/Windows modifier variants before and after synthetic typing/shortcuts, including a `finally` cleanup path. But the stronger rule is architectural: **the human must retain practical control of keyboard and mouse at all times.**
+
+Prefer background APIs, accessibility patterns, and mouse/DOM operations over global keystroke injection. If synthetic keys are unavoidable, release modifiers on success, error, cancellation, timeout, and shutdown. Never accept "the user can get control back after automation finishes" as a desktop-companion design.
+
+See `docs/10j-native-google-workspace-mcp-bounded-oauth-validated-2026-09-16.md` for the setup incident that exposed this requirement.
+
+---
+
 ## 12. What not to do
 
 Do not "simplify" this design into any of the following:
@@ -513,6 +525,7 @@ Never invent success from the model's intention to click.
 14. Validate ambiguity refusal and blocked destructive actions explicitly.
 15. Human-test the seam between safe dedicated controls and generalized hands with a harmless multi-step task.
 16. Never let a convenience library quietly become a second personality.
+17. Never let generalized automation leave modifier keys held or deprive the human of immediate keyboard/mouse control.
 
 This chapter extends:
 
