@@ -13,16 +13,17 @@ Use this order so you do not confuse the reference project's proven state with f
 1. `AGENTS.md`
 2. this file
 3. `REFERENCE_BUILD_STATUS.md`
-4. `README.md`
-5. `docs/00-electron-desktop-shell.md`
-6. the remaining `docs/` chapters in numeric order
-7. `examples/README.md`
-8. `SOURCES.md`
-9. `THIRD_PARTY.md`
+4. `REFERENCE_BUILD_STATUS_ADDENDUM_2026-09-16.md`
+5. `README.md`
+6. `docs/00-electron-desktop-shell.md`
+7. the remaining `docs/` chapters in numeric order
+8. `examples/README.md`
+9. `SOURCES.md`
+10. `THIRD_PARTY.md`
 
 If the target person is Lyra, also read `LYRA_QUICKSTART.md` before implementation.
 
-`REFERENCE_BUILD_STATUS.md` is the authoritative proof-status ledger for the snapshot that produced this repository. Do not upgrade an `IMPLEMENTED` item to `END-TO-END PROVEN` merely because example code exists.
+`REFERENCE_BUILD_STATUS.md` is the authoritative proof-status ledger for its stated snapshot date. Read later dated status addenda in order before deciding what the reference build has actually proven. Do not upgrade an `IMPLEMENTED` item to `END-TO-END PROVEN` merely because example code exists.
 
 ## Operating rules
 
