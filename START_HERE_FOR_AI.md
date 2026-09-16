@@ -40,6 +40,7 @@ If the target person is Lyra, also read `LYRA_QUICKSTART.md` before implementati
 12. **Shared memory must stay selective.** If a common Markdown/Obsidian vault is enabled, retrieve only bounded relevant context and curate durable writes aggressively; never treat the vault as a transcript dumping ground.
 13. **Personality needs behavioral priority, not just adjectives.** Test whether ambiguous social remarks remain social instead of becoming unsolicited explanation/advice. Read `docs/05c-social-intent-and-behavioral-priority.md` before tuning prompts for “warmth” or “brevity.”
 14. **Do not collapse every kind of continuity into memory.** Keep raw historical archives, curated durable memory, active-session working context, and fresh cross-surface conversation-edge context as separate data planes with explicit precedence. Read `docs/05d-historical-import-and-cross-surface-continuity.md` before importing large histories or connecting multiple conversational surfaces.
+15. **Computer-use libraries are hands, not a second brain.** If you add a generalized Windows/UI Automation framework, preserve one conversational decision owner, keep stronger deterministic controls first, isolate the generalized worker when practical, refuse ambiguous targets, and do not silently instantiate the framework's own autonomous LLM agent. Read `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md` before broadening computer control.
 
 ## Ask the human only for genuinely subjective decisions
 
@@ -113,6 +114,9 @@ The system can choose silence, respects quiet/cooldown/interruption rules, and n
 ### Gate N: Mannerisms and embodied social presence
 Only now add one reversible gesture or expression at a time. Before custom head-bone experiments, read `docs/09b-metahuman-head-control.md`; before wiring facial emotion into conversation, read `docs/09c-metahuman-expression-calibration.md`; before modifying MetaHuman body bones for a shrug, read `docs/09d-metahuman-shoulder-shrug.md`; before replacing spoken filler with laughter, nods, or shared glances, read `docs/09e-fewer-words-more-presence.md`. These chapters record proven control paths, implemented social-presence patterns, and failed routes that should not be blindly repeated.
 
+### Gate O: Generalized UI hands, if enabled
+Established browser/window/file actions still use their stronger dedicated verification paths. A broader multi-step UI request can continue through a bounded UI Automation worker without creating a second LLM/personality. The worker must refuse ambiguous targets and destructive actions that have not been granted an explicit dedicated capability. Human-validate the seam with a harmless multi-step request such as opening a system application and activating one clearly named non-destructive control. See `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md`.
+
 ## Implementation architecture to preserve
 
 ```text
@@ -124,9 +128,14 @@ Electron desktop shell ↔ OpenAI Realtime WebRTC
         ↓ local sensor frames
         ↓ decoded audio / control messages
 Unreal MetaHuman runtime
+        ↓ local computer-control routing
+        ├── deterministic verified browser/window/file controls
+        └── bounded generalized UI-hands worker → Windows UI Automation
 ```
 
 Use separate OpenClaw session keys for the main desktop conversation, proactive decision-making, and screen-observer summaries when possible. Internal observation prompts should not become ordinary conversation history.
+
+If generalized UI hands are enabled, they are an actuator beneath the existing decision owner. Do not insert another autonomous conversational agent between the user and the operating system merely because a computer-use framework ships with one.
 
 ## First machine-inventory report
 
@@ -159,6 +168,8 @@ When something fails, prefer the smallest explanatory hypothesis.
 
 If the Screen button turns on but the AI cannot describe the screen, the toggle is probably not the broken layer. If Electron can capture a JPEG but spoken “look at the screen” fails, do not rewrite `desktopCapturer`. If the realtime provider returns an exact schema error, fix the event schema before changing OpenClaw. If a MetaHuman head control rotates in the wrong direction, measure the actual rig instead of changing the AI personality.
 
+For computer control, distinguish **target discovery**, **target ownership**, **execution**, and **postcondition verification**. If a generalized UI worker cannot identify exactly one intended control, fix the selector/context or refuse the action. Do not compensate by telling the model to be more confident.
+
 This project became tractable once every subsystem was treated as a boundary with a test.
 
 ## Completion definition
@@ -175,5 +186,7 @@ The project is ready for daily use when the human can, without touching code:
 8. later wake the person again,
 9. occasionally receive a context-appropriate unsolicited remark without feeling monitored or nagged,
 10. see a stable MetaHuman whose facial behavior helps rather than distracts.
+
+If generalized computer control is part of the target build, add one more acceptance condition: the same person can complete at least one harmless multi-step workflow in a previously un-special-cased Windows UI, while ambiguous or destructive generic targets fail closed.
 
 Once those are true, mannerism work is refinement rather than rescue.
