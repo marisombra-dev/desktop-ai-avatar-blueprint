@@ -72,18 +72,6 @@ The blueprint does not redistribute the MediaPipe model asset or a Python runtim
 
 A real user's calibration data should remain private. Do not publish webcam frames or user-specific classifier weights merely because the gaze code itself is public.
 
-## Google Workspace MCP and Google APIs
-
-The optional native Gmail/Calendar/Drive connector described in `docs/10j-native-google-workspace-mcp-bounded-oauth-validated-2026-09-16.md` uses the separate `@dguido/google-workspace-mcp` project:
-
-https://github.com/dguido/google-workspace-mcp
-
-The validated reference runtime pinned package version `3.3.0`. At validation time the package declared the **MIT** license. Re-check the current upstream `LICENSE`, package metadata, dependency tree, and security advisories before redistribution or upgrade.
-
-Google Workspace APIs and OAuth are Google services governed by Google's current developer/service terms and user authorization requirements. This repository does not contain or redistribute any Google OAuth client secret, access token, refresh token, account identifier, or private Workspace data.
-
-The reference architecture keeps credentials/tokens in a private user configuration directory outside source control and places a local policy proxy between the conversational agent and the third-party MCP tool surface.
-
 ## BareHands
 
 The optional shared spatial airboard described in `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md` uses the separate BareHands project:

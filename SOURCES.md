@@ -2,7 +2,7 @@
 
 This repository is based on a working implementation, but several APIs and editor workflows evolve quickly. Before adapting the examples to a new machine, check the current upstream documentation below.
 
-Last reviewed: **2026-09-05**. The Google Workspace/OAuth section was added and reviewed on **2026-09-16**.
+Last reviewed: **2026-09-05**.
 
 ## OpenAI Realtime
 
@@ -260,30 +260,6 @@ Repository:
 https://github.com/SYSTRAN/faster-whisper
 
 The reference wake listener uses a local `faster-whisper` `base` model on CPU/int8 plus `sounddevice` and strict acoustic/phrase gating. The thresholds in this blueprint were measured for one microphone/room and must be recalibrated elsewhere. The Screen-linked program-audio helper uses a smaller cached `tiny` model on CPU/int8 because fast startup is more important there than wake-grade phrase discrimination; visual screen context helps compensate for imperfect transcription.
-
-## Google Workspace APIs and OAuth
-
-Native-app OAuth guidance:
-
-https://developers.google.com/identity/protocols/oauth2/native-app
-
-Google Workspace API quickstarts:
-
-https://developers.google.com/workspace/gmail/api/quickstart/nodejs
-
-https://developers.google.com/workspace/calendar/api/quickstart/nodejs
-
-https://developers.google.com/workspace/drive/api/quickstart/nodejs
-
-Reference MCP upstream:
-
-https://github.com/dguido/google-workspace-mcp
-
-Google Cloud audience/publishing status and testing-token behavior:
-
-https://support.google.com/cloud/answer/15549945
-
-The validated reference build used a dedicated OAuth Desktop-app client, explicitly enabled Gmail/Calendar/Drive APIs, reduced the upstream package's default requested scopes before consent, and kept credentials/tokens outside source control. Google Cloud testing-audience configuration, OAuth scope policy, API enablement, and package behavior are version-sensitive; check current official documentation before reproducing the setup.
 
 ## Node.js / TypeScript toolchain
 
