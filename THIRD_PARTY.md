@@ -72,6 +72,20 @@ The blueprint does not redistribute the MediaPipe model asset or a Python runtim
 
 A real user's calibration data should remain private. Do not publish webcam frames or user-specific classifier weights merely because the gaze code itself is public.
 
+## BareHands
+
+The optional shared spatial airboard described in `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md` uses the separate BareHands project:
+
+https://github.com/jaredrhod/barehands
+
+The validated reference integration pinned upstream commit `eb23bed2d772f9d5a24de26fb92f46c3c76d69cf`.
+
+At the time of validation, BareHands is licensed under **AGPL-3.0-or-later**. That is a materially different redistribution boundary from permissive licenses such as MIT. Consult the current upstream `LICENSE` and appropriate legal guidance before embedding, modifying, distributing, or operating a modified version as a service.
+
+This blueprint does **not** redistribute BareHands source. The reference architecture keeps it as a separately obtained localhost component and communicates with its bounded command/state API. Do not assume that permission to use the software means its source can be copied into a differently licensed closed-source application without consequences.
+
+BareHands itself uses Google MediaPipe hand tracking and three.js in the browser. Those components retain their own upstream licenses and distribution terms.
+
 ## Generated/Reference Images
 
 Reference portraits, private inspiration photographs, webcam images, screen captures, and user-specific character assets should not be assumed to be redistributable. Keep them out of a public implementation repository unless the owner has intentionally cleared them for publication.
