@@ -132,7 +132,7 @@ The reliable sequence is:
 18. Optionally add Screen-linked Windows system-audio loopback and local program-audio transcription for watch-along use.
 19. Add shared-activity continuity so substantial shows/games can resume from a compact prior stopping point.
 20. Add proactive presence with strong restraint and quiet-hour logic.
-21. Add bounded self-healing for local leaf processes and Realtime cleanup.
+21. Add bounded self-healing for local leaf processes and Realtime cleanup. When granting multi-step computer control, add a **separate, privacy-minimal task ledger** with evidence receipts and no automatic replay of interrupted side effects; see `docs/11b-durable-task-recovery-and-evidence-bound-actions.md`.
 22. Only after all of that is stable, add restrained listening micro-reactions and response-linked face tuning.
 23. Optionally add privacy-first eye contact as an eye-only layer with local calibration, hysteresis, webcam ownership arbitration, and watchdog release. See `docs/09a-privacy-first-eye-contact.md`.
 24. Add nonverbal social presence: listening micro-nods, selective laugh-only reactions, tiny closure acknowledgments, and shared glances using already-proven gaze/head controls. See `docs/09e-fewer-words-more-presence.md`.
@@ -1018,9 +1018,10 @@ Point it at this repository and tell it to read in this order:
 24. `docs/10-privacy-and-security.md`
 25. `docs/11-troubleshooting.md`
 26. `docs/11a-bounded-self-healing.md`
-27. `docs/12-build-order-checklist.md`
-28. `docs/13-what-we-tried-and-what-failed.md`
-29. `SOURCES.md`
+27. `docs/11b-durable-task-recovery-and-evidence-bound-actions.md`
+28. `docs/12-build-order-checklist.md`
+29. `docs/13-what-we-tried-and-what-failed.md`
+30. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 

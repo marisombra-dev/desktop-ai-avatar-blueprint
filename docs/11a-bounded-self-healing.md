@@ -167,3 +167,5 @@ A recovery supervisor is privileged infrastructure. Keep its powers narrow.
 **Reference status:** bounded-policy unit tests, TypeScript, and production build are proven. Live failure injection was performed against the wake listener, overlay synchronizer, and Unreal avatar runtime; all three relaunched with new processes, the approved Unreal map/flags returned, and no error indicator remained after successful recovery. Gateway reset, Screen-audio crash recovery, and Realtime failure cleanup/retry are implemented and build-tested but were not deliberately failure-injected in this validation pass.
 
 See `examples/recovery_policy.ts` for a sanitized policy pattern.
+
+For user-authorized **multi-step desktop actions**, process recovery is not enough. Use `docs/11b-durable-task-recovery-and-evidence-bound-actions.md` for a separate persisted action ledger, uncertain-outcome receipts and strict no-replay rules.
