@@ -33,6 +33,7 @@ Files:
 - `bounded_spontaneity.ts` — grounded-evidence gate, one-short-line filter, live-session delivery guard, and a safe one-shot validation pattern.
 - `recovery_policy.ts` — finite rolling retry budgets, exponential backoff, and privacy-aware leaf-process recovery planning.
 - `durable_task_recovery.ts` + `durable_task_recovery.test.ts` — independent task-state persistence, serialized atomic writes, crash-uncertainty review, and no-replay handoffs for permission-gated desktop actions. See `docs/11b-durable-task-recovery-and-evidence-bound-actions.md`.
+- `review_only_skills.ts` + `review_only_skill_store.ts` + `review_only_skills.test.ts` — quarantined, non-executable procedure suggestions from trusted, verified, privacy-reviewed routine receipts. See `docs/11c-review-only-procedural-learning.md`.
 - `proactive_voice.ts` — microphone-free playback-only Realtime session for a short line already authored by the long-lived agent, including audio-drain protection.
 - `listening_reactions.ts` — bounded one-reaction-per-user-turn semantic classifier for subtle listening expressions, suitable for partial-transcript opportunism with completed-transcript fallback.
 - `nonverbal_social.ts` — deterministic tiny-acknowledgment, narrow laugh-only, and screen `NO_COMMENT` / `LAUGH_ONLY` / spoken-reaction parsing patterns for embodied social responses.

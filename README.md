@@ -91,6 +91,7 @@ The reference system currently does all of the following end to end:
 - Runtime-generated local date/time/timezone/daypart context grounds relative-time language across ordinary consults, proactive decisions, return greetings, and memory curation. Runtime time is authoritative, and explicit time-of-day greetings are sanity-checked before playback without making time itself a reason to speak.
 - Proactive outreach is gated twice: local quiet/cooldown/idle checks first, then a context-aware evidence decision using current activity, meaningful screen events, recent dialogue, unfinished threads, and relevant durable memory. Silence itself is never treated as a reason to speak.
 - Core local subsystems use bounded self-healing: restart only the failed component with backoff, confirm stable health, and surface the real error only after a finite retry budget is exhausted.
+- Optional review-only procedural learning can suggest safe reusable workflows from independent, verified, privacy-reviewed receipts without mining personal chats or executing generated skills. See `docs/11c-review-only-procedural-learning.md`.
 - Conversational behavior can distinguish social companionship from explicit analysis, operational commands, and quiet states so a correct long-lived persona does not collapse into generic explain/correct/offer-help behavior during ambiguous social turns.
 - Local desk-presence logic can support restrained “welcome back” behavior after a meaningful absence without claiming that camera detection proves identity. During an open interactive voice session, the existing local gaze helper can also emit a minimal face-present heartbeat so return detection keeps working without a second process fighting for the webcam. Return detection and greeting delivery remain separate, and an already-open Realtime session must not cause a qualified greeting to be discarded.
 - Realtime audio drives MetaHuman lip sync. Additional local control packets drive mood/face state plus visually proven head turns, nods, shakes, sustained screen-attention posture, and a true clavicle-driven uncertainty shrug. Full-body regression later required moving structural head/neck ownership to Body while preserving Face RigLogic; see `docs/09g-metahuman-neck-head-ownership.md`.
@@ -1019,9 +1020,10 @@ Point it at this repository and tell it to read in this order:
 25. `docs/11-troubleshooting.md`
 26. `docs/11a-bounded-self-healing.md`
 27. `docs/11b-durable-task-recovery-and-evidence-bound-actions.md`
-28. `docs/12-build-order-checklist.md`
-29. `docs/13-what-we-tried-and-what-failed.md`
-30. `SOURCES.md`
+28. `docs/11c-review-only-procedural-learning.md`
+29. `docs/12-build-order-checklist.md`
+30. `docs/13-what-we-tried-and-what-failed.md`
+31. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 
