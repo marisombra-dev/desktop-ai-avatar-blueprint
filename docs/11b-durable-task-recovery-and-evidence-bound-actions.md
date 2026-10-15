@@ -108,6 +108,36 @@ Before adopting this pattern in a live companion:
 - Revoke computer-control permission during recovery. Prove nothing executes.
 - Confirm private transcripts, secrets and sensor samples never reach the ledger or diagnostics.
 
+## 8. October 15 implementation: claim before act, require an independent receipt
+
+The generalized [Companion Engine implementation](https://github.com/marisombra-dev/companion-engine/commit/038446fdf3f915d36b64409fe6fc0e8119d85303) has since connected this pattern to **actual bounded multi-step computer-task routing**, including steps that wait for explicit confirmation. The implementation was typechecked and its complete **237-test suite passed** on October 15, 2026. That is a tested separate engine, **not** a claim that this newer code was deployed in the existing personal Desktop Ethan runtime.
+
+The missing link in the earlier blueprint example was the call site. It is not enough to maintain a ledger somewhere; an action must be *unable to begin* until a durable state transition succeeds:
+
+```text
+safe policy + fresh target identity + confirmation if needed
+  -> await atomic ledger claim (pending -> executing)
+  -> dispatch bounded effect once
+  -> independently inspect and verify the postcondition
+  -> await ledger completion + privacy-safe receipt
+  -> continue to next step
+```
+
+The new self-contained [step executor](../examples/durable_step_execution.ts) demonstrates that ordering with the existing [TaskLedger](../examples/durable_task_recovery.ts). Its [tests](../examples/durable_step_execution.test.ts) simulate claim-before-action, restart after an ambiguous tool failure, competing calls, no receipt, and failure to persist the claim. Run both suites:
+
+```shell
+node --test examples/durable_task_recovery.test.ts examples/durable_step_execution.test.ts
+```
+
+Important distinctions:
+
+- **A wait for confirmation is not execution.** Acquire the durable `executing` claim only *after* the authorized confirmation is resolved, immediately before dispatch.
+- **Only `pending` may dispatch.** A second call, timeout, restarted process or newer model session cannot reissue an already claimed step. Unknown actions require fresh user-authorized recovery decisions.
+- **A success-looking string is not independent proof.** The Companion Engine integration currently uses its preexisting local action-completion checks; those checks are stronger for some target-specific actions than for generic `Clicked...` or `Entered text...` responses. For meaningful state changes, add real postcondition inspection before treating such a response as independently verified. The standalone sample makes that verifier explicit.
+- **A persisted receipt is mandatory in the revised example.** Existing old sample snapshots with `verifiedAt` but no receipt now classify as `outcome_unknown`, a deliberate fail-closed upgrade. A receipt is a bounded redacted description, never page content or personal typed values.
+- **Crash safety is not exactly-once distributed execution.** Atomic local writes and one-process ownership help prevent repeat dispatch; they cannot prove what a remote service did between dispatch and loss of connection.
+- **No broad new powers.** This layer is task lifecycle bookkeeping beneath existing permission, risk, UI identity and confirmed-action rules. It does not launch a second computer-use agent.
+
 ## External ideas worth studying, not wholesale installing
 
 The following links are design references; these repositories are not bundled here:

@@ -41,9 +41,12 @@ If the target person is Lyra, also read `LYRA_QUICKSTART.md` before implementati
 12. **Shared memory must stay selective.** If a common Markdown/Obsidian vault is enabled, retrieve only bounded relevant context and curate durable writes aggressively; never treat the vault as a transcript dumping ground.
 13. **Personality needs behavioral priority, not just adjectives.** Test whether ambiguous social remarks remain social instead of becoming unsolicited explanation/advice. Read `docs/05c-social-intent-and-behavioral-priority.md` before tuning prompts for “warmth” or “brevity.”
 14. **Learning is not automatic skill authority.** Reusable procedures may be proposed from independently verified, privacy-reviewed receipts, never installed or executed merely because a model or transcript suggests them. See `docs/11c-review-only-procedural-learning.md`.
-14. **Do not collapse every kind of continuity into memory.** Keep raw historical archives, curated durable memory, active-session working context, and fresh cross-surface conversation-edge context as separate data planes with explicit precedence. Read `docs/05d-historical-import-and-cross-surface-continuity.md` before importing large histories or connecting multiple conversational surfaces.
-15. **Computer-use libraries are hands, not a second brain.** If you add a generalized Windows/UI Automation framework, preserve one conversational decision owner, keep stronger deterministic controls first, isolate the generalized worker when practical, refuse ambiguous targets, and do not silently instantiate the framework's own autonomous LLM agent. Read `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md` before broadening computer control.
-16. **Spatial gesture systems are body/input layers, not another assistant.** If webcam hand tracking is added, preserve the existing identity/voice/memory stack and explicitly arbitrate webcam ownership among gaze tracking, Camera awareness, and hand tracking. Read `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md` before adding a gesture board or transparent hand-tracking overlay.
+15. **Do not collapse every kind of continuity into memory.** Keep raw historical archives, curated durable memory, active-session working context, and fresh cross-surface conversation-edge context as separate data planes with explicit precedence. Read `docs/05d-historical-import-and-cross-surface-continuity.md` before importing large histories or connecting multiple conversational surfaces.
+16. **Computer-use libraries are hands, not a second brain.** If you add a generalized Windows/UI Automation framework, preserve one conversational decision owner, keep stronger deterministic controls first, isolate the generalized worker when practical, refuse ambiguous targets, and do not silently instantiate the framework's own autonomous LLM agent. Read `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md` before broadening computer control.
+17. **Spatial gesture systems are body/input layers, not another assistant.** If webcam hand tracking is added, preserve the existing identity/voice/memory stack and explicitly arbitrate webcam ownership among gaze tracking, Camera awareness, and hand tracking. Read `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md` before adding a gesture board or transparent hand-tracking overlay.
+
+18. **Claim before external actions.** For any state-changing multi-step computer task, persist an executing-step claim before the first effect and require a separately verified, redacted completion receipt. Neither a crash nor a missing tool reply allows automatic replay. See `docs/11b-durable-task-recovery-and-evidence-bound-actions.md`.
+19. **Do not let memory exports silently lose historical corrections.** Preserve validity intervals, supersession IDs, and optional source evidence; make withdrawn-only claims unavailable to ordinary current retrieval without deleting old history. See `docs/05e-evidence-backed-temporal-memory.md`. These are optional generalized Companion Engine patterns, not yet live reference-runtime features.
 
 ## Ask the human only for genuinely subjective decisions
 
@@ -93,6 +96,10 @@ Greetings, gratitude, jokes, personal sharing, and casual shared-media observati
 ### Gate F3: Cross-surface continuity
 If another trusted AI/chat surface is part of the same person, a fact or project discussed there can be recalled correctly in desktop voice without copying raw transcripts into durable memory. Fresh cross-surface context outranks stale durable history, and one response owner speaks the final answer.
 
+### Gate F4: Evidence-backed memory migration, if enabled
+
+Round-trip a memory export with `validFrom`, `validTo`, `supersededById`, and source evidence without silently removing them. Withdraw the last explicit supporting source and prove the claim is excluded from ordinary current lookup but remains accessible in historical review. This is currently unit-tested in generalized Companion Engine, not validated in the private reference runtime. See `docs/05e-evidence-backed-temporal-memory.md`.
+
 ### Gate G: Lip sync
 Realtime output audibly and visually drives the MetaHuman face with acceptable latency.
 
@@ -119,6 +126,10 @@ Only now add one reversible gesture or expression at a time. Before custom head-
 
 ### Gate O: Generalized UI hands, if enabled
 Established browser/window/file actions still use their stronger dedicated verification paths. A broader multi-step UI request can continue through a bounded UI Automation worker without creating a second LLM/personality. The worker must refuse ambiguous targets and destructive actions that have not been granted an explicit dedicated capability. Human-validate the seam with a harmless multi-step request such as opening a system application and activating one clearly named non-destructive control. See `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md`.
+
+### Gate O2: Durable computer-task handoff, if enabled
+
+Before any bounded state-changing step executes, prove that the task ledger has committed an `executing` claim. Simulate an interruption after a possibly successful action and verify that neither recovery nor the next provider session repeats it. A completion flag without independently observed postcondition evidence must remain uncertain. See `docs/11b-durable-task-recovery-and-evidence-bound-actions.md`.
 
 ### Gate P: Shared spatial Hands / airboard, if enabled
 A hand-tracked spatial board must remain a body/input layer beneath the existing person. The transparent tracker should not replace the avatar, voice, memory, or conversational owner. Webcam ownership must be deterministic: gaze tracking, explicit Camera awareness, and gesture tracking may not race for the same device. Human-validate at least one live object manipulation such as grab/move/rotate while the rest of the desktop companion remains healthy. See `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md`.

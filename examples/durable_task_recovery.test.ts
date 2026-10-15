@@ -36,6 +36,7 @@ test('classifies verified, interrupted and pending steps without replaying them'
     await ledger.update((s) => {
       s.steps[0]!.phase = 'verified';
       s.steps[0]!.verifiedAt = '2026-10-06T00:01:00.000Z';
+      s.steps[0]!.receipt = 'Fresh target inspection confirmed the requested state';
       s.steps[1]!.phase = 'executing';
       return s;
     });

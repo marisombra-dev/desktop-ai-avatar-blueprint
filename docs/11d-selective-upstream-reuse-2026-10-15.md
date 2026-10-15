@@ -1,0 +1,21 @@
+# 11d — Selective upstream reuse review (October 15, 2026)
+
+This dated review compares open-source projects against the already implemented stack: OpenClaw-backed conversation, UE 5.8 MetaHuman, local Electron controls, bounded Windows UI Automation, Markdown/Obsidian memory, realtime voice, and optional separate Companion Engine product architecture.
+
+**Rule:** Borrow a narrow primitive only if it closes a demonstrated gap. Do not import a second conversational identity, unscoped shell access, arbitrary desktop control, unrelated memory stores or unreviewed model weights.
+
+| Candidate | Useful design to borrow | Overlap / actual status | License and adoption risks |
+| --- | --- | --- | --- |
+| [disler/durable-pi](https://github.com/disler/durable-pi) | Host-owned durable agents, SQLite-backed per-device sessions, client reconnect snapshots, approval checkpointing | Good reference for a future companion phone client, **not** integrated as a mobile runtime | MIT; network access and bearer tokens must be scoped/encrypted; no general external tool replay |
+| [jagguvarma15/throughline](https://github.com/jagguvarma15/throughline) | Serialized step journaling and explicit interruption/approval states | Pattern adapted in Companion Engine's persist-before-act flow, **no library dependency installed** | MIT; relatively small project; test crash semantics and unknown side effects independently |
+| [agent-memory-lab/agent-memory](https://github.com/agent-memory-lab/agent-memory) | Source provenance, explicit withdrawal, validity intervals, unknown after supporting evidence disappears | Pattern adapted in Companion Engine's local JSON memory; **not** a new authority over the shared vault | Apache-2.0; alpha-stage design, privacy review required for external stores |
+| [teobasaki/earl-korean-metahuman](https://github.com/teobasaki/earl-korean-metahuman) | UE 5.8 Live Link / RigLogic face-curve routing, observable pixel-level lip-sync checks | Research candidate for isolated Unreal test; **not** in the live MetaHuman | MIT code; partial recipe depends on project-specific headers, Epic governs MetaHuman assets |
+| [katipally/openlive](https://github.com/katipally/openlive) | Local STT/TTS, VAD, turn detection and provider-independent voice plumbing | Benchmark candidate against current Realtime + fallback; **not** a replacement voice route | Apache-2.0 code; downloaded voice/cloning models and cloud keys have separate terms |
+| [loOong-Cheng/vivian-ai-game-designer](https://github.com/loOong-Cheng/vivian-ai-game-designer) | Streamed sentence playback with measured audio-to-lip delay and action/mood tags | UE 5.8 hackathon prototype, **no live integration** | MIT code; reported timing is not independent benchmark, relies on Gradium/Gemini accounts |
+| [opensymph/open-computer-use](https://github.com/opensymph/open-computer-use) | Background-first desktop actuation and accessibility-centric control | Comparison candidate against existing Windows-Use deterministic hands, **not** a new permissions route | MIT, small project; no remote access or new privileged operations without review |
+
+**What was actually promoted on October 15:** A dependency-free durable-step execution guard used by Companion Engine's bounded computer-task flow, plus evidence-aware temporal recall and import/export preservation. Companion Engine passed **237 TypeScript/unit tests**, and the public blueprint includes runnable sanitized [task](../examples/durable_step_execution.ts) and [memory](../examples/evidence_aware_memory.ts) examples. [Verified code commit](https://github.com/marisombra-dev/companion-engine/commit/038446fdf3f915d36b64409fe6fc0e8119d85303).
+
+These findings do **not** imply that every listed upstream dependency was installed, that Unreal/MetaHuman was modified, or that a phone client already works. Cross-device continuity, local speech benchmarking, Live Link curve routing and background desktop control remain distinct experiments, each with their own opt-in, account-policy, licensing, and acceptance gates.
+
+When revisiting these candidates, pin a known-good revision, inspect its direct and transitive licenses, review default telemetry/network binding, isolate executable dependencies, and re-run compatibility tests on the target version.

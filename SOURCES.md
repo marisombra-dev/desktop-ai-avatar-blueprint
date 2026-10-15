@@ -2,7 +2,7 @@
 
 This repository is based on a working implementation, but several APIs and editor workflows evolve quickly. Before adapting the examples to a new machine, check the current upstream documentation below.
 
-Last reviewed: **2026-09-05**.
+Base API references last reviewed: **2026-09-05**. Additional open-source design survey: **2026-10-15**; this date does not imply every API link was reverified.
 
 ## OpenAI Realtime
 
@@ -272,6 +272,20 @@ TypeScript:
 https://www.typescriptlang.org/
 
 The exact Electron/Vite/TypeScript versions listed in the README describe one known-good snapshot, not permanent requirements.
+
+## October 15, 2026: additional architectural design references
+
+These source revisions were inspected during the October survey. They are **references only** and are not dependencies of this public blueprint. Do not automatically execute their install scripts, import broad agent runtimes or download voice-model weights.
+
+- [Durable Pi](https://github.com/disler/durable-pi/tree/37165c619573) (MIT) — device-owned durable sessions and reconnecting thin-client patterns.
+- [Throughline](https://github.com/jagguvarma15/throughline/tree/32ef1ba863e8) (MIT) — durable step journals and approval gates.
+- [Agent Memory](https://github.com/agent-memory-lab/agent-memory/tree/cd231df9405c) (Apache-2.0) — temporal provenance, evidence withdrawal and source-backed recall.
+- [EARL Korean MetaHuman](https://github.com/teobasaki/earl-korean-metahuman/tree/4f0fcdf241f9) (MIT) — UE 5.8 Live Link/RigLogic facial curve diagnostics; its lip-sync recipe is not a standalone buildable plugin.
+- [OpenLive](https://github.com/katipally/openlive/tree/c9121ebe6ed8) (Apache-2.0) — local voice pipeline comparison, with separate model-weight terms.
+- [Vivian AI Game Designer](https://github.com/loOong-Cheng/vivian-ai-game-designer/tree/a9fa71c0730a) (MIT) — streamed speech and audio-to-mouth delay measurement in UE 5.8, with separate Gradium/Gemini terms.
+- [Open Computer Use](https://github.com/opensymph/open-computer-use/tree/5b433b98019c) (MIT) — background-first desktop control comparison, without adding it as a new privileged path.
+
+For licensing, known limitations, overlap and adoption gates, see [the dated integration review](docs/11d-selective-upstream-reuse-2026-10-15.md). Actual generalized Companion Engine changes and tests are traced to [commit 038446f](https://github.com/marisombra-dev/companion-engine/commit/038446fdf3f915d36b64409fe6fc0e8119d85303).
 
 ## Licensing reminder
 

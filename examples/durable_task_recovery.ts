@@ -14,6 +14,8 @@ export interface TaskStep {
   phase: StepPhase;
   /** Set only after independently checking the requested postcondition. */
   verifiedAt?: string;
+  /** Privacy-safe evidence of an independently observed postcondition. */
+  receipt?: string;
 }
 
 export interface TaskSnapshot {
@@ -47,7 +49,9 @@ function validateSnapshot(value: unknown): asserts value is TaskSnapshot {
   for (const step of data.steps) {
     if (typeof step.id !== 'string' || typeof step.description !== 'string'
         || !['pending', 'executing', 'verified', 'blocked'].includes(step.phase)
-        || (step.verifiedAt !== undefined && typeof step.verifiedAt !== 'string')) {
+        || (step.verifiedAt !== undefined && typeof step.verifiedAt !== 'string')
+        || (step.receipt !== undefined && (typeof step.receipt !== 'string'
+            || step.receipt.length > 500))) {
       throw new Error('Invalid task step: refusing to overwrite the ledger.');
     }
   }
@@ -59,7 +63,7 @@ export function reviewInterruptedTask(snapshot: TaskSnapshot): RecoveryItem[] {
     description: step.description,
     disposition: step.phase === 'pending'
       ? 'not_started'
-      : step.phase === 'verified' && step.verifiedAt
+      : step.phase === 'verified' && step.verifiedAt && step.receipt
         ? 'verified_complete'
         : step.phase === 'blocked'
           ? 'requires_review'

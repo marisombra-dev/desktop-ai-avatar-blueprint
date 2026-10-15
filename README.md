@@ -105,6 +105,10 @@ The reference system currently does all of the following end to end:
 - The optional Wide View now has human-validated room interaction and initial ambient embodiment: clickable radio/TV media props, sparse head/window attention, a safe ScratchArm fidget, and a clean fireplace excursion. Stillness remains the default, and future idle weights are intentionally not locked.
 - The avatar runs as a resizable, draggable, always-on-top desktop element with Mic / Screen / Camera / Hands controls.
 
+### October 15, 2026: reusable Companion Engine improvements (separate implementation)
+
+A later independent [Companion Engine commit](https://github.com/marisombra-dev/companion-engine/commit/038446fdf3f915d36b64409fe6fc0e8119d85303) added persist-before-act computer-task steps, no-replay crash handling, and evidence-backed temporal memory with safe source withdrawal and import/export preservation. Its TypeScript checks and **237 unit tests passed**. These changes are **not asserted to be deployed in the reference Desktop Ethan runtime**. Use the sanitized [task-recovery chapter](docs/11b-durable-task-recovery-and-evidence-bound-actions.md), [memory-provenance chapter](docs/05e-evidence-backed-temporal-memory.md), and [dated upstream comparison](docs/11d-selective-upstream-reuse-2026-10-15.md) to adopt the ideas safely.
+
 ---
 
 # The build order that saves pain
@@ -123,7 +127,7 @@ The reliable sequence is:
 8. Establish realtime WebRTC voice with no screen/camera yet.
 9. Make audio drive MetaHuman lip sync.
 10. Preserve personality continuity by routing ordinary substantive dialogue through the existing OpenClaw agent with exactly one consult-to-speech owner; do not combine provider-owned and application-owned consult paths.
-11. Optionally add a shared Markdown/Obsidian continuity vault with bounded retrieval and conservative session-end curation. If multiple trusted surfaces must share fresh context or an existing history corpus, add the archive/import + conversation-edge bridge in `docs/05d-historical-import-and-cross-surface-continuity.md`.
+11. Optionally add a shared Markdown/Obsidian continuity vault with bounded retrieval and conservative session-end curation. If multiple trusted surfaces must share fresh context or an existing history corpus, add the archive/import + conversation-edge bridge in `docs/05d-historical-import-and-cross-surface-continuity.md`. For time-bounded facts, retractions and provider-archive portability, see `docs/05e-evidence-backed-temporal-memory.md`.
 12. Add contextual local-time awareness from the computer's actual clock/timezone.
 13. Add local wake and sleep lifecycle.
 14. Add manual Screen and Camera toggles.
@@ -133,7 +137,7 @@ The reliable sequence is:
 18. Optionally add Screen-linked Windows system-audio loopback and local program-audio transcription for watch-along use.
 19. Add shared-activity continuity so substantial shows/games can resume from a compact prior stopping point.
 20. Add proactive presence with strong restraint and quiet-hour logic.
-21. Add bounded self-healing for local leaf processes and Realtime cleanup. When granting multi-step computer control, add a **separate, privacy-minimal task ledger** with evidence receipts and no automatic replay of interrupted side effects; see `docs/11b-durable-task-recovery-and-evidence-bound-actions.md`.
+21. Add bounded self-healing for local leaf processes and Realtime cleanup. When granting multi-step computer control, add a **separate, privacy-minimal task ledger** with evidence receipts and no automatic replay of interrupted side effects. Persist the step claim before any external effect, not just afterward; see `docs/11b-durable-task-recovery-and-evidence-bound-actions.md`.
 22. Only after all of that is stable, add restrained listening micro-reactions and response-linked face tuning.
 23. Optionally add privacy-first eye contact as an eye-only layer with local calibration, hysteresis, webcam ownership arbitration, and watchdog release. See `docs/09a-privacy-first-eye-contact.md`.
 24. Add nonverbal social presence: listening micro-nods, selective laugh-only reactions, tiny closure acknowledgments, and shared glances using already-proven gaze/head controls. See `docs/09e-fewer-words-more-presence.md`.
@@ -1006,24 +1010,26 @@ Point it at this repository and tell it to read in this order:
 11. `docs/05b-contextual-time-awareness.md`
 12. `docs/05c-social-intent-and-behavioral-priority.md`
 13. `docs/05d-historical-import-and-cross-surface-continuity.md`
-14. `docs/06-wake-sleep-and-local-controls.md`
-15. `docs/07-screen-and-camera-vision.md`
-16. `docs/08-proactive-presence.md`
-17. `docs/09-avatar-behavior-and-animation.md`
-18. `docs/09a-privacy-first-eye-contact.md`
-19. `docs/09b-metahuman-head-control.md`
-20. `docs/09c-metahuman-expression-calibration.md`
-21. `docs/09d-metahuman-shoulder-shrug.md`
-22. `docs/09e-fewer-words-more-presence.md`
-23. `docs/09f-wide-view-full-body-animation.md`
-24. `docs/10-privacy-and-security.md`
-25. `docs/11-troubleshooting.md`
-26. `docs/11a-bounded-self-healing.md`
-27. `docs/11b-durable-task-recovery-and-evidence-bound-actions.md`
-28. `docs/11c-review-only-procedural-learning.md`
-29. `docs/12-build-order-checklist.md`
-30. `docs/13-what-we-tried-and-what-failed.md`
-31. `SOURCES.md`
+14. `docs/05e-evidence-backed-temporal-memory.md`
+15. `docs/06-wake-sleep-and-local-controls.md`
+16. `docs/07-screen-and-camera-vision.md`
+17. `docs/08-proactive-presence.md`
+18. `docs/09-avatar-behavior-and-animation.md`
+19. `docs/09a-privacy-first-eye-contact.md`
+20. `docs/09b-metahuman-head-control.md`
+21. `docs/09c-metahuman-expression-calibration.md`
+22. `docs/09d-metahuman-shoulder-shrug.md`
+23. `docs/09e-fewer-words-more-presence.md`
+24. `docs/09f-wide-view-full-body-animation.md`
+25. `docs/10-privacy-and-security.md`
+26. `docs/11-troubleshooting.md`
+27. `docs/11a-bounded-self-healing.md`
+28. `docs/11b-durable-task-recovery-and-evidence-bound-actions.md`
+29. `docs/11c-review-only-procedural-learning.md`
+30. `docs/11d-selective-upstream-reuse-2026-10-15.md`
+31. `docs/12-build-order-checklist.md`
+32. `docs/13-what-we-tried-and-what-failed.md`
+33. `SOURCES.md`
 
 Then have it inventory the target machine, current upstream versions, existing agent configuration, and the user's desired appearance **before editing anything**.
 
