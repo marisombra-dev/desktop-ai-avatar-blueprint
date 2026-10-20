@@ -290,3 +290,15 @@ For licensing, known limitations, overlap and adoption gates, see [the dated int
 ## Licensing reminder
 
 Every project above retains its own license and service terms. The MIT license in this repository applies only to the original documentation and example glue code authored for this blueprint. It does not relicense Unreal Engine, MetaHuman content, OpenAI services/models, OpenClaw, Monolith, Electron, or any third-party dependency.
+
+## October 20, 2026: optional evaluation-only references
+
+These upstream projects were reviewed as **design inputs, not as validated or
+installed parts of the reference build**. See
+[the detailed evaluation gates](docs/10j-upstream-mcp-and-memory-evaluation-gates-2026-10-20.md)
+for the testing and security constraints.
+
+- [Munim Computer Use](https://github.com/munimtechnologies/munim-computer-use) (Apache-2.0): Windows UIA/native input versus physical pointer fallback.
+- [VibeMetaHumans](https://github.com/kevinpbuckley/VibeMetaHumans) (MIT): UE 5.8 editor MetaHuman MCP authoring. Upstream initial cut explicitly uncompiled/unvalidated.
+- [Provena agent memory](https://github.com/admiralpunk/Provena) (MIT): source-linked claims and retrieval audit, not a second identity/memory authority.
+- [OpenCapX](https://github.com/opencapx/OpenCapX) (Apache-2.0): signed plugin/agent permission split and emergency isolation design.

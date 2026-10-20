@@ -62,6 +62,11 @@ The reference build now includes two optional extensions that make the same AI p
 
 The architectural rule is the same in both cases: **borrow capable hands, keep one mind.**
 
+Further optional upstream toolsets for editor authoring, Windows input
+transparency, explainable memory, and signed plugin boundaries are evaluated
+in [the October 20 research gates](docs/10j-upstream-mcp-and-memory-evaluation-gates-2026-10-20.md).
+These are **not validated or installed** in the reference desktop build.
+
 > Licensing note: BareHands is AGPL-3.0-or-later. The blueprint treats it as a separately obtained localhost component rather than copying its source into this repository. See `THIRD_PARTY.md`.
 
 ---

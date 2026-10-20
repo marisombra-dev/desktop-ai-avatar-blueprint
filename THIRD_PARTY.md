@@ -93,3 +93,14 @@ Reference portraits, private inspiration photographs, webcam images, screen capt
 ## This repository
 
 The original explanatory documentation and original sanitized glue-code examples in this repository are licensed under the repository `LICENSE`. That license does not extend to third-party components described above.
+
+## October 2026 evaluation-only open-source tools
+
+The blueprint also references Munim Computer Use (Apache-2.0), VibeMetaHumans
+(MIT), Provena agent memory (MIT), and OpenCapX (Apache-2.0) in
+`docs/10j-upstream-mcp-and-memory-evaluation-gates-2026-10-20.md`.
+No binaries or source from these projects are included here. Upstream license
+files were reviewed on 2026-10-20; verify the current license and transitive
+asset, model, plugin, MetaHuman and service terms before installing or
+redistributing anything. A reference to a tool is not a production safety
+endorsement.
