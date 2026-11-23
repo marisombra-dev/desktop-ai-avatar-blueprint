@@ -8,7 +8,7 @@ These files are **implementation patterns**, not a drop-in product. They are dis
 Use them this way:
 
 1. Read the matching chapter in `docs/` first.
-2. Check current OpenClaw/OpenAI/Electron/Unreal APIs.
+2. Check current chosen agent, speech, Electron and renderer APIs.
 3. Rename the generic `DesktopAvatar` / `Lyra` examples to your person.
 4. Wire them into your own typed IPC/state model.
 5. Test each boundary before adding the next file.
