@@ -1,5 +1,8 @@
 # 04 — Realtime Voice and Lip Sync
 
+> **Two-path note, 2026-11-23:** This chapter documents the historical OpenClaw/OpenAI Realtime plus MetaHuman PCM bridge. For the separately buildable **neural photographic face** using OpenCode, Whisper, ElevenLabs and neural audio-conditioned mouth motion, use [docs/16](16-neural-portrait-build.md) and [docs/19](19-agents-voice-memory-and-latency.md). Both paths must synchronize the same actual speech audio with visible face frames.
+
+
 This chapter gets you from a silent MetaHuman to a low-latency conversational voice whose audio drives the face.
 
 ## 1. Keep voice transport and agent reasoning conceptually separate
