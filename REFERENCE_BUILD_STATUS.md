@@ -1,5 +1,8 @@
 # Reference Build Status Ledger
 
+> **Historical reference snapshot:** This ledger records the 2026-09 MetaHuman/OpenClaw implementation, not the complete current state of both renderers. For the newer photographic neural 2D face, OpenCode/ElevenLabs stack, mobile haptics and corrected 2026-11-23 smile status, see [REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-23.md](REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-23.md) and [docs/15](docs/15-dual-path-build-guide.md).
+
+
 This file distinguishes **proven behavior**, **implemented plumbing**, and **experimental/abandoned work** in the reference project that produced this blueprint.
 
 It exists because “there is code for it” is not the same thing as “the human has objectively verified it.”
