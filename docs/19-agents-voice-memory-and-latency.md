@@ -1,6 +1,6 @@
 # 19 — Agent backends, voice transport, memory, model replacement and measured latency
 
-This chapter supersedes any impression that all builds require OpenClaw plus OpenAI Realtime. The original reference **used** that route, and Path A can still use it. A November 2026 reference uses **OpenCode-managed conversations, local multilingual Whisper ASR and ElevenLabs voice output**, with an independently replaceable neural face. The whole design must allow either agent backend and TTS provider without changing identity or renderer.
+This chapter defines interfaces for **any compatible agent/model backend, speech recognition system, speech transport and TTS provider**. Historical examples include a gateway-managed agent with a realtime speech frontend, and a later OpenCode-based agent with local Whisper ASR and external TTS. Those are examples, not exclusive options. Switching any one provider must not change identity, continuity or renderer.
 
 ## 1. The agent is not the avatar or TTS provider
 
@@ -19,15 +19,15 @@ interface ConversationBackend {
 
 The model must author the conversational response; the speech engine voices the cleaned approved text, and the face shows optional silent visual intentions. Tool execution belongs to the established agent permission system, not the portrait's web view, mic stream or speech provider.
 
-### Backend A: OpenClaw
+### Example agent adapter: OpenClaw
 
 Docs/01, 04, 05–05e, 06, 11 and earlier examples record an original OpenClaw Gateway implementation. Route substantive turns through the established long-lived agent and retain distinct observer/proactive sessions. Do not mistake the realtime vocal front end for a replacement agent identity. Reconcile versions using upstream docs; earlier recorded Gateway ports/providers are examples, not universal defaults.
 
-### Backend B: OpenCode
+### Example agent adapter: OpenCode
 
 The inspected later reference uses an OpenCode native API for persistent desktop conversation, with a dedicated main session, optional internal sessions and explicit model selection. A private session mapping preserves ID across restarts. When switching models, keep the prior history as an immutable archive and carry a bounded set of confirmed recent user/assistant turns into the new model's initial context. Do not silently discard older history when a session cannot be reached. A stale/inaccessible session is an error to diagnose, not permission to start over.
 
-The inspected selector supports a hosted model trial and alternate local/temporary model routes. At this dated snapshot the default points to a **Muse Spark 1.3 contributor/Go audition** via OpenCode; alternate routes include **Gemma 4 multimodal QAT** locally and an older **HY4 Flash free** option. Those are changeable operational choices, not the public blueprint's fixed dependencies or a guarantee that the models will remain available. Earlier local tests found the local model could answer well but had severe latency or hallucination tradeoffs; verify a concrete replacement before deleting a working model route.
+The inspected selector supported hosted and local model trials at the time of the historical reference. Those were temporary operational choices, not blueprint dependencies or guarantees of availability. Earlier local tests found the local model could answer well but had severe latency or hallucination tradeoffs; verify a concrete replacement before deleting a working model route.
 
 **Model transition rules:** explicitly choose model and provider; verify real native API response identifies that exact model, protect tool permission parity, preserve identity and current history, run a scripted voice conversation, and compare answer truthfulness, tone, first-token delay and context fidelity. Do not auto-switch to a different personality/model without disclosure. If a requested provider is unavailable, produce an understandable error or enqueue a durable task according to explicit policy; never invent an answer or imply the unavailable backend performed an action.
 
