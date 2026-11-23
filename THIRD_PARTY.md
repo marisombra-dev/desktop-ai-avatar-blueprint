@@ -34,15 +34,11 @@ https://docs.openclaw.ai/
 
 This repository does not redistribute OpenClaw, its state database, user workspaces, credentials, or private agent memory.
 
-## OpenAI
+## Optional model, ASR and speech providers
 
-OpenAI Realtime and related API services are external services and remain subject to OpenAI's current terms, policies, pricing, model availability, and API documentation.
+This project has **no required model vendor or hosted speech platform**. A local or hosted LLM, recognition system, synthesis service and compatible transport may each be selected independently. Those components remain subject to their own licenses, availability, usage policies, costs and current API documentation.
 
-Official developer documentation:
-
-https://developers.openai.com/api/docs/guides/realtime
-
-This repository does not contain an OpenAI API key, OAuth credential, ChatGPT subscription credential, or provider token.
+The repository contains **no private provider API credentials, OAuth material, session tokens, cloned voice IDs or subscription credentials**. Use least-privilege session handling and do not expose provider credentials to a renderer or public page.
 
 ## Electron
 

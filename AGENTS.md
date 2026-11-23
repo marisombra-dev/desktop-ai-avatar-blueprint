@@ -8,7 +8,7 @@ Read first:
 3. REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-23.md
 4. docs/20-validation-and-reproducibility.md
 5. docs/16 and 17 for Path B OR docs/02, 03 and 09b–09g for Path A
-6. docs/18 for haptics and docs/19 for OpenCode/OpenClaw voice, memory, model transition and latency
+6. docs/18 for haptics and docs/19 for model-agnostic agent/voice interfaces, memory, model transition and latency
 7. Existing relevant chapters docs/00–14 for shared subsystems
 8. examples/README.md, SOURCES.md and THIRD_PARTY.md
 

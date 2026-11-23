@@ -276,8 +276,6 @@ def find_tab(query):
         match = exact or next((item for item in tabs if needle in item['title'].lower()), None)
         if not match and any(word in needle for word in ('github', 'git hub', 'repo', 'repository')):
             match = next((item for item in tabs if 'github' in item['title'].lower() or re.match(r'^[\w.-]+/[\w.-]+(?::| ·|$)', item['title'])), None)
-        if not match and ('chatgpt' in needle or needle in ('gpt', 'chat gpt')):
-            match = next((item for item in tabs if 'chatgpt' in item['title'].lower() or 'avatar ethan' in item['title'].lower()), None)
         if not match and 'youtube' in needle:
             match = next((item for item in tabs if 'youtube' in item['title'].lower()), None)
     if not match:

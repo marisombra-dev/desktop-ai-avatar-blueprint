@@ -13,7 +13,7 @@ export function knownSiteUrl(site: string): string | undefined {
     tiktok: 'https://www.tiktok.com/',
     facebook: 'https://www.facebook.com/',
     github: 'https://github.com/',
-    chatgpt: 'https://chatgpt.com/',
+    stackoverflow: 'https://stackoverflow.com/',
     reddit: 'https://www.reddit.com/',
     google: 'https://www.google.com/',
     wikipedia: 'https://www.wikipedia.org/',
@@ -48,13 +48,13 @@ export function parseLocalBrowserCommand(text: string): LocalBrowserCommand | un
   }
 
   const openKnownSite = compact.match(
-    /\bopen\b[^.?!]*\b(youtube|tiktok|facebook|github|chatgpt|reddit|google|wikipedia|gmail|instagram|twitter|amazon|x)\b/
+    /\bopen\b[^.?!]*\b(youtube|tiktok|facebook|github|stackoverflow|reddit|google|wikipedia|gmail|instagram|twitter|amazon|x)\b/
   );
   if (openKnownSite?.[1]) return { action: 'open-site', query: openKnownSite[1] };
 
   if (
     /\b(?:open|make|create)\b[^.?!]*\b(?:a|another|one more)?\s*(?:new|blank)?\s*(?:browser\s+)?tab\b/.test(compact)
-    && !/\b(?:facebook|github|chatgpt|youtube|tiktok)\b/.test(compact)
+    && !/\b(?:facebook|github|stackoverflow|youtube|tiktok)\b/.test(compact)
   ) {
     return { action: 'new-tab' };
   }
@@ -79,7 +79,7 @@ export function parseLocalBrowserCommand(text: string): LocalBrowserCommand | un
   }
 
   const namedSite = compact.match(
-    /\b(?:switch|change|go|move)\b(?:\s+tabs?)?(?:\s+back)?(?:\s+to)?\s+(?:the\s+)?(facebook|github|chatgpt|youtube|tiktok)(?:\s+tab)?\b/
+    /\b(?:switch|change|go|move)\b(?:\s+tabs?)?(?:\s+back)?(?:\s+to)?\s+(?:the\s+)?(facebook|github|stackoverflow|youtube|tiktok)(?:\s+tab)?\b/
   );
   if (namedSite?.[1]) return { action: 'switch-tab', query: namedSite[1] };
 

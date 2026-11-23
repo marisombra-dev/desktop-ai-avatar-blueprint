@@ -2,7 +2,7 @@
  * Sanitized pattern for local Realtime controls.
  *
  * This is intentionally framework-agnostic glue. Adapt event names/shapes to the
- * current OpenAI Realtime API and your current OpenClaw Talk integration.
+ * current chosen realtime voice API and optional agent gateway integration.
  */
 
 type SensorKind = 'screen' | 'camera';

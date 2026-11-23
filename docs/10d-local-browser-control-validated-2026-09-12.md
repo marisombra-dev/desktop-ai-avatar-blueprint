@@ -194,7 +194,7 @@ open another one
 close this tab
 close another one
 switch to GitHub
-switch tabs to ChatGPT
+switch to the conversation tab
 switch back
 next tab
 try again
@@ -214,8 +214,8 @@ Okay, let's try something else, Ethan. Can you open the Facebook tab?
 Go back to the new tab that you just opened.
 Could you switch tabs to the new tab?
 Understood. Can you close the tab that we're on?
-Great. Can you go back to the ChatGPT tab, please?
-Switch tabs to ChatGPT.
+Great. Can you go back to the conversation tab, please?
+switch to the conversation tab.
 ```
 
 A parser that expects only `open new tab` or `switch to X tab` will miss ordinary conversational wrappers, conjunctions, pronouns, and follow-up language.

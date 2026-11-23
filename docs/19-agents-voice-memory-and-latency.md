@@ -1,6 +1,6 @@
 # 19 — Agent backends, voice transport, memory, model replacement and measured latency
 
-This chapter supersedes any impression that all builds require OpenClaw plus OpenAI Realtime. The original reference **used** that route, and Path A can still use it. A November 2026 reference uses **OpenCode-managed conversations, local multilingual Whisper ASR and ElevenLabs voice output**, with an independently replaceable neural face. The whole design must allow either agent backend and TTS provider without changing identity or renderer.
+This chapter defines interfaces for **any compatible agent/model backend, speech recognition system, speech transport and TTS provider**. Historical examples include a gateway-managed agent with a realtime speech frontend, and a later OpenCode-based agent with local Whisper ASR and external TTS. Those are examples, not exclusive options. Switching any one provider must not change identity, continuity or renderer.
 
 ## 1. The agent is not the avatar or TTS provider
 
@@ -17,21 +17,53 @@ interface ConversationBackend {
 }
 ~~~
 
-The model must author the conversational response; the speech engine voices the cleaned approved text, and the face shows optional silent visual intentions. Tool execution belongs to the established agent permission system, not the portrait's web view, mic stream or speech provider.
+The selected model or authorized agent must own the conversational response. For a text-model route, TTS voices cleaned text; for a native live voice model, the model may generate audible speech directly without any separate TTS. Both produce actual played audio and optional silent visual intentions for the face. Tool execution belongs to the established agent permission system, not the portrait's web view, mic stream or speech provider.
 
-### Backend A: OpenClaw
+### Example agent adapter: OpenClaw
 
 Docs/01, 04, 05–05e, 06, 11 and earlier examples record an original OpenClaw Gateway implementation. Route substantive turns through the established long-lived agent and retain distinct observer/proactive sessions. Do not mistake the realtime vocal front end for a replacement agent identity. Reconcile versions using upstream docs; earlier recorded Gateway ports/providers are examples, not universal defaults.
 
-### Backend B: OpenCode
+### Example agent adapter: OpenCode
 
 The inspected later reference uses an OpenCode native API for persistent desktop conversation, with a dedicated main session, optional internal sessions and explicit model selection. A private session mapping preserves ID across restarts. When switching models, keep the prior history as an immutable archive and carry a bounded set of confirmed recent user/assistant turns into the new model's initial context. Do not silently discard older history when a session cannot be reached. A stale/inaccessible session is an error to diagnose, not permission to start over.
 
-The inspected selector supports a hosted model trial and alternate local/temporary model routes. At this dated snapshot the default points to a **Muse Spark 1.3 contributor/Go audition** via OpenCode; alternate routes include **Gemma 4 multimodal QAT** locally and an older **HY4 Flash free** option. Those are changeable operational choices, not the public blueprint's fixed dependencies or a guarantee that the models will remain available. Earlier local tests found the local model could answer well but had severe latency or hallucination tradeoffs; verify a concrete replacement before deleting a working model route.
+The inspected selector supported hosted and local model trials at the time of the historical reference. Those were temporary operational choices, not blueprint dependencies or guarantees of availability. Earlier local tests found the local model could answer well but had severe latency or hallucination tradeoffs; verify a concrete replacement before deleting a working model route.
 
 **Model transition rules:** explicitly choose model and provider; verify real native API response identifies that exact model, protect tool permission parity, preserve identity and current history, run a scripted voice conversation, and compare answer truthfulness, tone, first-token delay and context fidelity. Do not auto-switch to a different personality/model without disclosure. If a requested provider is unavailable, produce an understandable error or enqueue a durable task according to explicit policy; never invent an answer or imply the unavailable backend performed an action.
 
-## 2. Voice: local capture → ASR → model → TTS → actual playback
+## 2. Voice: choose native live audio OR streaming ASR → model → TTS
+
+**This is a model-agnostic interface.** An integrated speech-to-speech model is a first-class choice, not a fallback, and it does **not** need a separate text LLM or speech synthesizer. Streaming pipelines with ASR + an LLM + TTS are equally valid. A hybrid live-voice frontend connected to an established reasoning agent is also supported if one source of identity/tool authority is preserved.
+
+~~~text
+Option A: mic → live speech-to-speech model ──┐
+                                             ├── played audio + timestamps → face
+Option B: mic → ASR → text model → TTS ───────┘
+Option C: mic → live speech frontend ↔ main agent → speech output
+~~~
+
+Both branches must normalize output into audio samples/chunks, actual playback-start timestamps, interruption/cancellation, turn-state changes, and optional transcripts and mood cues. Native speech models may not expose text prior to playback; never invent a transcript or force streaming speech to wait for text that does not exist. If a model exposes audio only, contextual animations can use trusted local cues, audio-driven motion and approved optional metadata.
+
+~~~ts
+type VoiceEvent =
+  | {kind:'audio'; turnId:string; pcm:Float32Array; sampleRate:number; offsetMs:number}
+  | {kind:'transcript'; turnId:string; text:string; final:boolean}
+  | {kind:'activity'; turnId:string; value:'listening'|'thinking'|'speaking'|'idle'}
+  | {kind:'cancel'; turnId:string}
+  | {kind:'complete'; turnId:string};
+interface StreamingVoiceAdapter {
+  start():Promise<void>;
+  events():AsyncIterable<VoiceEvent>;
+  cancel(turnId:string):Promise<void>;
+  stop():Promise<void>;
+}
+~~~
+
+This is an illustrative neutral contract, not a claim that upstream models already produce these exact event names. Adapt vendor SDK messages at the boundary; the renderer never depends on a provider's RPC shape.
+
+### Optional ASR → text model → TTS pipeline
+
+The following is one implementation path; it is **not required** when using a native speech-to-speech model.
 
 ~~~text
 microphone owner
@@ -50,7 +82,7 @@ The inspected voice gate keeps about 350 ms pre-roll and uses 600 ms normal sile
 
 Earlier CPU recognition was migrated to multilingual Whisper GPU acceleration with CPU recovery. Evaluate ASR based on **user understanding**, including English/Spanish code-switching and noise. Do not assume speech recognition mistakes are model hallucinations; keep original speech transcriptions private and permit clarification when ambiguous.
 
-### ElevenLabs route
+### Example external synthesis route (optional)
 
 The later reference uses a privately configured ElevenLabs voice with a v4 Turbo dialogue WebSocket adapter and optional HTTP fallback. The credential and voice ID stay in private environment/config, never in the repository. The v4 adapter as inspected accumulates returned base64 audio chunks and resolves a complete MP3 contract; a network stream alone does **not** prove that the desktop begins audible playback before the complete utterance. Measure actual playback rather than “first byte received.”
 

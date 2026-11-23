@@ -134,7 +134,7 @@ In the broken path, the model could answer as though it had acted even though no
 
 Wikipedia routing now recognizes direct page language such as `Open the Wikipedia page for X` / `Go to X's Wikipedia page`. A bare `Search for X` is interpreted as Wikipedia search only when the recent browser context is already Wikipedia; outside that context it remains ordinary language rather than being globally hijacked.
 
-A short alias such as `GPT tab` is resolved to the existing ChatGPT tab by the browser matcher rather than requiring one exact product-name phrase.
+A short alias such as `chat tab` is resolved to the existing conversation tab by the browser matcher rather than requiring one exact product-name phrase.
 
 ## Stale answers are also stale actions
 
@@ -154,7 +154,7 @@ The final human pass confirmed the repaired behaviors in ordinary speech:
 - browser scrolling worked in both directions;
 - direct Wikipedia topic navigation/search worked;
 - named Wikipedia links genuinely navigated;
-- shorthand switching back to the ChatGPT/GPT tab worked.
+- shorthand switching back to the conversation tab worked.
 ## Validation gate
 
 After the final natural-language Wikipedia repair, the reference project passed:

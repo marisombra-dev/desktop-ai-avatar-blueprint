@@ -116,7 +116,7 @@ send({
 send({ type: 'response.create' });
 ```
 
-Use the current OpenAI Realtime input-image event schema. The API evolves.
+Use the current image-input schema of the chosen multimodal provider, or route visual analysis through your own permissioned vision adapter. API formats vary, so this older event sequence is illustrative only.
 
 ## 5. Why use multiple frames?
 

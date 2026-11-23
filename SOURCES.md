@@ -4,47 +4,23 @@ This repository is based on a working implementation, but several APIs and edito
 
 Base API references last reviewed: **2026-09-05**. Additional open-source design survey: **2026-10-15**; this date does not imply every API link was reverified.
 
-## OpenAI Realtime
+## Model- and speech-provider-neutral realtime foundations
 
-### Realtime API overview
+### Browser audio and WebRTC
 
-Official documentation:
+- [MDN WebRTC API](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API): peer connections, media tracks and low-latency bidirectional transport.
+- [MDN Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API): audio capture, mixing, analysis and playback clocks.
+- [MDN Media Capture and Streams](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capture_and_Streams_API): permissioned microphone/camera access.
+- [MDN WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API): one possible low-latency transport for audio or event streams.
 
-https://developers.openai.com/api/docs/guides/realtime
+The desktop host can use WebRTC, WebSocket or a local streaming pipeline. Choose a compatible ASR/LLM/TTS stack independently from the renderer. Browser/renderer code should receive only constrained session credentials, never a long-lived provider secret.
 
-Use this for the current Realtime model/session lifecycle, supported modalities, tool calls, audio behavior, and general architecture.
+### Event schemas are adapters, not universal protocols
 
-### Realtime API with WebRTC
+Speech providers differ in how sessions are opened, speech chunks are delivered, tools are called and interruptions are acknowledged. The historical reference used event names resembling `session.created`, `session.update` and `response.create`, but these are **only examples of an earlier provider adapter**. New builds must read the current documentation of the chosen provider and translate its events to the typed renderer-neutral contracts.
 
-Official documentation:
+The invariant is the **actual audio playback clock, turn ownership, cancellation and stable identity/session**; there is no required provider event name or model family.
 
-https://developers.openai.com/api/docs/guides/realtime-webrtc
-
-The reference desktop build uses WebRTC because the client is an Electron/browser environment and low-latency bidirectional audio is central to the experience.
-
-Key design principle from the current docs: client/browser Realtime applications should use WebRTC rather than exposing a normal long-lived provider API key in browser code.
-
-### Realtime conversations and session updates
-
-Official documentation:
-
-https://developers.openai.com/api/docs/guides/realtime-conversations
-
-Current Realtime sessions emit `session.created`, accept `session.update`, and use an event-driven conversation lifecycle.
-
-The reference build encountered a current-schema requirement where its local-tool `session.update` needed the session type. The working pattern was:
-
-```json
-{
-  "type": "session.update",
-  "session": {
-    "type": "realtime",
-    "tools": []
-  }
-}
-```
-
-Do not assume that exact event schema is immutable. If a future provider error disagrees, follow the current official API reference.
 
 ## OpenClaw
 
@@ -289,7 +265,7 @@ For licensing, known limitations, overlap and adoption gates, see [the dated int
 
 ## Licensing reminder
 
-Every project above retains its own license and service terms. The MIT license in this repository applies only to the original documentation and example glue code authored for this blueprint. It does not relicense Unreal Engine, MetaHuman content, OpenAI services/models, OpenClaw, Monolith, Electron, or any third-party dependency.
+Every project above retains its own license and service terms. The MIT license in this repository applies only to the original documentation and example glue code authored for this blueprint. It does not relicense Unreal Engine, MetaHuman content, hosted model and speech services, OpenClaw, Monolith, Electron, or any third-party dependency.
 
 ## October 20, 2026: optional evaluation-only references
 

@@ -21,7 +21,7 @@ They capture the first narrow local-computer-control tier from the Desktop Ethan
 
 The reference build was live-tested for repeated tab creation/closing, switching among existing tabs, opening unopened sites, web/YouTube/Wikipedia/GitHub search, named-place Weather.com lookup with a fresh visual answer stage, shared-video conversation, return from Watch into ordinary browser control, and user barge-in.
 
-The later 2026-09-14 pass added verified Back/Forward, directional scrolling, and named-link activation, then live-tested natural Wikipedia topic navigation and shorthand ChatGPT-tab switching. The expanded project gate reached **204/204 tests across 29 files**, with clean TypeScript and production build. Earlier verdict-channel stress testing also completed 40 consecutive runs with zero blank/bad helper results.
+The later 2026-09-14 pass added verified Back/Forward, directional scrolling, and named-link activation, then live-tested natural Wikipedia topic navigation and shorthand conversation-tab switching. The expanded project gate reached **204/204 tests across 29 files**, with clean TypeScript and production build. Earlier verdict-channel stress testing also completed 40 consecutive runs with zero blank/bad helper results.
 
 ### File control
 

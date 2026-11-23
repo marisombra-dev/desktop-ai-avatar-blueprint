@@ -13,7 +13,7 @@ This repository publishes architecture, contracts, sanitised examples and accept
 | Mouth | PCM/face-animation bridge to MetaHuman | Audio-conditioned Ditto-style motion, output from a deformable portrait |
 | Emotions | Blendshape/animation curves and bones | LivePortrait-style native expression deltas plus 3D keypoint head/eye rotation |
 | Full-body | Full 3D body, environment and Wide View possible | Talking-face close view; optional separate body/presentation renderer |
-| Speaking backend | Any compatible agent and speech adapter; old reference used OpenClaw + OpenAI Realtime | Any compatible agent and speech adapter; inspected Nov reference uses OpenCode + local Whisper ASR + ElevenLabs |
+| Speaking backend | Any compatible agent and speech adapter; historical example used a gateway agent + WebRTC speech | Any compatible agent and speech adapter; inspected Nov reference uses OpenCode + local Whisper ASR + ElevenLabs |
 | Best for | Free 3D movement and environments | Photographic likeness and natural close-face conversation |
 | Detail | docs/02, 03, 09b–09g | docs/16, 17 |
 
@@ -24,13 +24,15 @@ This repository publishes architecture, contracts, sanitised examples and accept
 ~~~text
 Windows desktop / Electron shell
   ├─ narrow preload IPC, explicit privacy + local lifecycle controls
-  ├─ microphone owner → voice activity/turn detector → local ASR
+  ├─ microphone owner → voice/turn adapter
+  │    ├─ native live speech-to-speech model, OR
+  │    └─ ASR → chosen conversation model → TTS
   ├─ conversation coordinator → chosen agent/model + memory + tools
-  │    ├─ OpenCode adapter OR OpenClaw Gateway adapter
+  │    ├─ any compatible ConversationBackend adapter
   │    ├─ one answer owner, continuing sessions and bounded context
   │    └─ independent background/screen-observer sessions
   ├─ approved answer → text cleaner + optional silent emotion cue
-  ├─ speech adapter → output audio stream + authoritative audio clock
+  ├─ streaming audio output (native live model OR TTS) → authoritative playback clock
   ├─ animation/attention event mixer
   │    ├─ Path A → Unreal MetaHuman bridge
   │    └─ Path B → loopback neural portrait renderer
@@ -70,15 +72,15 @@ Clamp parameters, verify event type and owner, expire stale cues and discard can
 1. **Private baseline:** inventory Windows, GPU/VRAM, camera, mic, audio, Node/Python, existing agent, model access, authorized sensors and approved image. Keep local absolute paths and secrets private.
 2. **Continuity first:** prove the intended agent answers correctly in its normal session. Back up identity and history; do not overwrite existing memories.
 3. **Desktop shell:** implement Electron + a least-privilege preload; confirm window size, always-on-top, close/reopen, no mouse capture, health/error states and deterministic local controls.
-4. **Text conversation:** connect one model through an OpenCode or OpenClaw adapter, verify stream, interruption, session reentry, tool authorization and bounded historical context.
-5. **Speech:** local VAD/ASR, interrupt ownership, text cleanup, TTS, audio playback and timing spans. Test mic ownership and voice without any face renderer.
+4. **Text conversation:** connect a chosen local or hosted model through a compatible conversation adapter (examples include OpenCode and OpenClaw), then verify stream, interruption, session reentry, tool authorization and bounded historical context.
+5. **Speech:** choose either native streaming speech-to-speech or VAD/ASR → text agent → TTS. Implement mic permission, interrupt ownership, available text cleanup, audio playback and timing spans. Test voice without any face renderer.
 6. **Choose renderer:** run the Path A gates below or Path B gates in docs/16. Verify lip sync using the very audio being played.
 7. **Social embodiment:** state-driven idle/listening/speaking, context-selected silent expressions, manual voice commands, gaze, blink, eye contact and intentional screen attention. See docs/17.
 8. **Sensors/tools:** locally enforce mic/camera/screen off; fresh image delivery, bounded background observations, optional computer UI hands and deterministic target ownership. Existing chapters 05–11 apply to both renderers.
 9. **Mobile presence:** paired body-map touch, region/gesture interpretation, safe optional browser vibration, verified delivery semantics, testable disconnect. See docs/18.
 10. **Reliability:** recover dropped face service without dropping conversation, reconnect sessions, preserve voice and identity, measure every latency boundary, test cold reboot and regression suite. See docs/19–20.
 
-Do not install Unreal, MetaHuman or Monolith when following Path B. Do not install Ditto/LivePortrait models when following Path A. OpenAI Realtime, OpenCode, OpenClaw and ElevenLabs are replaceable adapters, not mandatory universal project dependencies.
+Do not install Unreal, MetaHuman or Monolith when following Path B. Do not install Ditto/LivePortrait models when following Path A. OpenCode, OpenClaw, ElevenLabs and any WebRTC or local audio provider shown in reference examples are replaceable adapters, not required dependencies. Any compatible model, agent interface and voice service can be used.
 
 ## Path A (3D) construction checklist
 
