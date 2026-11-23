@@ -302,3 +302,17 @@ for the testing and security constraints.
 - [VibeMetaHumans](https://github.com/kevinpbuckley/VibeMetaHumans) (MIT): UE 5.8 editor MetaHuman MCP authoring. Upstream initial cut explicitly uncompiled/unvalidated.
 - [Provena agent memory](https://github.com/admiralpunk/Provena) (MIT): source-linked claims and retrieval audit, not a second identity/memory authority.
 - [OpenCapX](https://github.com/opencapx/OpenCapX) (Apache-2.0): signed plugin/agent permission split and emergency isolation design.
+
+## 2026-11-23: Two-path neural portrait, OpenCode, haptics and voice
+
+The earlier bibliography focused on MetaHuman/Unreal, OpenClaw and Realtime. These additional primary upstream references support the **optional** neural photographic Path B. Always check the CURRENT upstream license, model weights terms and API release at install time. Do not bundle private checkpoints, images, sound or cloned voice in this blueprint.
+
+- Ant Group Ditto TalkingHead (source, audio-driven diffusion/motion example): https://github.com/antgroup/ditto-talkinghead
+- KwaiVGI LivePortrait (expression keypoints, retargeting, stitching): https://github.com/KwaiVGI/LivePortrait
+- OpenCode official documentation: https://opencode.ai/docs/
+- OpenCode SDK documentation: https://opencode.ai/docs/build/sdk/
+- ElevenLabs Text to Dialogue streaming WebSocket API: https://elevenlabs.io/docs/api-reference/text-to-dialogue/ttd-websocket
+- ElevenLabs realtime Text to Dialogue guide: https://elevenlabs.io/docs/eleven-api/guides/how-to/websockets/realtime-tdd
+- MDN Navigator.vibrate API and browser compatibility: https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
+
+Document reference versions and test evidence separately; none of these sources is proof that a given model/API or haptic capability works on every target machine.

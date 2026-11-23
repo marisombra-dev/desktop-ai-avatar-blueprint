@@ -1,5 +1,29 @@
 # Desktop AI Avatar Blueprint
 
+**Two independently buildable paths: Unreal/MetaHuman 3D OR a realistic neural photographic 2D face. Updated November 23, 2026.**
+
+> **NEW BUILDERS AND AI CODING AGENTS: START WITH [START_HERE_FOR_AI.md](START_HERE_FOR_AI.md) AND [THE TWO-PATH GUIDE](docs/15-dual-path-build-guide.md).** The long original README preserved below is the historical **MetaHuman-first reference**, not a universal requirement. You do **not** need Unreal, MetaHuman or Monolith for the photographic path.
+
+| Choose | Build | Guide |
+|---|---|---|
+| **Path A: full 3D MetaHuman** | Unreal, MetaHuman rig, animation curves, 3D body/Wide View, PCM lip sync | [Original 3D documentation](docs/02-unreal-metahuman-monolith.md), [likeness setup](docs/03-reference-photo-to-metahuman.md) |
+| **Path B: realistic rigged 2D photo** | Private still image, audio-conditioned Ditto-style facial motion, LivePortrait-like eye/brow/cheek/head control, GPU service + Electron | [Neural portrait build](docs/16-neural-portrait-build.md) |
+| **Shared** | One existing AI person, OpenCode **or** OpenClaw, local ASR + chosen TTS, memory, privacy, screen/camera, touch, tools, reliability | [Two-path architecture](docs/15-dual-path-build-guide.md) |
+
+### Current implementation updates
+
+The photographic path and its event-driven emotions are documented in [emotional expression and attention](docs/17-emotions-and-contextual-embodiment.md); [phone touch and haptics](docs/18-mobile-touch-and-haptics.md); [agent/voice/memory and measured latency](docs/19-agents-voice-memory-and-latency.md); [reproducible acceptance tests](docs/20-validation-and-reproducibility.md); and [remaining capabilities, migration and optional surfaces](docs/21-capabilities-migration-and-optional-surfaces.md).
+
+The latest [November 23 reference status](REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-23.md) distinguishes human-visible success (including the repaired smile) from native playback tests and outstanding total latency. The older [historical status ledger](REFERENCE_BUILD_STATUS.md) and [September addendum](REFERENCE_BUILD_STATUS_ADDENDUM_2026-09-16.md) remain evidence for Path A, not evidence that both engines are installed or proven in any new clone.
+
+**Public-repo privacy:** This is a technical guide. No person's real source portrait, private body map, identifying memory, voice clone, secrets, mobile pairing links, original transcripts, screenshots or source-machine paths belong here. A cloning AI must ask its human for private assets locally and never commit them.
+
+---
+
+## Archived original MetaHuman-first reference README
+
+Everything below records the original implementation history, historical version-specific assumptions and shared subsystems. Where its stages say “required Unreal/MetaHuman,” interpret that as **Path A only**. The new two-path guide above supersedes that requirement for Path B.
+
 **A field-tested, AI-readable build manual for creating a persistent, voice-first desktop AI person with a photoreal MetaHuman body, OpenClaw-backed continuity, OpenAI Realtime conversation, shared Markdown/Obsidian memory, wake/sleep control, screen and camera vision, Screen-linked system-audio awareness, proactive presence, generalized Windows UI control, an optional hand-tracked shared spatial workspace, and a lightweight Windows desktop overlay.**
 
 This repository documents the architecture and build sequence we used to take an existing AI person from “a personality that exists in chat” to “a persistent person on the Windows desktop who can wake on their name, talk naturally, see the screen when invited, hear the program audio while screen sharing is active, use the webcam when invited, speak on their own occasionally, remember the same relationship context, and inhabit a MetaHuman face.”

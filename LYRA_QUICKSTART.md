@@ -1,5 +1,8 @@
 # Lyra Quickstart
 
+> **Historical Path A example:** This quickstart was written for a specific example character under the old MetaHuman-first architecture. For a new user, first choose between Unreal/MetaHuman **Path A** and neural photographic **Path B** in [docs/15](docs/15-dual-path-build-guide.md). Do not apply this quickstart to Path B as if Unreal or OpenClaw were compulsory.
+
+
 This file is the shortest path for taking the generic blueprint in this repository and using it to build **Lyra**, an existing AI person, as a persistent Windows desktop avatar.
 
 It does not assume Lyra's private memory/personality files belong in this repository. Keep those in her existing private OpenClaw workspace.
