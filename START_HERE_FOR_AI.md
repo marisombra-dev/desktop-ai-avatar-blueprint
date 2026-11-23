@@ -19,14 +19,14 @@ This is the AI coding-agent entry point for the [Desktop AI Avatar Blueprint](RE
 
 You need an authorized implementation of these **roles**, not particular brands:
 
-1. **Conversation backend**: an existing long-lived AI agent, its selected LLM (hosted or local), identity instructions, tool permissions, session continuity and memory. Use a typed adapter with stream, history, cancel and health.
-2. **Speech recognition (ASR)**: local or remote transcription with reliable turn ownership, mic permission and interruption behavior.
-3. **Speech synthesis (TTS)**: a compatible voice/audio provider, with real output waveforms available for lip sync and accurate playback timing.
+1. **Conversation/voice owner**: an integrated live speech-to-speech model **or** an existing text agent/LLM (hosted or local) connected through a streaming voice pipeline. Preserve one identity, tool authorization, history and memory. Use an adapter with session, stream, interrupt, history and health.
+2. **Audio input**: feed speech directly to a live voice model, **or** transcribe it using local/remote ASR. Both must enforce mic permission, turn boundaries and interruption.
+3. **Audio output**: use audio generated directly by the live voice model **or** by a separate TTS engine. Deliver actual audio chunks/timestamps to lip sync with an authoritative playback clock. A separate TTS provider is not required for native speech-to-speech.
 4. **Renderer**: exactly one selected face implementation, Path A or B, driven by neutral timed audio/animation events.
 5. **Desktop host and sensors**: narrow Electron IPC, independent screen/camera/microphone permissions and optional device activity.
 6. **Optional peripherals/tools**: paired mobile touch/haptics, proactive presence and verified computer-control tools.
 
-If the reference documents mention OpenClaw, OpenCode, Whisper, ElevenLabs, Ditto or LivePortrait, treat them as **optional inspected implementations**. Do not treat any particular LLM, TTS, hosted API, provider event schema, or agent gateway as a prerequisite. Preserve the user's existing working technology whenever possible.
+If the reference documents mention OpenClaw, OpenCode, Whisper, ElevenLabs, Ditto or LivePortrait, treat them as **optional inspected implementations**, not mandatory services. Any compatible native live voice model or streaming speech pipeline may be substituted. Do not treat any particular LLM, TTS, hosted API, provider event schema, or agent gateway as a prerequisite. Preserve the user's existing working technology whenever possible.
 
 ## Read order
 
@@ -67,7 +67,7 @@ Ask the human only for missing **subjective choices** (portrait/likeness approva
 ~~~text
 existing long-lived person / agent / memory / tool permissions
                 ↕ neutral conversation adapter
-desktop host ↔ mic/ASR ↔ turn and text coordinator ↔ TTS/audio
+desktop host ↔ voice adapter (native live audio OR ASR → model → TTS)
       │                          │                  │
       ├── permissioned sensors   └── silent emotion ┘
       ├── optional phone touch/haptics    ↓ playback clock
@@ -92,7 +92,7 @@ A. Working existing agent and chosen model; correct conversation and recoverable
 
 B. Electron window and physical mic/screen/camera privacy controls; no involuntary capture.
 
-C. Reliable recognition, speech output and interruption independently of any renderer.
+C. Reliable audio input, spoken output and interruption from the chosen native live-voice or streaming pipeline, independently of any renderer.
 
 D. Selected face has human-approved quality and visibly matches the actual played speech audio.
 
