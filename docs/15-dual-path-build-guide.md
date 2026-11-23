@@ -24,13 +24,15 @@ This repository publishes architecture, contracts, sanitised examples and accept
 ~~~text
 Windows desktop / Electron shell
   ├─ narrow preload IPC, explicit privacy + local lifecycle controls
-  ├─ microphone owner → voice activity/turn detector → local ASR
+  ├─ microphone owner → voice/turn adapter
+  │    ├─ native live speech-to-speech model, OR
+  │    └─ ASR → chosen conversation model → TTS
   ├─ conversation coordinator → chosen agent/model + memory + tools
   │    ├─ any compatible ConversationBackend adapter
   │    ├─ one answer owner, continuing sessions and bounded context
   │    └─ independent background/screen-observer sessions
   ├─ approved answer → text cleaner + optional silent emotion cue
-  ├─ speech adapter → output audio stream + authoritative audio clock
+  ├─ streaming audio output (native live model OR TTS) → authoritative playback clock
   ├─ animation/attention event mixer
   │    ├─ Path A → Unreal MetaHuman bridge
   │    └─ Path B → loopback neural portrait renderer
@@ -71,7 +73,7 @@ Clamp parameters, verify event type and owner, expire stale cues and discard can
 2. **Continuity first:** prove the intended agent answers correctly in its normal session. Back up identity and history; do not overwrite existing memories.
 3. **Desktop shell:** implement Electron + a least-privilege preload; confirm window size, always-on-top, close/reopen, no mouse capture, health/error states and deterministic local controls.
 4. **Text conversation:** connect a chosen local or hosted model through a compatible conversation adapter (examples include OpenCode and OpenClaw), then verify stream, interruption, session reentry, tool authorization and bounded historical context.
-5. **Speech:** local VAD/ASR, interrupt ownership, text cleanup, TTS, audio playback and timing spans. Test mic ownership and voice without any face renderer.
+5. **Speech:** choose either native streaming speech-to-speech or VAD/ASR → text agent → TTS. Implement mic permission, interrupt ownership, available text cleanup, audio playback and timing spans. Test voice without any face renderer.
 6. **Choose renderer:** run the Path A gates below or Path B gates in docs/16. Verify lip sync using the very audio being played.
 7. **Social embodiment:** state-driven idle/listening/speaking, context-selected silent expressions, manual voice commands, gaze, blink, eye contact and intentional screen attention. See docs/17.
 8. **Sensors/tools:** locally enforce mic/camera/screen off; fresh image delivery, bounded background observations, optional computer UI hands and deterministic target ownership. Existing chapters 05–11 apply to both renderers.
