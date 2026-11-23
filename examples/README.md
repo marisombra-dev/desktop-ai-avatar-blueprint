@@ -61,3 +61,11 @@ Security rules:
 - Keep Unreal control sidebands whitelisted. Never forward arbitrary console commands from model text.
 
 The exact code in a new build will differ by current upstream versions. Preserve the architecture and validation boundaries, not obsolete syntax.
+
+## New dual-path sanitized examples (November 2026)
+
+- renderer_neutral_contract.ts — renderer-neutral typed interface, ordered event ownership, stale/expired cue rejection, bounded gaze/head/mood data.
+- neural_expression_policy.ts — private facial intent sideband extraction and conservative expression priority. Does not contain a source portrait or native face rig.
+- phone_touch_haptic_contract.ts — touch classification, bounded mobile vibration patterns and acknowledgment semantics. A browser acknowledgment is not physical vibration proof.
+
+These are reusable *patterns*, not a complete drop-in executable and not an alternative autonomous agent. Implement the chosen native renderer, service ownership, media clock, trust boundary and tests as described in docs/15–20.
