@@ -18,7 +18,7 @@ This gives you:
 - image input for screen/camera,
 - the same long-lived personality/memory.
 
-Do not start by sending microphone recordings to a normal text chat endpoint and bolting TTS on afterward unless realtime is unavailable. The conversational feel is materially different.
+A native realtime speech service and a local ASR → text-model → TTS chain are both valid. This historical chapter chose realtime WebRTC; whichever route you implement, measure turn latency and interruption in a real conversation rather than assuming one is inherently superior.
 
 ## 2. Create the WebRTC session through OpenClaw
 
