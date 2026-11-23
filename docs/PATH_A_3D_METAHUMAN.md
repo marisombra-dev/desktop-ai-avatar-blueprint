@@ -30,7 +30,7 @@ For advanced full-body scene transitions see the [02a–02f chapters](02a-swappa
 
 ## The model is your choice
 
-Nothing in this path requires a particular hosted or local language model, realtime speech vendor, voice clone, agent framework or memory backend. The **conversation layer and TTS** are separate from Unreal and MetaHuman. If you already have a working agent and speech engine, **do not replace them** just to follow the historical reference. Connect them through the neutral contracts in [the shared architecture](15-dual-path-build-guide.md) and [voice/backends](19-agents-voice-memory-and-latency.md).
+Nothing in this path requires a particular hosted or local language model, realtime speech vendor, voice clone, agent framework or memory backend. The **conversation and voice adapter** is separate from Unreal and MetaHuman. It can be a native speech-to-speech model (without separate TTS) or a streaming ASR + language model + TTS chain. If you already have a working agent and speech engine, **do not replace them** just to follow the historical reference. Connect them through the neutral contracts in [the shared architecture](15-dual-path-build-guide.md) and [voice/backends](19-agents-voice-memory-and-latency.md).
 
 Historical reference code demonstrates one possible gateway and realtime voice event protocol. Treat provider-specific RPC/event names as replaceable adapter internals, not universal requirements.
 
