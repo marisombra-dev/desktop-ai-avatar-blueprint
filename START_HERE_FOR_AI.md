@@ -1,221 +1,112 @@
-# START HERE FOR AI
+# START HERE FOR AI — choose 3D MetaHuman OR neural photographic 2D
 
-You are reading this because a human wants you to build a persistent desktop embodiment of an existing AI person.
+**Current architecture 2026-11-23.** This repository documents TWO different routes to a persistent voice-first desktop AI companion. The original Unreal/MetaHuman reference remains an option, not the default or a prerequisite. A newer reference uses a real photograph with neural facial deformation and motion, while preserving the underlying long-lived agent, voice, sensors, tools, memory and touch features.
 
-Your job is **not** to create a generic chatbot with a face. Your job is to preserve the existing person's identity and continuity while giving that person a realtime voice, a MetaHuman body, explicit local screen/camera perception, optional shared Markdown/Obsidian continuity, wake/sleep lifecycle, and restrained proactive presence.
+The objective is an AI-readable construction manual. Reconstruct from generalized architecture and public licensed upstream tools; NEVER copy private source portrait, body image, actual identity/personality, user conversations, cloned voice, secrets, local account details, or personal runtime calibration from any reference machine.
 
-Read the entire repository before making irreversible changes.
+## First decision: select renderer
 
-## Read order
+**Path A: 3D Unreal / MetaHuman.** Build a licensed 3D facial/body rig with Unreal and optionally Monolith. Lip sync, eye/head control, expressions, gestures and Wide View use the 3D model. Read docs/15, then docs/02, 03, 04, 09b–09g, 12, 20.
 
-Use this order so you do not confuse the reference project's proven state with future goals:
+**Path B: photographic neural 2D.** Build a realistic facially deformable portrait from the user's own private licensed photo. Use neural audio-to-motion plus LivePortrait-style canonical 3D facial expression/gaze keypoints; output is an audio-clocked moving 2D view. Neither Unreal nor MetaHuman is required. Read docs/15–20. The reference uses Ditto-style motion, native keypoint blends, a GPU face service and a trusted Electron view.
 
-1. `AGENTS.md`
-2. this file
-3. `REFERENCE_BUILD_STATUS.md`
-4. `REFERENCE_BUILD_STATUS_ADDENDUM_2026-09-16.md`
-5. `README.md`
-6. `docs/00-electron-desktop-shell.md`
-7. the remaining `docs/` chapters in numeric order
-8. `examples/README.md`
-9. `SOURCES.md`
-10. `THIRD_PARTY.md`
+The **conversation backend** is a separate choice: OpenCode or OpenClaw, as appropriate to the human's existing identity/tools. The **speech backend** is another choice: local ASR plus ElevenLabs voice, an alternative TTS, or the earlier OpenAI Realtime route. Do not confuse “which voice plays” with “which model thinks.” The reference dates prove specific implementations, not mandatory dependencies.
 
-If the target person is Lyra, also read `LYRA_QUICKSTART.md` before implementation.
+## Reading order
 
-`REFERENCE_BUILD_STATUS.md` is the authoritative proof-status ledger for its stated snapshot date. Read later dated status addenda in order before deciding what the reference build has actually proven. Do not upgrade an `IMPLEMENTED` item to `END-TO-END PROVEN` merely because example code exists.
+1. AGENTS.md, this page.
+2. docs/15-dual-path-build-guide.md.
+3. REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-23.md (latest state, limitations and evidence labels).
+4. docs/20-validation-and-reproducibility.md.
+5. Choose renderer:
+   - Path A: docs/00, 01, 02, 03, 04, 09b–09g, 12.
+   - Path B: docs/00, 01, 16, 17, 19.
+6. Shared optional systems: docs/05–08, 09, 10, 11, 18, 21; inspect remaining chapters when their capability is chosen.
+7. examples/README.md and any examples actually relevant.
+8. SOURCES.md, THIRD_PARTY.md for upstream licenses.
 
-## Operating rules
+The prior REFERENCE_BUILD_STATUS.md and September addendum describe **historical Path A**, not automatic completion of Path B. Old versions of README chapters “Stage 2 Unreal” and mandatory MetaHuman gates apply only to Path A. The page LYRA_QUICKSTART.md is a historical example name/implementation, not the only target character.
 
-1. **Inventory before installation.** Determine OS, GPU, Unreal version, MetaHuman availability, existing OpenClaw version/configuration, current agent/session identity, Node/Python versions, audio devices, webcam, and whether Git/Monolith are already installed.
-2. **Use current upstream documentation.** The reference build used UE 5.8 and OpenClaw 2026.8.1. If the target machine is newer, adapt deliberately instead of forcing old APIs.
-3. **Preserve the existing agent.** Do not replace or rewrite the person's identity/memory files merely to make the desktop client easier to build.
-4. **Never expose secrets.** Do not paste or commit OpenClaw tokens, provider API keys, OAuth material, personal memory files, or private transcripts.
-5. **Make backups before Unreal asset changes.** Once a face or animation Blueprint is approved, treat it as a checkpoint.
-6. **Work one layer at a time.** Do not change wake recognition, OpenClaw routing, screen capture, and MetaHuman animation in the same debugging step.
-7. **Test boundaries, not vibes.** “The screen feature is broken” is not a diagnosis. Determine whether the failing boundary is speech transcription, local command classification, UI state, capture, image injection, provider response, or agent routing.
-8. **Local privacy/lifecycle commands stay local.** Screen on/off, camera on/off, and end-voice-session must not depend on a general computer-control agent deciding what the words mean.
-9. **The main agent owns substantive conversation.** Realtime provides low-latency speech; normal replies should be consulted through the existing agent so the user experiences one continuous person.
-10. **Restraint is a feature.** Proactive speech and screen commentary need explicit `NO_MESSAGE` / `NO_COMMENT` paths.
-11. **Do not begin with mannerisms.** First make the system reliable. A blinking, lip-synced, visually stable MetaHuman with excellent conversation is more valuable than a gesturing avatar whose wake/sensor lifecycle is fragile.
-12. **Shared memory must stay selective.** If a common Markdown/Obsidian vault is enabled, retrieve only bounded relevant context and curate durable writes aggressively; never treat the vault as a transcript dumping ground.
-13. **Personality needs behavioral priority, not just adjectives.** Test whether ambiguous social remarks remain social instead of becoming unsolicited explanation/advice. Read `docs/05c-social-intent-and-behavioral-priority.md` before tuning prompts for “warmth” or “brevity.”
-14. **Learning is not automatic skill authority.** Reusable procedures may be proposed from independently verified, privacy-reviewed receipts, never installed or executed merely because a model or transcript suggests them. See `docs/11c-review-only-procedural-learning.md`.
-15. **Portable surfaces keep narrow authority.** Provider switches, phone companions, semantic turn detectors, and alternate avatar renderers should cross explicit bounded contracts rather than inherit hidden session state or desktop permissions. See `docs/11e-portable-companion-handoff-contracts.md`.
-15. **Do not collapse every kind of continuity into memory.** Keep raw historical archives, curated durable memory, active-session working context, and fresh cross-surface conversation-edge context as separate data planes with explicit precedence. Read `docs/05d-historical-import-and-cross-surface-continuity.md` before importing large histories or connecting multiple conversational surfaces.
-16. **Computer-use libraries are hands, not a second brain.** If you add a generalized Windows/UI Automation framework, preserve one conversational decision owner, keep stronger deterministic controls first, isolate the generalized worker when practical, refuse ambiguous targets, and do not silently instantiate the framework's own autonomous LLM agent. Read `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md` before broadening computer control.
-17. **Spatial gesture systems are body/input layers, not another assistant.** If webcam hand tracking is added, preserve the existing identity/voice/memory stack and explicitly arbitrate webcam ownership among gaze tracking, Camera awareness, and hand tracking. Read `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md` before adding a gesture board or transparent hand-tracking overlay.
+## What to build
 
-18. **Claim before external actions.** For any state-changing multi-step computer task, persist an executing-step claim before the first effect and require a separately verified, redacted completion receipt. Neither a crash nor a missing tool reply allows automatic replay. See `docs/11b-durable-task-recovery-and-evidence-bound-actions.md`.
-19. **Do not let memory exports silently lose historical corrections.** Preserve validity intervals, supersession IDs, and optional source evidence; make withdrawn-only claims unavailable to ordinary current retrieval without deleting old history. See `docs/05e-evidence-backed-temporal-memory.md`. These are optional generalized Companion Engine patterns, not yet live reference-runtime features.
+~~~text
+Existing intended AI person, private memory and stable agent sessions
+     ↕ one permissioned OpenCode or OpenClaw conversation adapter
+Electron desktop shell + narrow local IPC + sensor controls
+     ↕ ASR, voice/interrupt coordinator, TTS, audio playback clock
+     ↕ typed emotion/gaze/lip-sync/presence events
+        ├── Path A: Unreal MetaHuman renderer
+        └── Path B: loopback neural photo face renderer
+Optional paired phone touch + haptic peripheral
+Optional screen/camera/media observation and verified OS tool actions
+~~~
 
-## Ask the human only for genuinely subjective decisions
+An animation renderer must never own a separate “AI self,” session secrets, arbitrary computer-use tools or the authority to turn on sensors. The agent's answer text, optional private visual tags and TTS audio follow separate contracts. The user can move between renderers and voice/model providers without starting a different identity.
 
-Good questions to ask:
+## Prerequisite inventory report
 
-- Which existing AI agent/person is this embodiment for?
-- What should the wake name be?
-- Which realtime voice do you prefer?
-- Which reference portrait should be canonical?
-- Does this MetaHuman likeness look approved?
-- Are these proactive-speech boundaries acceptable?
+Inspect automatically where possible and report privately, without secret values:
 
-Questions you should normally answer yourself through inspection/research:
+~~~text
+Chosen path: A (3D) / B (photographic)
+Existing agent + backend:
+Available candidate model(s), including local or hosted and provenance:
+Target OS / GPU / VRAM:
+Node / Python:
+Current voice input/output and ASR backend:
+Selected TTS / model/voice transport (no voice ID or secret printed):
+Existing conversation session and recovery method:
+Chosen private portrait or MetaHuman asset approval state:
+For A: Unreal version, MetaHuman, Monolith, GPU project/rig status:
+For B: neural weights/license, registered source, GPU service, cache state:
+Available screen/camera devices and their independent permission/ownership:
+Paired phone touch/haptic support, if opted in:
+Existing memory and current recent-thread continuity:
+Existing backups and rollback:
+Last human-verified gate:
+First failing boundary:
+Single next action:
+~~~
 
-- Where is Unreal installed?
-- What OpenClaw version is running?
-- Which webcam/audio devices exist?
-- Is the Gateway healthy?
-- Which Monolith release matches the engine?
-- Which file contains the relevant handler?
+For missing subjective choices ask the user, including portrait selection/approval, actual voice, desired sensor permissions and acceptable haptics. Do not ask the user to find machine files that authorized tools can inspect. Do not claim a hardware device “did vibrate” because JavaScript accepted a request.
 
-## The mandatory stage gates
+## Safety and operating rules
 
-Do not move forward until each gate passes.
+- **Preserve the person.** Back up and do not rewrite existing private identity, memory, session mappings, transcript archives or permissions merely to make the renderer simpler.
+- **Preserve the current working build.** Back up approved portrait/MetaHuman, audio, working scripts and config before changes. Run one subsystem experiment at a time. Fix the earliest failing boundary, not the most visible symptom.
+- **Never publish personal assets.** No source photo or body-map, keypoint embedding, user utterances, private prompts, cloned voice sample/ID, real URLs or tokens, private screenshots or identifying machine paths in Git, logs or examples.
+- **One active ownership per resource.** One microphone owner, one current animation renderer, one model conversation owner, one authoritative speech clock and one explicit camera lease per device. Stale cue IDs must expire.
+- **Respect local privacy.** Screen/camera/mute/sleep controls are narrow deterministic operations and physically stop capture/usage, not generic model-generated suggestions.
+- **Distinguish evidence.** Code present ≠ unit tested ≠ live native playback tested ≠ human verified. Cached-clip timing excludes ASR, model and TTS. See docs/20.
+- **Keep the model naturally conversational.** It is not supposed to read stage directions, face tags, emoji names or tool descriptions aloud. Natural visible emotion should come from sideband cues and sensors, not simulated words.
+- **No automatic false fallback.** If a model/provider is unavailable, do not invent continuity or actions. Preserve prior history, ask for explicitly authorized fallback or queue tasks with a durable status.
+- **Tools are hands.** Computer use must be authorized by the existing agent, bounded to target/action and backed by postcondition evidence, not delegated to an uncontrolled second assistant.
+- **Haptics are physical device requests.** A phone browser accepting navigator.vibrate does not certify actual vibration; absent support/connection must degrade gracefully.
 
-### Gate A: Agent continuity
-The existing agent works through its normal OpenClaw surface and demonstrates the desired identity/style.
+## Mandatory functional gates
 
-### Gate B: Unreal body
-The chosen MetaHuman launches in a small game window, idles naturally, does not capture the mouse, and has an approved face.
+A. Existing intended agent works in text and survives restart.
 
-### Gate C: Desktop shell
-Electron launches/positions the avatar and exposes visible Mic / Screen / Camera state without touching the agent's private memory.
+B. Electron shell, local privacy toggles and voice session work independently of renderer.
 
-### Gate D: Gateway
-Electron connects reliably to the intended OpenClaw agent/session over the local Gateway.
+C. Local microphone recognition, real spoken answer, interruption and reliable return to listening.
 
-### Gate E: Realtime voice
-A WebRTC voice session opens, the user can speak and interrupt, and audio output is stable.
+D. Selected face is visually approved; real audio makes real mouth movement at the audio clock.
 
-### Gate F: Same-person routing
-Spoken substantive answers demonstrably come from/through the existing OpenClaw person rather than an independent realtime persona.
+E. **Small smile, large smile, amused, curious, concerned and neutral** are actually visible on selected renderer; events alone are insufficient. They do not interrupt lip sync.
 
-### Gate F2: Social-behavior priority
-Greetings, gratitude, jokes, personal sharing, and casual shared-media observations retain the intended person's social manner instead of automatically becoming explanation, advice, fact-checking, coaching, or availability speeches. Explicit analysis requests must still receive analysis.
+F. Screen/camera gaze priority and sensor permissions are true; model sees fresh frames only when invited.
 
-### Gate F3: Cross-surface continuity
-If another trusted AI/chat surface is part of the same person, a fact or project discussed there can be recalled correctly in desktop voice without copying raw transcripts into durable memory. Fresh cross-surface context outranks stale durable history, and one response owner speaks the final answer.
+G. Face service crash/rebind does not destroy audio, mic, conversation, memory or camera ownership.
 
-### Gate F4: Evidence-backed memory migration, if enabled
+H. Phone tap/press/stroke and optional haptic browser receipt are accurate if enabled.
 
-Round-trip a memory export with `validFrom`, `validTo`, `supersededById`, and source evidence without silently removing them. Withdraw the last explicit supporting source and prove the claim is excluded from ordinary current lookup but remains accessible in historical review. This is currently unit-tested in generalized Companion Engine, not validated in the private reference runtime. See `docs/05e-evidence-backed-temporal-memory.md`.
+I. Proactive system can choose silence; no nagging, hallucinated presence, stage directions or unsafe unauthorized tools.
 
-### Gate G: Lip sync
-Realtime output audibly and visually drives the MetaHuman face with acceptable latency.
+J. Cold start, provider/model unavailability, context overflow and long dialogue recover without silently losing confirmed recent context.
 
-### Gate H: Wake/sleep loop
-Wake name opens voice; sign-off closes voice; wake listener re-arms. Repeat several times.
+**Completion:** pass the human walk-through from docs/20, record the selected path and evidence, and leave remaining limitations explicit.
 
-### Gate I: Manual sensors
-Manual Screen and Camera buttons work independently and visibly reflect physical state.
+## Philosophy
 
-### Gate J: Spoken sensors
-Natural spoken requests toggle the correct local sensor without going through a general agent/tool path.
-
-### Gate K: Actual vision
-The AI answers objective questions that require the current screen/webcam image.
-
-### Gate L: Smart observation
-Ongoing screen awareness notices meaningful change without narrating routine motion.
-
-### Gate M: Proactive presence
-The system can choose silence, respects quiet/cooldown/interruption rules, and never treats ordinary inactivity as distress.
-
-### Gate N: Mannerisms and embodied social presence
-Only now add one reversible gesture or expression at a time. Before custom head-bone experiments, read `docs/09b-metahuman-head-control.md`; before wiring facial emotion into conversation, read `docs/09c-metahuman-expression-calibration.md`; before modifying MetaHuman body bones for a shrug, read `docs/09d-metahuman-shoulder-shrug.md`; before replacing spoken filler with laughter, nods, or shared glances, read `docs/09e-fewer-words-more-presence.md`. These chapters record proven control paths, implemented social-presence patterns, and failed routes that should not be blindly repeated.
-
-### Gate O: Generalized UI hands, if enabled
-Established browser/window/file actions still use their stronger dedicated verification paths. A broader multi-step UI request can continue through a bounded UI Automation worker without creating a second LLM/personality. The worker must refuse ambiguous targets and destructive actions that have not been granted an explicit dedicated capability. Human-validate the seam with a harmless multi-step request such as opening a system application and activating one clearly named non-destructive control. See `docs/10h-generalized-windows-ui-hands-without-a-second-agent-validated-2026-09-16.md`.
-
-### Gate O2: Durable computer-task handoff, if enabled
-
-Before any bounded state-changing step executes, prove that the task ledger has committed an `executing` claim. Simulate an interruption after a possibly successful action and verify that neither recovery nor the next provider session repeats it. A completion flag without independently observed postcondition evidence must remain uncertain. See `docs/11b-durable-task-recovery-and-evidence-bound-actions.md`.
-
-### Gate P: Shared spatial Hands / airboard, if enabled
-A hand-tracked spatial board must remain a body/input layer beneath the existing person. The transparent tracker should not replace the avatar, voice, memory, or conversational owner. Webcam ownership must be deterministic: gaze tracking, explicit Camera awareness, and gesture tracking may not race for the same device. Human-validate at least one live object manipulation such as grab/move/rotate while the rest of the desktop companion remains healthy. See `docs/10i-barehands-shared-spatial-airboard-validated-2026-09-16.md`.
-
-## Implementation architecture to preserve
-
-```text
-existing person (OpenClaw agent)
-        ↑ substantive consults / memory / tools
-OpenClaw Gateway on loopback
-        ↑ broker + policy
-Electron desktop shell ↔ OpenAI Realtime WebRTC
-        ↓ local sensor frames
-        ↓ decoded audio / control messages
-Unreal MetaHuman runtime
-        ↓ local computer-control routing
-        ├── deterministic verified browser/window/file controls
-        └── bounded generalized UI-hands worker → Windows UI Automation
-
-optional shared spatial input
-human webcam → explicit camera owner → local hand tracker → transparent airboard
-                                          ↑                ↓
-                                          └── localhost board state/commands ↔ existing Ethan tool loop
-```
-
-Use separate OpenClaw session keys for the main desktop conversation, proactive decision-making, and screen-observer summaries when possible. Internal observation prompts should not become ordinary conversation history.
-
-If generalized UI hands are enabled, they are an actuator beneath the existing decision owner. Do not insert another autonomous conversational agent between the user and the operating system merely because a computer-use framework ships with one.
-
-If a shared spatial hand-tracking layer is enabled, keep its webcam lifecycle and licensing boundary explicit. A local gesture engine should not become a second perception/identity stack, and it should not silently steal the camera from eye contact or explicit Camera awareness.
-
-## First machine-inventory report
-
-Before you edit anything, give the human a concise report containing:
-
-```text
-OS:
-GPU / VRAM:
-Unreal version + install path:
-MetaHuman plugins present:
-Monolith present/version:
-OpenClaw version:
-Gateway health/address:
-Existing agent/session to embody:
-Node/npm:
-Python:
-Microphone(s):
-Speaker/output path:
-Webcam(s):
-Existing loopback/virtual audio device:
-Candidate project directories:
-Anything that blocks Gate A or Gate B:
-```
-
-Do not include secret values in that report.
-
-## Build philosophy
-
-When something fails, prefer the smallest explanatory hypothesis.
-
-If the Screen button turns on but the AI cannot describe the screen, the toggle is probably not the broken layer. If Electron can capture a JPEG but spoken “look at the screen” fails, do not rewrite `desktopCapturer`. If the realtime provider returns an exact schema error, fix the event schema before changing OpenClaw. If a MetaHuman head control rotates in the wrong direction, measure the actual rig instead of changing the AI personality.
-
-For computer control, distinguish **target discovery**, **target ownership**, **execution**, and **postcondition verification**. If a generalized UI worker cannot identify exactly one intended control, fix the selector/context or refuse the action. Do not compensate by telling the model to be more confident.
-
-For shared webcam consumers, distinguish **camera ownership**, **capture**, **local inference**, and **AI vision**. A MediaPipe hand tracker does not need to send webcam frames to the language model, and explicit Camera awareness must not be left logically "on" while another component owns the device.
-
-This project became tractable once every subsystem was treated as a boundary with a test.
-
-## Completion definition
-
-The project is ready for daily use when the human can, without touching code:
-
-1. say the person's name,
-2. get a short natural acknowledgment,
-3. have a normal same-person conversation,
-4. ask the person to look at the screen and receive a visually grounded answer,
-5. ask the person to look through the webcam and receive a visually grounded answer,
-6. turn those sensors back off,
-7. say the agreed sign-off and see voice close,
-8. later wake the person again,
-9. occasionally receive a context-appropriate unsolicited remark without feeling monitored or nagged,
-10. see a stable MetaHuman whose facial behavior helps rather than distracts.
-
-If generalized computer control is part of the target build, add one more acceptance condition: the same person can complete at least one harmless multi-step workflow in a previously un-special-cased Windows UI, while ambiguous or destructive generic targets fail closed.
-
-If shared spatial Hands are part of the target build, add another acceptance condition: the human can activate the hand tracker, physically manipulate at least one shared object, and return to ordinary camera/gaze behavior without breaking the companion's existing voice or sensor lifecycle.
-
-Once those are true, mannerism work is refinement rather than rescue.
+This is a blueprint, not a license to overwrite a real working system. Make a stable human-approved conversation and voice first. Then add a faithful face. Then add sensors, touch and optional 3D presence. The best animated avatar is worthless if it cannot hear, respond naturally or retain the same person across a restart.
