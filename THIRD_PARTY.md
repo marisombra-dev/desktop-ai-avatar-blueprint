@@ -104,3 +104,11 @@ files were reviewed on 2026-10-20; verify the current license and transitive
 asset, model, plugin, MetaHuman and service terms before installing or
 redistributing anything. A reference to a tool is not a production safety
 endorsement.
+
+## November 2026 optional neural-photo and voice dependencies
+
+Path B can use **Ant Group Ditto** audio-driven talking-head models and **KwaiVGI LivePortrait** face retargeting/stitching. These are external projects with their own source and weight licensing, GPU runtime and redistribution terms. This blueprint supplies no source portrait, copyrighted model weights, voice clone, original face cache, tensor engine or copied third-party code. Verify licenses and checkpoints at the time of installation.
+
+OpenCode, ElevenLabs, Whisper and GPU acceleration frameworks are independent optional integration choices with their own versions, credentials, license and service policies. An OpenCode provider's temporary/free model route is not a durable licensed asset. A private ElevenLabs voice and voice ID must never be committed. Mobile haptic effects are subject to browser/OS/device support and permission or user activation restrictions.
+
+For upstream links, see SOURCES.md. Path A still uses the existing Unreal/MetaHuman sections and their license caveats.
