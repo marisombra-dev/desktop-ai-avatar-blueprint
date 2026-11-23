@@ -1,6 +1,6 @@
 # 01 — Reference Architecture
 
-> **Two-path note, 2026-11-23:** This chapter is the original **Unreal/OpenClaw/OpenAI Realtime implementation**. It is not the only supported architecture. See [docs/15](15-dual-path-build-guide.md) for the renderer-neutral structure and [docs/16](16-neural-portrait-build.md) for the newer realistic 2D neural face, plus [docs/19](19-agents-voice-memory-and-latency.md) for OpenCode and ElevenLabs alternatives. The single-person, consent, sensor and service-boundary principles below apply to both.
+> **Two-path note, 2026-11-23:** This chapter is a historical **Unreal/agent-gateway/realtime speech implementation**. It is not the only supported architecture. See [docs/15](15-dual-path-build-guide.md) for the renderer-neutral structure and [docs/16](16-neural-portrait-build.md) for the newer realistic 2D neural face, plus [docs/19](19-agents-voice-memory-and-latency.md) for OpenCode and ElevenLabs alternatives. The single-person, consent, sensor and service-boundary principles below apply to both.
 
 
 This chapter describes the stable division of responsibility in the working reference build.
@@ -66,7 +66,7 @@ A useful rule is **one Gateway per normal host profile**. If you deliberately ru
 
 ## Layer 3 — Realtime provider
 
-OpenAI Realtime supplies:
+The chosen realtime voice adapter supplies:
 
 - microphone streaming,
 - voice activity / turn-taking,
