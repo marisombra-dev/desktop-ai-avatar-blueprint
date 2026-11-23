@@ -1,112 +1,113 @@
-# START HERE FOR AI — choose 3D MetaHuman OR neural photographic 2D
+# START HERE FOR AI — two avatar paths, any compatible model
 
-**Current architecture 2026-11-23.** This repository documents TWO different routes to a persistent voice-first desktop AI companion. The original Unreal/MetaHuman reference remains an option, not the default or a prerequisite. A newer reference uses a real photograph with neural facial deformation and motion, while preserving the underlying long-lived agent, voice, sensors, tools, memory and touch features.
+This is the AI coding-agent entry point for the [Desktop AI Avatar Blueprint](README.md). **Do not assume a particular language model, vendor, agent framework, speech service, or renderer.** First select the visual route and preserve the human's existing conversation identity and data.
 
-The objective is an AI-readable construction manual. Reconstruct from generalized architecture and public licensed upstream tools; NEVER copy private source portrait, body image, actual identity/personality, user conversations, cloned voice, secrets, local account details, or personal runtime calibration from any reference machine.
+## Step 1 — Let the builder choose the face
 
-## First decision: select renderer
+| | Path A: 3D MetaHuman | Path B: photographic neural 2D |
+|---|---|---|
+| Input | Licensed 3D character / MetaHuman rig | Privately owned realistic photograph |
+| Renderer | Unreal Engine and animation rig | Local face-motion inference and compositing |
+| Motion | 3D face and full-body gestures | 2D photo with 3D-aware eye, face and head deformation |
+| Ideal use | Full-body scenes and spatial 3D presence | Lifelike, expressive close-up face |
+| Unreal required? | Yes | No |
+| First guide | [PATH_A_3D_METAHUMAN.md](docs/PATH_A_3D_METAHUMAN.md) | [PATH_B_PHOTOGRAPHIC_2D.md](docs/PATH_B_PHOTOGRAPHIC_2D.md) |
 
-**Path A: 3D Unreal / MetaHuman.** Build a licensed 3D facial/body rig with Unreal and optionally Monolith. Lip sync, eye/head control, expressions, gestures and Wide View use the 3D model. Read docs/15, then docs/02, 03, 04, 09b–09g, 12, 20.
+**Do not begin by installing either engine.** First inspect the target machine, existing project and approved assets. If the human has already made the choice, proceed without asking again.
 
-**Path B: photographic neural 2D.** Build a realistic facially deformable portrait from the user's own private licensed photo. Use neural audio-to-motion plus LivePortrait-style canonical 3D facial expression/gaze keypoints; output is an audio-clocked moving 2D view. Neither Unreal nor MetaHuman is required. Read docs/15–20. The reference uses Ditto-style motion, native keypoint blends, a GPU face service and a trusted Electron view.
+## Step 2 — Select independent, interchangeable services
 
-The **conversation backend** is a separate choice: OpenCode or OpenClaw, as appropriate to the human's existing identity/tools. The **speech backend** is another choice: local ASR plus ElevenLabs voice, an alternative TTS, or the earlier OpenAI Realtime route. Do not confuse “which voice plays” with “which model thinks.” The reference dates prove specific implementations, not mandatory dependencies.
+You need an authorized implementation of these **roles**, not particular brands:
 
-## Reading order
+1. **Conversation backend**: an existing long-lived AI agent, its selected LLM (hosted or local), identity instructions, tool permissions, session continuity and memory. Use a typed adapter with stream, history, cancel and health.
+2. **Speech recognition (ASR)**: local or remote transcription with reliable turn ownership, mic permission and interruption behavior.
+3. **Speech synthesis (TTS)**: a compatible voice/audio provider, with real output waveforms available for lip sync and accurate playback timing.
+4. **Renderer**: exactly one selected face implementation, Path A or B, driven by neutral timed audio/animation events.
+5. **Desktop host and sensors**: narrow Electron IPC, independent screen/camera/microphone permissions and optional device activity.
+6. **Optional peripherals/tools**: paired mobile touch/haptics, proactive presence and verified computer-control tools.
 
-1. AGENTS.md, this page.
-2. docs/15-dual-path-build-guide.md.
-3. REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-23.md (latest state, limitations and evidence labels).
-4. docs/20-validation-and-reproducibility.md.
-5. Choose renderer:
-   - Path A: docs/00, 01, 02, 03, 04, 09b–09g, 12.
-   - Path B: docs/00, 01, 16, 17, 19.
-6. Shared optional systems: docs/05–08, 09, 10, 11, 18, 21; inspect remaining chapters when their capability is chosen.
-7. examples/README.md and any examples actually relevant.
-8. SOURCES.md, THIRD_PARTY.md for upstream licenses.
+If the reference documents mention OpenClaw, OpenCode, Whisper, ElevenLabs, Ditto or LivePortrait, treat them as **optional inspected implementations**. Do not treat any particular LLM, TTS, hosted API, provider event schema, or agent gateway as a prerequisite. Preserve the user's existing working technology whenever possible.
 
-The prior REFERENCE_BUILD_STATUS.md and September addendum describe **historical Path A**, not automatic completion of Path B. Old versions of README chapters “Stage 2 Unreal” and mandatory MetaHuman gates apply only to Path A. The page LYRA_QUICKSTART.md is a historical example name/implementation, not the only target character.
+## Read order
 
-## What to build
+1. [AGENTS.md](AGENTS.md) and this page.
+2. Your chosen [3D guide](docs/PATH_A_3D_METAHUMAN.md) **or** [photographic 2D guide](docs/PATH_B_PHOTOGRAPHIC_2D.md).
+3. [Common architecture and build sequence](docs/15-dual-path-build-guide.md).
+4. [Latest reference status with evidence distinctions](REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-23.md).
+5. [Validation and safety gates](docs/20-validation-and-reproducibility.md).
+6. The selected renderer's chapters, then optional [expressions](docs/17-emotions-and-contextual-embodiment.md), [mobile touch/haptics](docs/18-mobile-touch-and-haptics.md), [model/voice/memory/latency](docs/19-agents-voice-memory-and-latency.md) and [other features](docs/21-capabilities-migration-and-optional-surfaces.md).
+7. [Sanitized examples](examples/README.md), [upstream references](SOURCES.md) and [third-party licenses](THIRD_PARTY.md) for technologies actually selected.
 
-~~~text
-Existing intended AI person, private memory and stable agent sessions
-     ↕ one permissioned OpenCode or OpenClaw conversation adapter
-Electron desktop shell + narrow local IPC + sensor controls
-     ↕ ASR, voice/interrupt coordinator, TTS, audio playback clock
-     ↕ typed emotion/gaze/lip-sync/presence events
-        ├── Path A: Unreal MetaHuman renderer
-        └── Path B: loopback neural photo face renderer
-Optional paired phone touch + haptic peripheral
-Optional screen/camera/media observation and verified OS tool actions
-~~~
+The [archived 3D-first walkthrough](docs/archive/legacy-3d-first-readme.md) is **historical** and applies only when deliberately using its corresponding older architecture. Never present it as the main build order.
 
-An animation renderer must never own a separate “AI self,” session secrets, arbitrary computer-use tools or the authority to turn on sensors. The agent's answer text, optional private visual tags and TTS audio follow separate contracts. The user can move between renderers and voice/model providers without starting a different identity.
+## Machine inventory before edits
 
-## Prerequisite inventory report
-
-Inspect automatically where possible and report privately, without secret values:
+Report privately and without secrets:
 
 ~~~text
-Chosen path: A (3D) / B (photographic)
-Existing agent + backend:
-Available candidate model(s), including local or hosted and provenance:
-Target OS / GPU / VRAM:
-Node / Python:
-Current voice input/output and ASR backend:
-Selected TTS / model/voice transport (no voice ID or secret printed):
-Existing conversation session and recovery method:
-Chosen private portrait or MetaHuman asset approval state:
-For A: Unreal version, MetaHuman, Monolith, GPU project/rig status:
-For B: neural weights/license, registered source, GPU service, cache state:
-Available screen/camera devices and their independent permission/ownership:
-Paired phone touch/haptic support, if opted in:
-Existing memory and current recent-thread continuity:
-Existing backups and rollback:
-Last human-verified gate:
-First failing boundary:
-Single next action:
+Chosen renderer path and user-approved target appearance:
+Existing AI agent, chosen LLM, instructions, memory and sessions:
+Available local/hosted model/provider options and permission boundaries:
+OS, CPU, GPU and VRAM:
+Working mic/speakers and speech recognition/synthesis:
+Available camera/screen sources and separate sensor permissions:
+Selected renderer software and existing assets/service:
+Local runtimes and model weights/licenses where required:
+Existing backups, service ownership and rollback:
+Mobile touch/haptics options, if desired:
+Most recent human-verified capability:
+First failing subsystem:
+Next smallest safe implementation/test:
 ~~~
 
-For missing subjective choices ask the user, including portrait selection/approval, actual voice, desired sensor permissions and acceptable haptics. Do not ask the user to find machine files that authorized tools can inspect. Do not claim a hardware device “did vibrate” because JavaScript accepted a request.
+Ask the human only for missing **subjective choices** (portrait/likeness approval, voice, privacy preferences). Use authorized inspection tools to learn versions, paths and device capabilities. Never copy source portrait, private voice model, personal data or secrets into public documentation.
 
-## Safety and operating rules
+## Architecture and correctness rules
 
-- **Preserve the person.** Back up and do not rewrite existing private identity, memory, session mappings, transcript archives or permissions merely to make the renderer simpler.
-- **Preserve the current working build.** Back up approved portrait/MetaHuman, audio, working scripts and config before changes. Run one subsystem experiment at a time. Fix the earliest failing boundary, not the most visible symptom.
-- **Never publish personal assets.** No source photo or body-map, keypoint embedding, user utterances, private prompts, cloned voice sample/ID, real URLs or tokens, private screenshots or identifying machine paths in Git, logs or examples.
-- **One active ownership per resource.** One microphone owner, one current animation renderer, one model conversation owner, one authoritative speech clock and one explicit camera lease per device. Stale cue IDs must expire.
-- **Respect local privacy.** Screen/camera/mute/sleep controls are narrow deterministic operations and physically stop capture/usage, not generic model-generated suggestions.
-- **Distinguish evidence.** Code present ≠ unit tested ≠ live native playback tested ≠ human verified. Cached-clip timing excludes ASR, model and TTS. See docs/20.
-- **Keep the model naturally conversational.** It is not supposed to read stage directions, face tags, emoji names or tool descriptions aloud. Natural visible emotion should come from sideband cues and sensors, not simulated words.
-- **No automatic false fallback.** If a model/provider is unavailable, do not invent continuity or actions. Preserve prior history, ask for explicitly authorized fallback or queue tasks with a durable status.
-- **Tools are hands.** Computer use must be authorized by the existing agent, bounded to target/action and backed by postcondition evidence, not delegated to an uncontrolled second assistant.
-- **Haptics are physical device requests.** A phone browser accepting navigator.vibrate does not certify actual vibration; absent support/connection must degrade gracefully.
+~~~text
+existing long-lived person / agent / memory / tool permissions
+                ↕ neutral conversation adapter
+desktop host ↔ mic/ASR ↔ turn and text coordinator ↔ TTS/audio
+      │                          │                  │
+      ├── permissioned sensors   └── silent emotion ┘
+      ├── optional phone touch/haptics    ↓ playback clock
+      └── one renderer owner:
+             ├── Path A: Unreal / MetaHuman facial-body rig
+             └── Path B: neural photographic 2D face
+~~~
 
-## Mandatory functional gates
+- One conversational response owner. An audio front end and an animation renderer must never create their own independent agent/personality.
+- One active microphone owner, one active renderer, one authoritative speech clock and explicit camera lease/permission ownership.
+- Voice, emotion, screen awareness, memory and tool actions are separate layers with narrow schemas; a model suggestion is not evidence that hardware moved or a tool completed an action.
+- Keep local privacy controls physically enforceable even when the model or network is unavailable.
+- Do not speak stage directions, silent face tags or raw debug metadata.
+- Treat silence as valid for proactive behavior, and do not guess presence from missing data.
+- Reject ambiguous or destructive computer use; persist claims and independently verify postconditions.
+- Preserve private identity, session links, recent conversation context, historical archives and approved asset backups.
+- Distinguish **CODE PRESENT**, **UNIT TESTED**, **NATIVE TESTED**, **HUMAN VERIFIED** and **UNRESOLVED**. Benchmarks on prepared audio do not prove end-to-end latency.
 
-A. Existing intended agent works in text and survives restart.
+## Required acceptance gates
 
-B. Electron shell, local privacy toggles and voice session work independently of renderer.
+A. Working existing agent and chosen model; correct conversation and recoverable session history.
 
-C. Local microphone recognition, real spoken answer, interruption and reliable return to listening.
+B. Electron window and physical mic/screen/camera privacy controls; no involuntary capture.
 
-D. Selected face is visually approved; real audio makes real mouth movement at the audio clock.
+C. Reliable recognition, speech output and interruption independently of any renderer.
 
-E. **Small smile, large smile, amused, curious, concerned and neutral** are actually visible on selected renderer; events alone are insufficient. They do not interrupt lip sync.
+D. Selected face has human-approved quality and visibly matches the actual played speech audio.
 
-F. Screen/camera gaze priority and sensor permissions are true; model sees fresh frames only when invited.
+E. Real, visible small smile, big smile, amusement, curiosity, concern and return-to-neutral; direct spoken commands also work. Sent events alone are not proof.
 
-G. Face service crash/rebind does not destroy audio, mic, conversation, memory or camera ownership.
+F. Screen/camera gaze priorities and model perception operate only with real, authorized fresh data.
 
-H. Phone tap/press/stroke and optional haptic browser receipt are accurate if enabled.
+G. Face restart/rebind does not reset voice, memory, identity or sensor truth.
 
-I. Proactive system can choose silence; no nagging, hallucinated presence, stage directions or unsafe unauthorized tools.
+H. Paired phone touch and accurate browser-acknowledged haptics, **only if enabled**.
 
-J. Cold start, provider/model unavailability, context overflow and long dialogue recover without silently losing confirmed recent context.
+I. Silence-capable proactivity, safe tool execution and robust context continuity.
 
-**Completion:** pass the human walk-through from docs/20, record the selected path and evidence, and leave remaining limitations explicit.
+J. Cold start, interrupted reply, model outage and long conversation recover without silent data loss.
 
-## Philosophy
+Run the [full human acceptance walk-through](docs/20-validation-and-reproducibility.md) and report any unfinished gate.
 
-This is a blueprint, not a license to overwrite a real working system. Make a stable human-approved conversation and voice first. Then add a faithful face. Then add sensors, touch and optional 3D presence. The best animated avatar is worthless if it cannot hear, respond naturally or retain the same person across a restart.
+**The model is interchangeable. The identity, consent, continuity, expressive behavior and visible results are the product.**
