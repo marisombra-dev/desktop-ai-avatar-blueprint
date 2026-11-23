@@ -71,7 +71,7 @@ multiple matches -> fail as ambiguous
 no match          -> fail as missing
 ```
 
-Aliases such as ChatGPT/GPT, YouTube, and GitHub/repository are convenience layers, not permission to guess among multiple matching tabs.
+Aliases such as conversation tab, video site, and GitHub/repository are convenience layers, not permission to guess among multiple matching tabs.
 
 Before a destructive close, the bridge rechecks that the exact target is still selected in the expected Chrome window immediately before sending `Ctrl+W`. Afterward, it verifies that the target disappeared.
 
