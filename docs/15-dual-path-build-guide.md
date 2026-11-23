@@ -13,7 +13,7 @@ This repository publishes architecture, contracts, sanitised examples and accept
 | Mouth | PCM/face-animation bridge to MetaHuman | Audio-conditioned Ditto-style motion, output from a deformable portrait |
 | Emotions | Blendshape/animation curves and bones | LivePortrait-style native expression deltas plus 3D keypoint head/eye rotation |
 | Full-body | Full 3D body, environment and Wide View possible | Talking-face close view; optional separate body/presentation renderer |
-| Speaking backend | Any compatible agent and speech adapter; old reference used OpenClaw + OpenAI Realtime | Any compatible agent and speech adapter; inspected Nov reference uses OpenCode + local Whisper ASR + ElevenLabs |
+| Speaking backend | Any compatible agent and speech adapter; historical example used a gateway agent + WebRTC speech | Any compatible agent and speech adapter; inspected Nov reference uses OpenCode + local Whisper ASR + ElevenLabs |
 | Best for | Free 3D movement and environments | Photographic likeness and natural close-face conversation |
 | Detail | docs/02, 03, 09b–09g | docs/16, 17 |
 
@@ -78,7 +78,7 @@ Clamp parameters, verify event type and owner, expire stale cues and discard can
 9. **Mobile presence:** paired body-map touch, region/gesture interpretation, safe optional browser vibration, verified delivery semantics, testable disconnect. See docs/18.
 10. **Reliability:** recover dropped face service without dropping conversation, reconnect sessions, preserve voice and identity, measure every latency boundary, test cold reboot and regression suite. See docs/19–20.
 
-Do not install Unreal, MetaHuman or Monolith when following Path B. Do not install Ditto/LivePortrait models when following Path A. OpenAI Realtime, OpenCode, OpenClaw and ElevenLabs are replaceable adapters, not mandatory universal project dependencies.
+Do not install Unreal, MetaHuman or Monolith when following Path B. Do not install Ditto/LivePortrait models when following Path A. OpenCode, OpenClaw, ElevenLabs and any WebRTC or local audio provider shown in reference examples are replaceable adapters, not required dependencies. Any compatible model, agent interface and voice service can be used.
 
 ## Path A (3D) construction checklist
 
