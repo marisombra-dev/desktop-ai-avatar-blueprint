@@ -55,7 +55,7 @@ Do not print the token in debug logs.
 
 ## 4. Renderer receives only constrained realtime credentials
 
-Electron renderer/browser is a less privileged environment. It should receive a short-lived client secret/reservation for the realtime session, not a long-lived provider API key or ChatGPT OAuth credential.
+Electron renderer/browser is a less privileged environment. It should receive a short-lived client secret/reservation for the realtime session, not a long-lived provider API key or hosted-chat OAuth credential.
 
 OpenClaw's current Talk architecture brokers appropriate credentials. Use that instead of `dangerouslyAllowAPIKeyInBrowser` patterns.
 
