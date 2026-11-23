@@ -377,7 +377,7 @@ A direct consult can return the correct answer while the audible Realtime respon
 If the agent consult log contains the correct answer, stop changing retrieval. The bug is downstream. If no consult happened, stop changing response delivery. The bug is upstream.
 
 ### Invisible control characters inside regex source
-One of the most expensive bugs in the reference build was a continuity classifier whose apparent `\b` word boundaries had been written by a Python patch as literal backspace characters (`0x08`). The source looked almost normal in ordinary viewing, but the regex could never match `chatgpt` or `this morning`.
+One of the most expensive bugs in the reference build was a continuity classifier whose apparent `\b` word boundaries had been written by a Python patch as literal backspace characters (`0x08`). The source looked almost normal in ordinary viewing, but the regex could never match `conversation app` or `this morning`.
 
 When generated scripts write regex-bearing source, inspect `repr()` / character codes or add a source sanity test. After patching, run the exact classifier against the exact user phrase before launching the app.
 
