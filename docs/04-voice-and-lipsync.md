@@ -1,13 +1,13 @@
 # 04 — Realtime Voice and Lip Sync
 
-> **Two-path note, 2026-11-23:** This chapter documents the historical OpenClaw/OpenAI Realtime plus MetaHuman PCM bridge. For the separately buildable **neural photographic face** using OpenCode, Whisper, ElevenLabs and neural audio-conditioned mouth motion, use [docs/16](16-neural-portrait-build.md) and [docs/19](19-agents-voice-memory-and-latency.md). Both paths must synchronize the same actual speech audio with visible face frames.
+> **Two-path note, 2026-11-23:** This chapter documents the historical agent-gateway/realtime-speech plus MetaHuman PCM bridge. For the separately buildable **neural photographic face** using OpenCode, Whisper, ElevenLabs and neural audio-conditioned mouth motion, use [docs/16](16-neural-portrait-build.md) and [docs/19](19-agents-voice-memory-and-latency.md). Both paths must synchronize the same actual speech audio with visible face frames.
 
 
 This chapter gets you from a silent MetaHuman to a low-latency conversational voice whose audio drives the face.
 
 ## 1. Keep voice transport and agent reasoning conceptually separate
 
-The reference system uses OpenAI Realtime over WebRTC for the live acoustic experience, while OpenClaw owns the long-lived person and routes substantive dialogue through the existing agent.
+The historical reference used a WebRTC speech service for low-latency audio with a separate long-lived agent owning identity, memory and substantive replies. This is one optional adapter architecture; any compatible streaming speech transport may be used.
 
 This gives you:
 
@@ -46,7 +46,7 @@ A successful result should contain enough information for the client to establis
 - SDP offer URL or broker route,
 - optional headers/model/voice/expiry.
 
-Never put a normal long-lived OpenAI API key into Electron renderer code.
+Never put a long-lived model or speech-provider API key into Electron renderer code.
 
 ## 3. Create the peer connection
 
