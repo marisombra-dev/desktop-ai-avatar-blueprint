@@ -70,7 +70,7 @@ The architectural rule is the same in both cases: **borrow capable hands, keep o
 
 Further optional upstream toolsets for editor authoring, Windows input
 transparency, explainable memory, and signed plugin boundaries are evaluated
-in [the October 20 research gates](docs/10j-upstream-mcp-and-memory-evaluation-gates-2026-10-20.md).
+in [the October 20 research gates](10j-upstream-mcp-and-memory-evaluation-gates-2026-10-20.md).
 These are **not validated or installed** in the reference desktop build.
 
 > Licensing note: BareHands is AGPL-3.0-or-later. The blueprint treats it as a separately obtained localhost component rather than copying its source into this repository. See `THIRD_PARTY.md`.
@@ -119,7 +119,7 @@ The reference system currently does all of the following end to end:
 
 ### October 15, 2026: reusable Companion Engine improvements (separate implementation)
 
-A later independent [Companion Engine commit](https://github.com/marisombra-dev/companion-engine/commit/038446fdf3f915d36b64409fe6fc0e8119d85303) added persist-before-act computer-task steps, no-replay crash handling, and evidence-backed temporal memory with safe source withdrawal and import/export preservation. Its TypeScript checks and **237 unit tests passed**. These changes are **not asserted to be deployed in the reference Desktop Ethan runtime**. Use the sanitized [task-recovery chapter](docs/11b-durable-task-recovery-and-evidence-bound-actions.md), [memory-provenance chapter](docs/05e-evidence-backed-temporal-memory.md), and [dated upstream comparison](docs/11d-selective-upstream-reuse-2026-10-15.md) to adopt the ideas safely.
+A later independent [Companion Engine commit](https://github.com/marisombra-dev/companion-engine/commit/038446fdf3f915d36b64409fe6fc0e8119d85303) added persist-before-act computer-task steps, no-replay crash handling, and evidence-backed temporal memory with safe source withdrawal and import/export preservation. Its TypeScript checks and **237 unit tests passed**. These changes are **not asserted to be deployed in the reference Desktop Ethan runtime**. Use the sanitized [task-recovery chapter](11b-durable-task-recovery-and-evidence-bound-actions.md), [memory-provenance chapter](05e-evidence-backed-temporal-memory.md), and [dated upstream comparison](11d-selective-upstream-reuse-2026-10-15.md) to adopt the ideas safely.
 
 ---
 
