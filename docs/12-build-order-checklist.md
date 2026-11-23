@@ -1,5 +1,8 @@
 # 12 — Build Order Checklist
 
+> **November 2026, two-path update:** This checklist records the original Unreal/MetaHuman build sequence and is now **Path A only** wherever it mandates Unreal, MetaHuman, Monolith or animation blueprints. To build the equally supported photographic neural 2D **Path B**, begin with [the dual-path build order](15-dual-path-build-guide.md), then [Path B renderer](16-neural-portrait-build.md), [face behaviors](17-emotions-and-contextual-embodiment.md) and [validation gates](20-validation-and-reproducibility.md). Shared Electron, agent, memory, sensors and privacy phases below remain useful. Do not install Unreal for Path B.
+
+
 Use this as the execution checklist for a new AI person such as Lyra. Do not mark an item complete because source code exists. Mark it complete only after the observable validation passes.
 
 ## Phase A — Define the person
