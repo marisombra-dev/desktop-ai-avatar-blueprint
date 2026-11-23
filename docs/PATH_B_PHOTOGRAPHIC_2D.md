@@ -13,7 +13,7 @@
 3. A single locally authenticated GPU face service that can be restarted independently of conversation or microphone.
 4. An Electron display bound to that face service and an authoritative output-audio playback clock.
 5. A renderer-neutral event mixer driving neutral, small smile, broad grin, amused, curious, concerned, eye gaze, blink, and native 3D head offsets while speech owns the lips.
-6. Your **own** AI agent and memory, speech recognition and voice synthesizer. Optional screen/camera, proactive presence, mobile touch and haptics use the shared contracts.
+6. Your **own** AI identity and memory, delivered by any compatible native live-voice model or streaming ASR + language model + TTS pipeline. Optional screen/camera, proactive presence, mobile touch and haptics use the shared contracts.
 
 ## Build sequence
 
@@ -23,7 +23,7 @@
 | B1 | Register source image privately; calibrate face landmarks, cache by hash and establish neutral quality baseline | [Neural portrait renderer](16-neural-portrait-build.md) |
 | B2 | Prove canned audio moves the lips and other real face geometry, with no image-cutout mouth or distorted portrait | [Motion pipeline](16-neural-portrait-build.md) |
 | B3 | Wrap motion engine in one healthy authenticated loopback service and Electron frame/clock interface | [Service architecture](16-neural-portrait-build.md) |
-| B4 | Connect any compatible agent + ASR + TTS; preserve interruption, conversation history and actual audio time | [Model/voice/memory adapters](19-agents-voice-memory-and-latency.md) |
+| B4 | Connect any compatible live speech-to-speech model or streaming ASR/LLM/TTS stack; preserve interruption, conversation history and actual audio time | [Model/voice/memory adapters](19-agents-voice-memory-and-latency.md) |
 | B5 | Wire small smile, broad grin, amusement, curiosity, concern, blinks, screen/camera gaze, listening micro-reactions | [Expressions and attention](17-emotions-and-contextual-embodiment.md) |
 | B6 | Add optional screen/camera context, phone touch/haptics, computer tools and proactive presence | [Mobile touch](18-mobile-touch-and-haptics.md), [capabilities](21-capabilities-migration-and-optional-surfaces.md) |
 | B7 | Verify native visible motion, facial reaction during speaking, face restart, latency and real human acceptance | [Complete tests](20-validation-and-reproducibility.md) |
@@ -46,7 +46,7 @@ The output is a 2D presentation with 3D-aware facial controls. It is **not** a 3
 
 ## The model is your choice
 
-Any model that can provide a conversational text stream through the chosen adapter is suitable *if it meets your requirements*. The portrait engine has no reason to know the brand or identity of the LLM. It takes approved speech audio and bounded, optional emotion/attention cues. Cloud or local TTS can be used if the real audio is available to the motion engine with correct timing and cancellation.
+Any model that can provide a conversational text stream through the chosen adapter is suitable *if it meets your requirements*. The portrait engine has no reason to know the brand or identity of the LLM. It takes approved speech audio and bounded, optional emotion/attention cues. Cloud or local TTS can be used, **or the audio can come directly from a native streaming speech-to-speech model**, provided the real audio reaches the motion engine with correct timing and cancellation.
 
 The dated reference happened to use particular speech, motion and conversation libraries. They are examples for reproducing known interfaces, not mandatory suppliers. Always inspect current licensing, model formats and hardware compatibility.
 
