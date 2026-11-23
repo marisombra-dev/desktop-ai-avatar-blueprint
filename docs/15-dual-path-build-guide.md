@@ -26,7 +26,7 @@ Windows desktop / Electron shell
   ├─ narrow preload IPC, explicit privacy + local lifecycle controls
   ├─ microphone owner → voice activity/turn detector → local ASR
   ├─ conversation coordinator → chosen agent/model + memory + tools
-  │    ├─ OpenCode adapter OR OpenClaw Gateway adapter
+  │    ├─ any compatible ConversationBackend adapter
   │    ├─ one answer owner, continuing sessions and bounded context
   │    └─ independent background/screen-observer sessions
   ├─ approved answer → text cleaner + optional silent emotion cue
@@ -70,7 +70,7 @@ Clamp parameters, verify event type and owner, expire stale cues and discard can
 1. **Private baseline:** inventory Windows, GPU/VRAM, camera, mic, audio, Node/Python, existing agent, model access, authorized sensors and approved image. Keep local absolute paths and secrets private.
 2. **Continuity first:** prove the intended agent answers correctly in its normal session. Back up identity and history; do not overwrite existing memories.
 3. **Desktop shell:** implement Electron + a least-privilege preload; confirm window size, always-on-top, close/reopen, no mouse capture, health/error states and deterministic local controls.
-4. **Text conversation:** connect one model through an OpenCode or OpenClaw adapter, verify stream, interruption, session reentry, tool authorization and bounded historical context.
+4. **Text conversation:** connect a chosen local or hosted model through a compatible conversation adapter (examples include OpenCode and OpenClaw), then verify stream, interruption, session reentry, tool authorization and bounded historical context.
 5. **Speech:** local VAD/ASR, interrupt ownership, text cleanup, TTS, audio playback and timing spans. Test mic ownership and voice without any face renderer.
 6. **Choose renderer:** run the Path A gates below or Path B gates in docs/16. Verify lip sync using the very audio being played.
 7. **Social embodiment:** state-driven idle/listening/speaking, context-selected silent expressions, manual voice commands, gaze, blink, eye contact and intentional screen attention. See docs/17.
