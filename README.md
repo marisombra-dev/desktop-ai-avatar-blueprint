@@ -40,11 +40,21 @@ A **realistic photograph brought to life**, using neural face motion rather than
 
 Neither route requires a specific LLM, cloud provider, chatbot product, agent framework, TTS engine, or voice service. The technical reference includes **optional examples** of particular libraries and services, but those are replaceable.
 
+## Choose your voice architecture independently
+
+**Any compatible live or streaming voice model can be used with either visual path.** The blueprint supports three implementation styles:
+
+1. **Native realtime speech-to-speech:** a streaming voice model handles incoming audio and produces spoken audio directly. A separate text model or TTS engine is **not required**. Use its streamed audio as the lip-sync source, and its transcripts/semantic events when available.
+2. **Streaming ASR → conversation model → speech synthesis:** recognize spoken words locally or remotely, run any chosen local/hosted model, and synthesize speech with any compatible TTS engine. Stream audio and text incrementally if the providers support it.
+3. **Hybrid:** a live voice front end delegates reasoning, tools or memory to an existing agent while retaining low-latency spoken delivery. Preserve one authoritative conversational identity rather than creating a competing avatar persona.
+
+The adapter requirements are **audio samples/chunks, playback timing, turn boundaries, interruption/cancel events, and optional transcripts/animation cues**, not a vendor-specific event schema. Both animation routes synchronize their lips to the **audio the user actually hears**. There is no mandatory service, provider name or voice model.
+
 ## Shared features, whichever path you choose
 
-Both paths can connect to an existing long-lived AI identity and its memory, run local wake/sleep and speech recognition, support interruptible spoken conversation, and use context-appropriate facial expressions instead of narrated stage directions. Both can support explicit screen/camera controls, proactive presence with the option to remain silent, authorized desktop actions, and a paired phone that recognizes tap/press/stroke gestures and can request vibration feedback.
+Both paths can connect to an existing long-lived AI identity and its memory, run local wake/sleep, support native live speech or streaming recognition/synthesis, and provide interruptible spoken conversation, and use context-appropriate facial expressions instead of narrated stage directions. Both can support explicit screen/camera controls, proactive presence with the option to remain silent, authorized desktop actions, and a paired phone that recognizes tap/press/stroke gestures and can request vibration feedback.
 
-The boundary matters: **the agent owns conversation and tools; the voice provider generates speech; the renderer animates; sensors and mobile peripherals are permissioned separately.** Replacing one component should not erase identity, conversation history or permissions.
+The boundary matters: **the selected conversation or live-voice model owns authorized dialogue; the speech adapter exposes the played audio and turn state; the renderer animates; sensors and mobile peripherals are permissioned separately.** Replacing one component should not erase identity, conversation history or permissions.
 
 ## Build and verification documentation
 
