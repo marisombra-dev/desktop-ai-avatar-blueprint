@@ -17,7 +17,7 @@ The desktop host can use WebRTC, WebSocket or a local streaming pipeline. Choose
 
 ### Event schemas are adapters, not universal protocols
 
-Speech providers differ in how sessions are opened, speech chunks are delivered, tools are called and interruptions are acknowledged. The historical reference used event names resembling \`session.created\`, \`session.update\` and \`response.create\`, but these are **only examples of an earlier provider adapter**. New builds must read the current documentation of the chosen provider and translate its events to the typed renderer-neutral contracts.
+Speech providers differ in how sessions are opened, speech chunks are delivered, tools are called and interruptions are acknowledged. The historical reference used event names resembling `session.created`, `session.update` and `response.create`, but these are **only examples of an earlier provider adapter**. New builds must read the current documentation of the chosen provider and translate its events to the typed renderer-neutral contracts.
 
 The invariant is the **actual audio playback clock, turn ownership, cancellation and stable identity/session**; there is no required provider event name or model family.
 
