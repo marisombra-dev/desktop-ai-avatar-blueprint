@@ -1,5 +1,8 @@
 # Sanitized Reference Examples
 
+> **Two-path update:** The existing examples are mostly sanitized patterns from the original Unreal/OpenClaw reference. For Path B choose [docs/16](../docs/16-neural-portrait-build.md) and [docs/17](../docs/17-emotions-and-contextual-embodiment.md); both paths can use [docs/18](../docs/18-mobile-touch-and-haptics.md) and [docs/19](../docs/19-agents-voice-memory-and-latency.md). Examples are illustrative, not a complete packaged runtime; do not copy private portrait/voice data.
+
+
 These files are **implementation patterns**, not a drop-in product. They are distilled from the working reference architecture while removing personal names, secrets, absolute machine paths, private memory logic, and project-specific character assets.
 
 Use them this way:
