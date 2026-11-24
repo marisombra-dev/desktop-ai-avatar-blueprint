@@ -69,3 +69,7 @@ The exact code in a new build will differ by current upstream versions. Preserve
 - phone_touch_haptic_contract.ts — touch classification, bounded mobile vibration patterns and acknowledgment semantics. A browser acknowledgment is not physical vibration proof.
 
 These are reusable *patterns*, not a complete drop-in executable and not an alternative autonomous agent. Implement the chosen native renderer, service ownership, media clock, trust boundary and tests as described in docs/15–20.
+
+## Mobile app source
+
+[mobile/](mobile/README.md) contains a portable phone touch page/server, native Android inbox source, private inbox server/worker contract, SDK build script and synthetic HTTP tests. Both renderer paths can use them. Configure private network, identity and signing key locally.

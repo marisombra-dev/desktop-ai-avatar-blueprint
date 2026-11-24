@@ -103,3 +103,7 @@ A phone on a different network requires deliberate network security and pairing;
 6. Disconnect mid-acknowledgment: server times out rather than inventing success; reconnect does not replay old pulses.
 7. Confirm touch/face interaction works with either MetaHuman or photographic face, without ever sending private image bytes to the model unless explicit authorized vision was requested.
 8. Run security checks for token exposure, request limits, caching headers, origin/network policy, no LAN exposure without pairing and secret-free logs.
+
+## Complete portable implementation
+
+See [29 — phone touch app build](29-phone-touch-app-build.md) for installation, private pairing/HTTPS, reconnection, actual sensor integration and source code. The [two-way telephone inbox](30-phone-inbox-app-build.md) is separate.

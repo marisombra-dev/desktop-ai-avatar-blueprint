@@ -117,3 +117,5 @@ K. If optional development is enabled: verify durable queue, source evidence, is
 Run the [full human acceptance walk-through](docs/20-validation-and-reproducibility.md) and report any unfinished gate.
 
 **The model is interchangeable. The identity, consent, continuity, expressive behavior and visible results are the product.**
+
+Optional phone apps: read [29 — touch/haptics](docs/29-phone-touch-app-build.md), [30 — two-way inbox](docs/30-phone-inbox-app-build.md), and [mobile source examples](examples/mobile/README.md). Verify actual device connectivity, reply receipt and touch accuracy separately; do not conflate with live mobile voice.

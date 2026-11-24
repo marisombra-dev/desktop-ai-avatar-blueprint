@@ -67,3 +67,5 @@ After B0–B7, optionally follow [the shared initiative architecture](22-shared-
 The approved subject photo, private face embeddings, cloned voice and pairing secrets are never published in this repository. Start with [the neural portrait implementation](16-neural-portrait-build.md) and [emotion policy](17-emotions-and-contextual-embodiment.md).
 
 [← Back to the two choices](../README.md)
+
+Optional mobile construction: [touch/haptic app](29-phone-touch-app-build.md) and [two-way Android inbox](30-phone-inbox-app-build.md) use the same backend as Path A. Neither requires a neural renderer on the phone.

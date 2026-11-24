@@ -1,0 +1,41 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {randomUUID} from 'node:crypto';
+import {createInbox} from './inbox/server.mjs';
+import {createTouchHub,createTouchServer,classify} from './haptics/server.mjs';
+const owner='synthetic-owner',worker='synthetic-test-secret-not-for-production-123456789';
+const dir=fs.mkdtempSync(path.join(os.tmpdir(),'mobile-test-'));
+const headers={'tailscale-user-login':owner},agent={authorization:'Bearer '+worker};
+const opts=(h,d)=>({method:'POST',headers:{...h,'Content-Type':'application/json'},body:JSON.stringify(d)});
+const listen=async s=>{await new Promise(r=>s.listen(0,'127.0.0.1',r));return 'http://127.0.0.1:'+s.address().port};
+const close=s=>new Promise(r=>s.close(r));
+const inbox=createInbox({file:path.join(dir,'inbox.json'),ownerLogin:owner,workerSecret:worker});const url=await listen(inbox);
+const note={id:randomUUID(),replyTo:'ses_fixture',text:'Synthetic test'};
+try{
+ assert.equal((await fetch(url+'/messages')).status,403);
+ assert.equal((await fetch(url+'/agent/pending',{headers})).status,403);
+ assert.equal((await fetch(url+'/agent/publish',opts(agent,{id:'ses_fixture',text:'Synthetic original'}))).status,200);
+ assert.equal((await fetch(url+'/agent/publish',opts(agent,{id:'ses_other',text:'Synthetic second'}))).status,429);
+ assert.equal((await fetch(url+'/note',opts({},note))).status,403);
+ assert.equal((await fetch(url+'/note',opts(headers,note))).status,200);
+ assert.equal((await fetch(url+'/note',opts(headers,note))).status,200);
+ assert.equal((await fetch(url+'/note',opts(headers,{...note,text:'changed'}))).status,409);
+ assert.equal((await(await fetch(url+'/agent/pending',{headers:agent})).json()).notes.length,1);
+ assert.equal((await fetch(url+'/agent/complete',opts(agent,{noteId:note.id,cycleId:'ses_reply',text:'Synthetic response'}))).status,200);
+ assert.equal((await fetch(url+'/agent/complete',opts(agent,{noteId:note.id,cycleId:'ses_reply',text:'Synthetic response'}))).status,200);
+ const history=await(await fetch(url+'/messages',{headers})).json();assert.equal(history.notes[0].status,'reviewed');assert.equal(history.messages[1].replyToNote,note.id);assert.equal(history.messages.length,2);
+ assert.equal((await fetch(url+'/receipt',opts(headers,{id:'ses_reply',kind:'opened'}))).status,200);
+}finally{await close(inbox);fs.rmSync(dir,{recursive:true,force:true})}
+let now=Date.now(),count=0;const hub=createTouchHub({clock:()=>now,onTouch:()=>count++});
+const touch={kind:'touch_trace',eventId:randomUUID(),startX:.5,startY:.2,lastX:.5,lastY:.2,path:0,durationMs:200};
+assert.equal(classify(touch).gesture,'tap');assert.equal(classify({...touch,durationMs:900}).gesture,'press');assert.equal(classify({...touch,path:.4}).gesture,'stroke');
+assert.throws(()=>classify({...touch,path:NaN}));
+hub.poll(-1);hub.event(touch);hub.event(touch);assert.equal(count,1);
+const p=hub.haptic([30]);const c=hub.poll(0).commands.at(-1);hub.event({kind:'haptic_ack',id:c.id,accepted:true});assert.equal((await p).status,'browser_accepted');
+now+=2000;hub.event({kind:'touch_live',active:true,x:.5,y:.5});assert.ok(hub.snapshot().live);now+=1300;assert.equal(hub.snapshot().live,null);
+assert.throws(()=>hub.event({kind:'forged_action'}));
+const touchServer=createTouchServer({ownerLogin:owner,hub}),u=await listen(touchServer);
+try{assert.equal((await fetch(u+'/')).status,403);assert.equal((await fetch(u+'/',{headers})).status,200);assert.equal((await fetch(u+'/api/poll?since=-1',{headers})).status,200)}finally{await close(touchServer)}
+console.log('Synthetic inbox HTTP, authentication, idempotency, reply/receipt, touch classification, acknowledgment, expiry and HTTP tests passed');

@@ -60,3 +60,5 @@ Use NOT STARTED / CODE PRESENT / UNIT TESTED / NATIVE TESTED / HUMAN VERIFIED / 
 Before calling the extension complete, observe multiple real eligible cycles with no fabricated test history, including a decision to do nothing. Let the owner use normal voice and text sessions, then ask naturally about actual independent work; verify relevance and provenance. Check rest and disabled state, foreground cancellation, real communication receipts, long-term measurement drift and model migration. Measure added context size and first-token/first-audio latency; restore context if an optimization removes important memory without improvement. No mandatory productivity targets.
 
 See [dated reference evidence](../REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-24.md) for what was actually tested. Use the same backend for both renderers, but independently validate the selected presentation client.
+
+Mobile construction details and source: [29 — haptic phone](29-phone-touch-app-build.md), [30 — two-way Android inbox](30-phone-inbox-app-build.md). Use the [mobile evidence addendum](../REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-24_MOBILE.md) for updated delivery status.

@@ -49,3 +49,5 @@ After A0–A7, optionally follow [the shared initiative architecture](22-shared-
 For source and license caveats see [third-party dependencies](../THIRD_PARTY.md). The [old 3D-first README](archive/legacy-3d-first-readme.md) is retained as **historical troubleshooting/reference**, not as a universal installation script.
 
 [← Back to the two choices](../README.md)
+
+Optional mobile construction: [touch/haptic app](29-phone-touch-app-build.md) and [two-way Android inbox](30-phone-inbox-app-build.md) use the same backend as Path B. Neither requires Unreal on the phone.

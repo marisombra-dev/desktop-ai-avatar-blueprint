@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Companion Touch</title>
+<style>body{font:17px system-ui;max-width:420px;margin:auto;padding:16px;color:#e8e8e8;background:#161b23}svg{display:block;width:100%;max-height:65vh;touch-action:none;background:#252e3c;border-radius:14px}button{padding:12px;margin:8px 0}label{display:block;padding:8px 0}#status{color:#c0d6e8}</style>
+<h1>Companion Touch</h1><p id="status">Connecting…</p>
+<svg id="bodyMap" viewBox="0 0 300 440" preserveAspectRatio="none" aria-label="Synthetic body touch map">
+<g fill="#8795a8"><circle cx="150" cy="65" r="38"/><rect x="105" y="105" width="90" height="175" rx="34"/><rect x="51" y="119" width="47" height="166" rx="23"/><rect x="202" y="119" width="47" height="166" rx="23"/><rect x="107" y="269" width="40" height="154" rx="20"/><rect x="153" y="269" width="40" height="154" rx="20"/></g>
+<circle id="marker" cx="0" cy="0" r="11" fill="#ffbf76" visibility="hidden"/></svg>
+<label><input type="checkbox" id="vibrate"> Enable vibration feedback on this phone</label>
+<button id="test">Test vibration</button><p id="receipt" aria-live="polite">Tap, hold or stroke the map.</p>
+<script src="/phone.js" defer></script></html>

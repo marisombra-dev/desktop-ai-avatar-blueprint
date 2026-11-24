@@ -1,0 +1,9 @@
+# Mobile app construction examples (both avatar paths)
+
+These are portable reference implementations for the phone touch peripheral and two-way private note inbox, not the private production runtime. Neither requires a particular LLM, TTS, renderer or agent framework. See [Touch setup](../../docs/29-phone-touch-app-build.md) and [Inbox setup](../../docs/30-phone-inbox-app-build.md).
+
+- **haptics/**: Node loopback server, synthetic SVG phone page, Pointer Events, live touch, SSE + HTTPS fallback polling, bounded vibration acknowledgment and an embeddable touch hub.
+- **inbox/**: Node loopback server with authenticated phone and separate trusted worker endpoints, persistent message/note/receipt state, retry-safe UUIDs, direct replies and separate rate limits. **android/** contains sanitized source derived from the reference 1.1 app, manifest and Windows SDK build script. Configure private URL, timezone, key and network before build. The sample APK route retains the old endpoint name for compatibility; it serves your own locally built APK.
+- **test.mjs**: synthetic tests (Node 20+). Run `node examples/mobile/test.mjs` from the repository root. No real personal message, sensor or external service is used.
+
+Both servers assume a **trusted private HTTPS identity proxy** that strips/replaces incoming identity headers; bind only to loopback, never expose directly. Header trust is safe only within that boundary; local privileged processes are trusted. Agent endpoints also require a separate high-entropy bearer secret, and must be blocked at the external proxy where possible. No credentials or phone URL belong in Git. Use separate ports and scope permissions; do not send private notes to public research/collaboration tools. Each reference server is single-writer and intended for one private paired owner; production needs stronger device-specific identity, rate limits and retention policies.

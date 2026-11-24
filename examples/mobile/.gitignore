@@ -1,0 +1,11 @@
+*.apk
+*.jks
+*.keystore
+*.p12
+*.env
+*.local.*
+signing-password.txt
+private/
+state/
+classes/
+dex/

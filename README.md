@@ -67,11 +67,13 @@ These are optional shared capabilities, not a third avatar path, a required prov
 - **[AI builder entry point](START_HERE_FOR_AI.md)**: choose the path and inventory the target machine before installing anything.
 - **[Shared architecture and staged build order](docs/15-dual-path-build-guide.md)**: contracts, common lifecycle and distinct renderers.
 - **[Emotional expressions and facial behavior](docs/17-emotions-and-contextual-embodiment.md)**: contextual cues, smiles, gaze, direct voice commands and observable tests.
-- **[Phone touch and haptics](docs/18-mobile-touch-and-haptics.md)**: authenticated touch events, optional phone vibration and acknowledgment.
+- **[Phone touch and haptics](docs/18-mobile-touch-and-haptics.md)**: authenticated touch events, optional phone vibration and acknowledgment. [Build the phone touch app](docs/29-phone-touch-app-build.md) and [two-way Android inbox](docs/30-phone-inbox-app-build.md) with [source examples](examples/mobile/README.md), shared by both paths.
 - **[Model-agnostic agent, voice, memory and latency](docs/19-agents-voice-memory-and-latency.md)**: swappable backends and evidence-based tuning.
 - **[Acceptance tests](docs/20-validation-and-reproducibility.md)** and **[optional capabilities](docs/21-capabilities-migration-and-optional-surfaces.md)**.
 
 **Shared development chapters (optional for A and B):** [22 Initiative and goals](docs/22-shared-initiative-and-development.md) · [23 Developmental memory and continuity](docs/23-developmental-memory-and-continuity.md) · [24 Reflection, learning and skills](docs/24-learning-reflection-and-skills.md) · [25 Projects, research and laboratory](docs/25-independent-projects-and-laboratory.md) · [26 Environment, conversation and mobile](docs/26-attention-environment-and-cross-device.md) · [27 Evaluation and model migration](docs/27-developmental-evaluation-and-migration.md) · [28 Build and acceptance](docs/28-development-build-and-acceptance.md).
+
+**Mobile status:** [phone app build and verification addendum](REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-24_MOBILE.md).
 
 **Reference history:** the original 3D-first implementation is preserved in the [archived walkthrough](docs/archive/legacy-3d-first-readme.md). The [historical status](REFERENCE_BUILD_STATUS.md) and [visual/voice status addendum](REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-23.md) plus the [developmental status addendum](REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-24.md) distinguish what was code-only, locally tested and directly human-verified. They are evidence, **not** installation requirements or guarantees on your hardware.
 
