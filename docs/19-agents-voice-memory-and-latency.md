@@ -139,3 +139,7 @@ Keep the approved portrait quality, expression calibration, voice and identity s
 - “Stage directions audible”: fix text sanitizer/sideband parser before changing the entire conversational model.
 
 Security and privacy: docs/10; architecture: docs/01; full validation: docs/20.
+
+## 6. Shared developmental context and model replacement
+
+The optional [initiative worker](22-shared-initiative-and-development.md) uses a separately pinned, bounded reasoning session and the same private record store. The voice adapter consumes a compact, digest-versioned [working context](23-developmental-memory-and-continuity.md) and optional relevant intentions/discoveries before an admitted turn. Do not inject full journals on every utterance, invent delivery or sacrifice recent conversation history for an unproven latency gain. A background job yields to active speech or foreground tasks. Use [cross-model and longitudinal evaluation](27-developmental-evaluation-and-migration.md) before changing routes; verify both objective correctness and natural conversational behavior.

@@ -103,8 +103,12 @@ Do not install Unreal, MetaHuman or Monolith when following Path B. Do not insta
 7. Preserve working voice and memory unchanged while tuning expression or visual latency. A face restart must be recoverable during an intact conversation.
 8. Verify docs/17, 18, 19 and 20. The separate mobile portrait preview is not automatically a live neural lip-sync client.
 
+## Shared optional developmental layer
+
+Either renderer may attach to the same persistent initiative worker after core conversation, privacy and memory work. Use [chapters 22–28](22-shared-initiative-and-development.md) for scheduling, goals, learning, private projects, lab isolation, contextual memory, environmental context, evaluation and cross-device delivery. The shared backend owns records; neither renderer is an agent. Follow [D0–D11](28-development-build-and-acceptance.md) independently of A/B presentation gates. Keep current voice and face stable and foreground resources prioritized.
+
 ## How to interpret older material
 
 - The older README and START_HERE_FOR_AI originally describe a MetaHuman-first implementation. They now need to be read through this dual-path guide. Their mandatory 3D gates apply only to Path A.
-- REFERENCE_BUILD_STATUS.md and the September addendum are historical snapshots. The 2026-11-23 addendum reports later Path B evidence, human corrections and current limitations; it does not retroactively rewrite old outcomes.
+- REFERENCE_BUILD_STATUS.md and the September addendum are historical snapshots. The 2026-11-23 addendum reports later Path B evidence, human corrections and current limitations; it does not retroactively rewrite old outcomes. The [2026-11-24 addendum](../REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-24.md) covers the shared developmental layer with separate evidence levels.
 - “Implemented,” “unit tested,” “cached-render tested,” “native playback tested,” “human-verified” and “fully live end-to-end” are distinct labels. Use the strongest **actually supported** status for each subsystem.

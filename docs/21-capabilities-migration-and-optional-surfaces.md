@@ -81,3 +81,7 @@ For hardware upgrades, measure GPU VRAM, memory contention, model inference toke
 6. Restore optional mobile touch and other peripherals; prove verified delivery, opt-out and disconnect.
 7. Test full cold reboot, absence/return, cancellation, privacy off, long context and provider outage. Log what is human verified vs native tested.
 8. Treat unresolved latency or incomplete phone capability as remaining work; don't relabel because a new dependency was installed.
+
+## Shared independent development
+
+The [shared initiative and developmental architecture](22-shared-initiative-and-development.md) extends optional proactivity into durable goals, curiosity, bounded public research, self-observation, learning, skills, projects, isolated experiments, reflective memory and model comparisons. It is not a new visual route and cannot bypass existing desktop tool permissions. The [private mobile inbox](26-attention-environment-and-cross-device.md) is a distinct optional polling channel, not live mobile speech or haptics. Follow [the development build gates](28-development-build-and-acceptance.md) and retain original memory during model changes.

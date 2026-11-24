@@ -50,6 +50,10 @@ Any model that can provide a conversational text stream through the chosen adapt
 
 The dated reference happened to use particular speech, motion and conversation libraries. They are examples for reproducing known interfaces, not mandatory suppliers. Always inspect current licensing, model formats and hardware compatibility.
 
+## Optional shared initiative and development (same as Path A)
+
+After B0–B7, optionally follow [the shared initiative architecture](22-shared-initiative-and-development.md) and [development build gates D0–D11](28-development-build-and-acceptance.md). Memory/learning, projects, laboratory, reflective records, environment, contextual conversation, mobile inbox and evaluation are backend capabilities. The neural face remains a presentation service; its GPU budget and voice playback take priority over optional background experiments. No Unreal dependency or separate persona is introduced.
+
 ## What proves Path B works
 
 - Human-approved photographic quality, neutral face, and real visible lip sync.

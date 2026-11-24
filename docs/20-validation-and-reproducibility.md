@@ -94,3 +94,7 @@ Source: user still found latency objectionable; no reliable full improvement.
 ~~~
 
 Do not upgrade a gate because its unit tests pass. Update the dated addendum with corrections; preserve old evidence for audit.
+
+## G. Optional developmental layer (both paths)
+
+Run [D0–D11](28-development-build-and-acceptance.md) in addition to this matrix. Verify scheduler admission, no action/rest, model pinning, event deduplication, source-linked memory, laboratory denial/limits, artifact/receipt persistence, private messaging and reversible prioritization. Test relevant/nonrelevant live conversation and model transfer; fixed synthetic fixtures and context-entry readback are not human acceptance. See the [November 24 status](../REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-24.md) for bounded evidence and unresolved items.

@@ -1,0 +1,29 @@
+# 26 — Environmental context, attention and natural cross-device participation
+
+Both renderers are clients of one shared agent system. A background initiative action may produce a private insight, an optional conversational candidate, or a bounded notification; it does not own the microphone, renderer or live conversation. Maintain separate permission controls for sensors, communication and speech.
+
+## Environmental awareness
+
+Use only authorized, fresh, minimal signals. Local clock/timezone and approximate sun elevation can provide time and daylight estimates; city-level weather from a configured public weather service is optional and is not measured at the residence. Send only coarse location if explicitly configured; cache and label timestamp/source; stale/unavailable is unknown. Reference: hourly-at-most weather during eligible cycles; no ambient sound recording, no measured indoor light.
+
+A desktop adapter may publish a single overwrite-only snapshot of an existing permission-gated face-visible/no-face-visible/unknown signal. Example: update about once per minute, expire after 90 seconds, require explicit camera awareness and unlocked screen; no new camera lease or raw images. Existing camera signal itself may have a shorter freshness lease. A visible face is occupancy evidence, not identification, mood or knowledge of where a user went. When permission closes, invalidate signal immediately; when app stops, expire it. Do not infer presence from microphone or OS idle alone. Ambient sound recognition is not implemented in the reference; only add it separately with explicit consent, narrow event types and physical off controls. See [sensor rules](07-screen-and-camera-vision.md) and [privacy](10-privacy-and-security.md).
+
+## Conversational integration, not compulsory commentary
+
+A model can record a candidate based on an actual completed task or recorded reflection, with title, substantive idea, source IDs, 1–6 short topic phrases and expiry (reference 1–60 days). Distinguish fictional simulations from factual discoveries; deprioritized/expired records are not offered. Match only actual incoming user text or an explicit conversational invitation such as “what have you been working on?”; bound to two hints and avoid replay. A separate prospective intention mechanism can offer up to three relevant intentions. The foreground agent decides whether to mention them; answer the user's current question first. Clear stale hint entries on a later nonmatching turn. Neither a context hint nor a generated response proves it was heard.
+
+Shared context can be exposed to normal text and mobile agents. Deterministic matching in the desktop adapter does not prove identical behavior in other clients; test each independently. Preserve private independent records and do not surface them to unrelated contacts. Do not use the feature to demand attention, generate pressure, or escalate personal disclosures.
+
+## Proactive delivery choices
+
+Allow silence, private journal, desktop notification, optional spoken candidate or private mobile message. Require explicit channel enablement, current session ownership, quiet hours, busy/idle/lock checks, user quiet mode, cooldown and deduplication. A short spoken candidate goes through the existing approved speech adapter and playback clock, with no second voice owner. Reference offered speech at most once using a persisted candidate ID; an offered line is not a heard receipt. Desktop notification submission is not proof a user saw it. No artificial test messages should be inserted into live personal history.
+
+## Private mobile inbox (distinct from phone haptics/live voice)
+
+One reference built a small Android client polling an authenticated private HTTPS endpoint via a private overlay network; this is optional, not a mandatory app/provider. Server binds loopback, exposes only installation page, bounded message queue and validated receipt endpoint; private proxy authenticates the owner. Do not expose it publicly or trust a spoofable identity header on a public listener. Use TLS, access control, device revocation and secrets outside Git. Queue with stable IDs, expiry, bounded text and rate caps (reference two messages per 24h, three hours apart). No forced messaging or arbitrary recipients. Android app uses explicit opt-in to notifications, a foreground receiving service with stop control, private lock-screen display, deduplication and separate posted/opened receipts; example polls every 60 seconds. Host must be awake and network available. Android may stop a service; not push and not guaranteed delivery. Never mark a notification as read unless a real opened receipt exists. The reference signed/build-tested the APK and verified protected endpoint responses, but did not verify actual handset receipt. Do not publish private APK signing keys, paired URLs or real messages.
+
+Phone touch/vibration is a separate authenticated peripheral ([18](18-mobile-touch-and-haptics.md)); a notification inbox is not full mobile speech, nor proof of physical haptics. Preserve user-controlled opt-out, quiet hours and existing conversation permissions.
+
+## Verify
+
+Use fresh/stale/disabled signal tests; synthetic relevant and irrelevant user turns; negative/internal event tests; playback/cancel ownership; duplicate suppression; unauthorized mobile requests rejected; network outage and expiry; actual user-authorized phone notification and open receipt; ordinary live conversation with real independently recorded discovery. Record exactly what was verified, with no private material published.

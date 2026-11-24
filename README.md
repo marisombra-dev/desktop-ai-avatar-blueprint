@@ -56,6 +56,12 @@ Both paths can connect to an existing long-lived AI identity and its memory, run
 
 The boundary matters: **the selected conversation or live-voice model owns authorized dialogue; the speech adapter exposes the played audio and turn state; the renderer animates; sensors and mobile peripherals are permissioned separately.** Replacing one component should not erase identity, conversation history or permissions.
 
+## Optional shared development layer (both paths)
+
+The face is only one interface to the agent. Either path can use an independent, model-agnostic scheduler and private persistent state for self-directed initiative, public research, goals and projects, sandbox experiments, metacognition, experiential learning and reusable skills. Add associative/episodic/prospective memory, evolving preferences and perspectives, curiosity, deliberation, consolidation, creative work, education, intellectual collaboration, independent evaluation and optional rest. Contextual discoveries can inform ordinary conversations and authorized desktop/mobile delivery without forcing a topic change.
+
+These are optional shared capabilities, not a third avatar path, a required provider, a claim of continuous consciousness, or permission for autonomous production changes. Start with the [shared initiative architecture](docs/22-shared-initiative-and-development.md) and [staged development build](docs/28-development-build-and-acceptance.md). The [November 24 evidence addendum](REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-24.md) distinguishes actual tests from still-unverified live behavior.
+
 ## Build and verification documentation
 
 - **[AI builder entry point](START_HERE_FOR_AI.md)**: choose the path and inventory the target machine before installing anything.
@@ -65,7 +71,9 @@ The boundary matters: **the selected conversation or live-voice model owns autho
 - **[Model-agnostic agent, voice, memory and latency](docs/19-agents-voice-memory-and-latency.md)**: swappable backends and evidence-based tuning.
 - **[Acceptance tests](docs/20-validation-and-reproducibility.md)** and **[optional capabilities](docs/21-capabilities-migration-and-optional-surfaces.md)**.
 
-**Reference history:** the original 3D-first implementation is preserved in the [archived walkthrough](docs/archive/legacy-3d-first-readme.md). The [historical status](REFERENCE_BUILD_STATUS.md) and [newer status addendum](REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-23.md) distinguish what was code-only, locally tested and directly human-verified. They are evidence, **not** installation requirements or guarantees on your hardware.
+**Shared development chapters (optional for A and B):** [22 Initiative and goals](docs/22-shared-initiative-and-development.md) · [23 Developmental memory and continuity](docs/23-developmental-memory-and-continuity.md) · [24 Reflection, learning and skills](docs/24-learning-reflection-and-skills.md) · [25 Projects, research and laboratory](docs/25-independent-projects-and-laboratory.md) · [26 Environment, conversation and mobile](docs/26-attention-environment-and-cross-device.md) · [27 Evaluation and model migration](docs/27-developmental-evaluation-and-migration.md) · [28 Build and acceptance](docs/28-development-build-and-acceptance.md).
+
+**Reference history:** the original 3D-first implementation is preserved in the [archived walkthrough](docs/archive/legacy-3d-first-readme.md). The [historical status](REFERENCE_BUILD_STATUS.md) and [visual/voice status addendum](REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-23.md) plus the [developmental status addendum](REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-24.md) distinguish what was code-only, locally tested and directly human-verified. They are evidence, **not** installation requirements or guarantees on your hardware.
 
 ## Privacy and scope
 

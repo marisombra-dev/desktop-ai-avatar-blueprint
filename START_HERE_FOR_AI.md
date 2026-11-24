@@ -33,12 +33,16 @@ If the reference documents mention OpenClaw, OpenCode, Whisper, ElevenLabs, Ditt
 1. [AGENTS.md](AGENTS.md) and this page.
 2. Your chosen [3D guide](docs/PATH_A_3D_METAHUMAN.md) **or** [photographic 2D guide](docs/PATH_B_PHOTOGRAPHIC_2D.md).
 3. [Common architecture and build sequence](docs/15-dual-path-build-guide.md).
-4. [Latest reference status with evidence distinctions](REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-23.md).
+4. [Visual/voice reference status](REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-23.md) and [developmental extension status](REFERENCE_BUILD_STATUS_ADDENDUM_2026-11-24.md).
 5. [Validation and safety gates](docs/20-validation-and-reproducibility.md).
 6. The selected renderer's chapters, then optional [expressions](docs/17-emotions-and-contextual-embodiment.md), [mobile touch/haptics](docs/18-mobile-touch-and-haptics.md), [model/voice/memory/latency](docs/19-agents-voice-memory-and-latency.md) and [other features](docs/21-capabilities-migration-and-optional-surfaces.md).
 7. [Sanitized examples](examples/README.md), [upstream references](SOURCES.md) and [third-party licenses](THIRD_PARTY.md) for technologies actually selected.
 
 The [archived 3D-first walkthrough](docs/archive/legacy-3d-first-readme.md) is **historical** and applies only when deliberately using its corresponding older architecture. Never present it as the main build order.
+
+## Optional shared developmental extension
+
+After the core conversation and memory gates work, either renderer can connect to the same initiative worker and private developmental state. Read [22–28](docs/22-shared-initiative-and-development.md) in order, then the [development acceptance gates](docs/28-development-build-and-acceptance.md). Choose capabilities explicitly; start disabled, preserve owner permissions, and avoid extra inference or paid model switching without approval. Build and validate the agent extension independently from the face. Do not publish private records or create an autonomous general computer-control agent.
 
 ## Machine inventory before edits
 
@@ -107,6 +111,8 @@ H. Paired phone touch and accurate browser-acknowledged haptics, **only if enabl
 I. Silence-capable proactivity, safe tool execution and robust context continuity.
 
 J. Cold start, interrupted reply, model outage and long conversation recover without silent data loss.
+
+K. If optional development is enabled: verify durable queue, source evidence, isolation, rest, contextual relevance, private delivery receipts and cross-model comparisons using [D0–D11](docs/28-development-build-and-acceptance.md). Do not count synthetic tests as spontaneous development.
 
 Run the [full human acceptance walk-through](docs/20-validation-and-reproducibility.md) and report any unfinished gate.
 

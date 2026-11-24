@@ -34,6 +34,10 @@ Nothing in this path requires a particular hosted or local language model, realt
 
 Historical reference code demonstrates one possible gateway and realtime voice event protocol. Treat provider-specific RPC/event names as replaceable adapter internals, not universal requirements.
 
+## Optional shared initiative and development (same as Path B)
+
+After A0–A7, optionally follow [the shared initiative architecture](22-shared-initiative-and-development.md) and [development build gates D0–D11](28-development-build-and-acceptance.md). Memory/learning, projects, laboratory, reflective records, environment, contextual conversation, mobile inbox and evaluation are backend capabilities. Unreal consumes the existing audio and silent animation contracts; it never owns the independent scheduler or development records. Verify actual Path A live integration separately from the reference Path B tests.
+
 ## What proves Path A works
 
 - A human approves the rendered 3D likeness and actual display behavior.
